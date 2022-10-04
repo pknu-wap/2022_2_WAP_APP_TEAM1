@@ -1,6 +1,6 @@
 ---
-name: 'Issue: FEATURE'
-about: Feature 작업 사항 입력
+name: 'Issue : CHORE'
+about: 'Chore 작업 사항 입력 '
 title: ''
 labels: ''
 assignees: ''

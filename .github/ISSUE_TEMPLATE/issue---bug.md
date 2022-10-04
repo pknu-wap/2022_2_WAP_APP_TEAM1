@@ -1,6 +1,6 @@
 ---
-name: 'Issue: FEATURE'
-about: Feature 작업 사항 입력
+name: 'Issue : BUG'
+about: Bug 발생시 작성 부탁드립니다 :)
 title: ''
 labels: ''
 assignees: ''
