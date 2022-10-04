@@ -1,6 +1,6 @@
 ---
-name: Custom issue template
-about: Describe this issue template's purpose here.
+name: 'issue: FEATURE'
+about: Feature 작업 사항 입력
 title: ''
 labels: ''
 assignees: ''
