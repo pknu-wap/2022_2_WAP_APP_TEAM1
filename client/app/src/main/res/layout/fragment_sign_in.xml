@@ -61,7 +61,7 @@
         app:layout_constraintTop_toBottomOf="@+id/passwordTextView" /
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/signInButton"
         style="@style/Widget.Material3.Button.ElevatedButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -74,4 +74,16 @@
         android:layout_marginTop="32dp"
         app:layout_constraintTop_toBottomOf="@+id/passwordEditText" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    <Button
+        android:id="@+id/goToSignUpButton"
+        style="@style/Widget.Material3.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="회원가입"
+        android:textColor="@color/gray"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/signInButton" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

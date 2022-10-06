@@ -82,7 +82,7 @@
         app:layout_constraintTop_toBottomOf="@+id/repeatedPasswordTextView" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/goToSignUp2Button"
         style="@style/Widget.Material3.Button.ElevatedButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
