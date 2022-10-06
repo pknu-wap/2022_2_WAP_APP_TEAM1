@@ -5,6 +5,9 @@
       <map>
         <entry key="..\:/Users/jaino/2022_2_WAP_APP_TEAM1/client/app/src/main/res/layout/activity_main.xml" value="0.38645833333333335" />
         <entry key="..\:/Users/jaino/2022_2_WAP_APP_TEAM1/client/app/src/main/res/layout/fragment_base.xml" value="0.38645833333333335" />
+        <entry key="..\:/Users/jaino/2022_2_WAP_APP_TEAM1/client/app/src/main/res/layout/fragment_sign_in.xml" value="0.38645833333333335" />
+        <entry key="..\:/Users/jaino/2022_2_WAP_APP_TEAM1/client/app/src/main/res/layout/fragment_sign_up.xml" value="0.33" />
+        <entry key="..\:/Users/jaino/2022_2_WAP_APP_TEAM1/client/app/src/main/res/layout/fragment_sign_up2.xml" value="0.38645833333333335" />
       </map>
     </option>
   </component>
