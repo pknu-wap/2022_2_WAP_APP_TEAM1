@@ -1,27 +1,37 @@
 'use strict';
 
 const { QueryTypes } = require("sequelize");
-const db = require("../config-db");
-//USER_ID = HEXTORAW('${this.USER_ID}')
+const db = require("../util/database");
+const raw2str = require("../util/rawtostr");
+const buf2hex = require("../util/rawtostr").sqlswap;
 class User {
-    constructor(param) {
-        Object.assign(this, param);
-        this.dbsetup = require("../config-db");
+    constructor(param) { //Object.assign(this, param);
+        this.UserId = param.UserId;
+        this.AccountType = param.AccountType;
+        this.OauthId = param.OauthId;
+        this.Username = param.Username;
+        this.Password = param.Password;
+        this.PhoneNum = param.PhoneNum;
+        this.Nickname = param.Nickname;
+        this.ProfileImage = param.ProfileImage;
+        this.dbsetup = require("../util/database");
     }
 
     async login() {
         try {
             if (this.AccountType == 0) {
                 const data = await db.query(`SELECT * FROM DB_USER WHERE USERNAME = '${this.Username}' and PASSWORD = '${this.Password}'`, { type: QueryTypes.SELECT });
+                data = await buf2hex(data);
                 return (data.length == 0) ?
                     { status: false, reason: "아이디나 비밀번호가 맞지 않습니다." } :
-                    { status: true, reason: "로그인 성공", userId: data[0].USER_ID.toString('hex') };
+                    { status: true, reason: "로그인 성공", result: data[0] };
             }
             else if (this.AccountType == 1 || this.AccountType == 2) { //Kakao Login
-                const data = await db.query(`SELECT * FROM DB_USER WHERE OAUTH_ID = ${this.OAUTH_ID}`, { type: QueryTypes.SELECT });
+                const data = await db.query(`SELECT * FROM DB_USER WHERE OAUTH_ID = ${this.OauthId}`, { type: QueryTypes.SELECT });
+                data = await buf2hex(data);
                 return (data.length == 0) ?
                     { status: false, reason: "등록되지 않는 고유번호입니다." } :
-                    { status: true, reason: "로그인 성공", userId: data[0].USER_ID.toString('hex') };
+                    { status: true, reason: "로그인 성공", result: data[0] };
             }
             else {
                 return { status: false, reason: "허용되지 않는 로그인 방식입니다." };
@@ -61,7 +71,7 @@ class User {
         let result = await require("../util/file")(image.buffer, image.originalname);
         if (result.result) {
             try {
-                const data = await db.query(`UPDATE DB_USER SET PROFILEIMAGE = '${result.fileName}' WHERE USER_ID = '${this.USER_ID}'`, { type: QueryTypes.UPDATE });
+                const data = await db.query(`UPDATE DB_USER SET PROFILEIMAGE = '${result.fileName}' WHERE USER_ID = '${this.UserId}'`, { type: QueryTypes.UPDATE });
                 return (data.length == 0) ?
                     { status: false, reason: "유저 아이디를 찾을 수 없습니다." } :
                     { status: true, reason: "프로필 이미지 변경 성공" };
@@ -71,6 +81,27 @@ class User {
         }
         else {
             return { status: false, reason: "파일 저장 실패" };
+        }
+    }
+    async editNickname() {
+        try {
+            const data = await db.query(`UPDATE DB_USER SET NICKNAME = '${this.Nickname}' WHERE USER_ID = '${this.UserId}'`, { type: QueryTypes.UPDATE });
+            return (data.length == 0) ?
+                { status: false, reason: "유저 아이디를 찾을 수 없습니다." } :
+                { status: true, reason: "닉네임 변경 성공" };
+        } catch (err) {
+            console.log('user->editNickname 도중 오류 발생: ', err);
+        }
+    }
+    async getInfo() {
+        try {
+            const data = await db.query(`SELECT * FROM DB_USER WHERE USER_ID = '${this.UserId}'`, { type: QueryTypes.SELECT });
+            data = await buf2hex(data);
+            return (data.length == 0) ?
+                { status: false, reason: "유저 아이디를 찾을 수 없습니다." } :
+                { status: true, reason: "유저 정보 조회 성공", result: data[0] };
+        } catch (err) {
+            console.log('user->getInfo 도중 오류 발생: ', err);
         }
     }
 }
