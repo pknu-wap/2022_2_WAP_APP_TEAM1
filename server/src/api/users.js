@@ -17,6 +17,14 @@ const process = {
     editProfileImage: async(req, res) => {
         let user = new User(req.body);
         return res.send(await user.editProfileImage(req.file));
+    },
+    getInfo: async(req, res) => {
+        let user = new User(req.body);
+        return res.send(await user.getInfo());
+    },
+    editNickname: async(req, res) => {
+        let user = new User(req.body);
+        return res.send(await user.editNickname());
     }
 }
 module.exports = process;
