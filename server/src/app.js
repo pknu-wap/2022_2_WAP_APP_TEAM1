@@ -6,5 +6,12 @@ const router = require("./routes");
 
 app.use('/', router);
 app.listen(port, async () => {
+    try {
+        db.authenticate();
+    }
+    catch (err) {
+        console.log('DB 연결 중 오류 발생: ', err);
+        process.exit();
+    }
     console.log(`http://localhost:${port}`)
 })
