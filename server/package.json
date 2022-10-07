@@ -4,7 +4,7 @@
   "description": "WAP 2022-2 TEAM APP 1",
   "main": "index.js",
   "scripts": {
-    "test": "node ./Server/app.js && exit 1"
+    "test": "node ./src/app.js && exit 1"
   },
   "author": "",
   "license": "ISC",

@@ -2,9 +2,7 @@
 const { Sequelize } = require('sequelize');
 
 
-module.exports = {
-  getDb: function () {
-    return new Sequelize('xe', 'wetrip', 'wetrip', {
+module.exports = new Sequelize('xe', 'wetrip', 'wetrip', {
       database: 'xe',
       username: 'wetrip',
       password: 'wetrip',
@@ -21,5 +19,3 @@ module.exports = {
       },
       quoteIdentifiers: false
     });
-  }
-};
