@@ -2,7 +2,6 @@
 
 const { QueryTypes } = require("sequelize");
 
-
 //USER_ID = HEXTORAW('${this.USER_ID}')
 class User {
     constructor(param) {
@@ -12,7 +11,7 @@ class User {
 
     login() {
         if (this.Username === undefined || this.Password === undefined || this.AccountType === undefined) {
-            return { result: false, reason: "ERROR_LACK_OF_DATA" };
+            return { result: false, reason: "아이디나 비밀번호가 맞지 않습니다." };
         }
         let _db = this.dbsetup.getDb();
         _db.authenticate().then(async () => {
