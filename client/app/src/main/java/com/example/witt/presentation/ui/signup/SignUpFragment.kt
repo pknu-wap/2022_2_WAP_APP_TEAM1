@@ -1,20 +1,20 @@
 package com.example.witt.presentation.ui.signup
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import com.example.witt.R
+import com.example.witt.databinding.FragmentSignUpBinding
+import com.example.witt.presentation.base.BaseFragment
 
-class SignUpFragment : Fragment() {
+class SignUpFragment : BaseFragment<FragmentSignUpBinding>(R.layout.fragment_sign_up) {
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_sign_up, container, false)
+        binding.goToSignUp2Button.setOnClickListener{
+            val direction = SignUpFragmentDirections.actionSignUpFragmentToSignUp2Fragment()
+            findNavController().navigate(direction)
+        }
     }
 
 }
