@@ -29,11 +29,13 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/signInTextView" />
 
+
         <EditText
             android:id="@+id/emailEditTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
+            android:singleLine="true"
             android:hint="이메일을 입력해주세요."
             android:inputType="textEmailAddress"
             app:layout_constraintEnd_toEndOf="parent"
@@ -55,6 +57,7 @@
             android:id="@+id/passwordEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:singleLine="true"
             android:inputType="textPassword"
             android:hint="비밀번호를 입력해주세요."
             app:layout_constraintEnd_toEndOf="parent"

@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.witt.presentation.ui.signup.SignUpViewModel" />
+    </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
@@ -34,7 +39,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
+            android:singleLine="true"
             android:hint="이메일을 입력해주세요."
+            android:text="@={viewModel.inputEmail}"
             android:inputType="textEmailAddress"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -56,7 +63,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPassword"
+            android:singleLine="true"
             android:hint="비밀번호를 입력해주세요."
+            android:text="@={viewModel.inputPassword}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/passwordTextView" />
@@ -65,7 +74,7 @@
             android:id="@+id/repeatedPasswordTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="비밀번호"
+            android:text="비밀번호 확인"
             android:textColor="@color/gray"
             android:textSize="12sp"
             android:layout_marginTop="32dp"
@@ -78,6 +87,8 @@
             android:layout_height="wrap_content"
             android:hint="비밀번호를 다시 한번 입력해주세요."
             android:inputType="textPersonName"
+            android:singleLine="true"
+            android:text="@={viewModel.inputRepeatedPassword}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/repeatedPasswordTextView" />

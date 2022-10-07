@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.witt.presentation.ui.signup.SignUpViewModel" />
+    </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
@@ -35,6 +40,8 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="이름을 입력하세요."
+            android:singleLine="true"
+            android:text="@={viewModel.inputName}"
             android:inputType="textPersonName"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -59,6 +66,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
+            android:singleLine="true"
+            android:text="@={viewModel.inputPhoneNumber}"
             android:hint="(예시) 01012345678"
             android:inputType="phone" />
 
