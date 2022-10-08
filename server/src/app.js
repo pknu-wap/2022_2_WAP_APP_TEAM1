@@ -6,6 +6,8 @@ const router = require("./routes");
 
 app.use('/', router);
 app.listen(port, async () => {
+    require("dotenv").config();
+
     try {
         db.authenticate();
     }

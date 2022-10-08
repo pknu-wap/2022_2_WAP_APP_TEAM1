@@ -3,7 +3,7 @@
 const { QueryTypes } = require("sequelize");
 const db = require("../util/database");
 const raw2str = require("../util/rawtostr");
-const buf2hex = require("../util/rawtostr").sqlswap;
+const token = require("../util/jwt");
 class User {
     constructor(param) { //Object.assign(this, param);
         this.UserId = param.UserId;
@@ -19,19 +19,39 @@ class User {
 
     async login() {
         try {
+            /* 일반 로그인 */
             if (this.AccountType == 0) {
-                const data = await db.query(`SELECT * FROM DB_USER WHERE USERNAME = '${this.Username}' and PASSWORD = '${this.Password}'`, { type: QueryTypes.SELECT });
-                data = await buf2hex(data);
-                return (data.length == 0) ?
-                    { status: false, reason: "아이디나 비밀번호가 맞지 않습니다." } :
-                    { status: true, reason: "로그인 성공", result: data[0] };
+                let data = await db.query(`SELECT * FROM DB_USER WHERE USERNAME = '${this.Username}' and PASSWORD = '${this.Password}'`, { type: QueryTypes.SELECT });
+                data = await raw2str.sqlswap(data);
+                if (data.length == 0) {
+                    return { status: false, reason: "아이디나 비밀번호가 맞지 않습니다." }
+                }
+                else {
+                    let AccessToken = token.generateAccessToken(data[0].USER_ID);
+                    let RefreshToken = token.generateRefreshToken(data[0].USER_ID);
+                    return { status: true, reason: "로그인 성공", AccessToken: AccessToken, RefreshToken: RefreshToken };
+                }
             }
-            else if (this.AccountType == 1 || this.AccountType == 2) { //Kakao Login
-                const data = await db.query(`SELECT * FROM DB_USER WHERE OAUTH_ID = ${this.OauthId}`, { type: QueryTypes.SELECT });
-                data = await buf2hex(data);
-                return (data.length == 0) ?
-                    { status: false, reason: "등록되지 않는 고유번호입니다." } :
-                    { status: true, reason: "로그인 성공", result: data[0] };
+            /* 카카오,네이버 로그인 */
+            else if (this.AccountType == 1 || this.AccountType == 2) { 
+                let query = await raw2str.sqlswap(await db.query(`SELECT * FROM DB_USER WHERE OAUTH_ID = ${this.OauthId}`, { type: QueryTypes.SELECT }));
+                if (query.length == 0) {
+                    /* 계정이 없을 경우 회원가입 */
+                    query = await db.query(`INSERT INTO DB_USER (ACCOUNTTYPE, OAUTH_ID, USERNAME, PASSWORD, PHONENUM, NICKNAME) VALUES ('${this.AccountType}', '${this.OauthId}', '${this.Username}', '', '', '')`, { type: QueryTypes.INSERT });
+                    query = await raw2str.sqlswap(await db.query(`SELECT * FROM DB_USER WHERE OAUTH_ID = ${this.OauthId}`, { type: QueryTypes.SELECT }));
+                    if (query.length == 0) {
+                        return { status: false, reason: "계정 등록에 실패했습니다." };
+                    }
+                    let AccessToken = token.generateAccessToken(q3[0].USER_ID);
+                    let RefreshToken = token.generateRefreshToken(q3[0].USER_ID);
+                    return { status: true, reason: "로그인 성공", AccessToken: AccessToken, RefreshToken: RefreshToken };
+                }
+                else {
+                    let AccessToken = token.generateAccessToken(q1[0].USER_ID);
+                    let RefreshToken = token.generateRefreshToken(q1[0].USER_ID);
+                    return { status: true, reason: "로그인 성공", AccessToken: AccessToken, RefreshToken: RefreshToken };
+                }
+
             }
             else {
                 return { status: false, reason: "허용되지 않는 로그인 방식입니다." };
@@ -95,8 +115,7 @@ class User {
     }
     async getInfo() {
         try {
-            const data = await db.query(`SELECT * FROM DB_USER WHERE USER_ID = '${this.UserId}'`, { type: QueryTypes.SELECT });
-            data = await buf2hex(data);
+            let data = await buf2hex(await db.query(`SELECT * FROM DB_USER WHERE USER_ID = '${this.UserId}'`, { type: QueryTypes.SELECT }));
             return (data.length == 0) ?
                 { status: false, reason: "유저 아이디를 찾을 수 없습니다." } :
                 { status: true, reason: "유저 정보 조회 성공", result: data[0] };

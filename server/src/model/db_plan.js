@@ -51,9 +51,9 @@ class Plan {
             return { status: false, reason: "일정을 수정하는 도중 오류가 발생했습니다." };
         }
     }
-    async getPlanList() {
+    static async getPlanList(ownerId) {
         try {
-            var data = await db.query(`SELECT * FROM DB_PLAN WHERE OWNER_ID = '${this.OwnerId}'`, { type: QueryTypes.SELECT });
+            var data = await db.query(`SELECT * FROM DB_PLAN WHERE OWNER_ID = '${ownerId}'`, { type: QueryTypes.SELECT });
             data = await buf2hex(data);
             return (data.length == 0) ?
                 { status: false, reason: "일정을 불러오는 도중 오류가 발생했습니다." } :
