@@ -25,8 +25,8 @@
 
         <TextView
             android:id="@+id/emailTextView"
-            android:layout_width="37dp"
-            android:layout_height="12dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
             android:text="이메일"
             android:textColor="@color/gray"
@@ -86,7 +86,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="비밀번호를 다시 한번 입력해주세요."
-            android:inputType="textPersonName"
+            android:inputType="textPassword"
             android:singleLine="true"
             android:text="@={viewModel.inputRepeatedPassword}"
             app:layout_constraintEnd_toEndOf="parent"
