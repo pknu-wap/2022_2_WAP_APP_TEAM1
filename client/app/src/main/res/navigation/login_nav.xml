@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_signInFragment_to_signUpFragment"
             app:destination="@id/signUpFragment" />
+        <action
+            android:id="@+id/action_signInFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
     </fragment>
     <fragment
         android:id="@+id/signUpFragment"
@@ -20,16 +23,21 @@
         android:label="fragment_sign_up"
         tools:layout="@layout/fragment_sign_up" >
         <action
-            android:id="@+id/action_signUpFragment_to_signUp2Fragment"
-            app:destination="@id/signUp2Fragment" />
+            android:id="@+id/action_signUpFragment_to_profileEditFragment"
+            app:destination="@id/profileEditFragment" />
     </fragment>
     <fragment
-        android:id="@+id/signUp2Fragment"
-        android:name="com.example.witt.presentation.ui.signup.SignUp2Fragment"
-        android:label="fragment_sign_up2"
-        tools:layout="@layout/fragment_sign_up2" >
+        android:id="@+id/profileEditFragment"
+        android:name="com.example.witt.presentation.ui.profile_edit.ProfileEditFragment"
+        android:label="fragment_profile_edit"
+        tools:layout="@layout/fragment_profile_edit" >
         <action
-            android:id="@+id/action_signUp2Fragment_to_signInFragment"
-            app:destination="@id/signInFragment" />
+            android:id="@+id/action_profileEditFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.witt.presentation.ui.home.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" />
 </navigation>

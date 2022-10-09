@@ -16,7 +16,7 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(R.layout.fragment_sig
 
         binding.goToSignUp2Button.setOnClickListener{
             viewModel.onEvent(SignUpEvent.SubmitEmailPassword)
-            val direction = SignUpFragmentDirections.actionSignUpFragmentToSignUp2Fragment()
+            val direction = SignUpFragmentDirections.actionSignUpFragmentToProfileEditFragment()
             findNavController().navigate(direction)
         }
     }
