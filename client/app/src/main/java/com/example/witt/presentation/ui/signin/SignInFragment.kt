@@ -40,10 +40,18 @@ class SignInFragment : BaseFragment<FragmentSignInBinding>(R.layout.fragment_sig
                 }
             }
         }
+        //Error 표시
+        viewModel.errorEmail.observe(viewLifecycleOwner){
+            binding.emailEditTextView.error = it
+        }
+        viewModel.errorPassword.observe(viewLifecycleOwner){
+            binding.passwordEditText.error = it
+        }
 
         binding.signInButton.setOnClickListener {
             viewModel.onEvent(SignUpEvent.SubmitEmailPassword)
         }
+
         binding.goToSignUpButton.setOnClickListener{
             val direction = SignInFragmentDirections.actionSignInFragmentToSignUpFragment()
             findNavController().navigate(direction)

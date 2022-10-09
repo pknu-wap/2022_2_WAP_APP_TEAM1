@@ -1,5 +1,6 @@
 package com.example.witt.presentation.ui.signin
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -27,11 +28,17 @@ class SignInViewModel @Inject constructor(
     val inputEmail: MutableLiveData<String> = MutableLiveData("")
     val inputPassword: MutableLiveData<String> = MutableLiveData("")
 
+    private val _errorEmail : MutableLiveData<String> = MutableLiveData()
+    val errorEmail : LiveData<String> get() = _errorEmail
+
+    private val _errorPassword : MutableLiveData<String> = MutableLiveData()
+    val errorPassword: LiveData<String> get() = _errorPassword
+
 
     fun onEvent(event: SignUpEvent){
         when(event){
             is SignUpEvent.SubmitEmailPassword ->{
-                submitData()
+                validateData()
             }
             is SignUpEvent.SubmitNamePhoneNumber ->{
 
@@ -40,6 +47,7 @@ class SignInViewModel @Inject constructor(
     }
 
     private fun validateData(){
+        //작성 폼 유효성 검사
         val emailResult = validateEmail.execute(inputEmail.value ?: "")
         val passwordResult = validatePassword.execute(inputPassword.value ?: "")
 
@@ -50,13 +58,16 @@ class SignInViewModel @Inject constructor(
             !it.successful
         }
         if(hasError){
+            //만약 에러가 발생한다면
+            _errorEmail.value = emailResult.errorMessage ?: ""
+            _errorPassword.value = passwordResult.errorMessage ?: ""
             return
         }
         submitData()
     }
 
     private fun submitData(){
-        //kakao access token 가져오기 및 데이터 전송
+        //data 전송
         viewModelScope.launch {
             val signInResult =
                 signInEmailPassword(accountType = 0, inputEmail.value ?: "", inputPassword.value ?: "")
