@@ -15,7 +15,7 @@ class ProfileEditFragment : BaseFragment<FragmentProfileEditBinding>(R.layout.fr
         super.onViewCreated(view, savedInstanceState)
 
         binding.signUpButton.setOnClickListener{
-            val direction = ProfileEditFragmentDirections.actionProfileEditFragmentToSignInFragment()
+            val direction = ProfileEditFragmentDirections.actionProfileEditFragmentToHomeFragment()
             findNavController().navigate(direction)
         }
     }
