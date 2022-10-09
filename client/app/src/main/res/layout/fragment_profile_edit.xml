@@ -1,23 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
     <data>
         <variable
             name="viewModel"
             type="com.example.witt.presentation.ui.signup.SignUpViewModel" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="32dp"
         tools:context=".presentation.ui.profile_edit.ProfileEditFragment">
 
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/profile_image"
+            android:layout_width="96dp"
+            android:layout_height="96dp"
+            android:layout_marginTop="32dp"
+            android:src="@drawable/ic_launcher_background"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/signUp2TextView" />
+
         <TextView
             android:id="@+id/signUp2TextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="회원가입"
+            android:text="프로필"
             android:textSize="20sp"
             android:textColor="@color/black"
             app:layout_constraintStart_toStartOf="parent"
@@ -27,12 +37,12 @@
             android:id="@+id/nameTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
             android:text="이름"
+            android:layout_marginTop="32dp"
             android:textColor="@color/gray"
             android:textSize="12sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/signUp2TextView" />
+            app:layout_constraintTop_toBottomOf="@+id/profile_image" />
 
         <EditText
             android:id="@+id/nameEditText"
@@ -74,7 +84,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/skyBlue"
-            android:text="회원가입"
+            android:text="수정완료"
             android:textColor="@color/white"
             android:textSize="16sp"
             android:layout_marginTop="32dp"
