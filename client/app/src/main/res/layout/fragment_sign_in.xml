@@ -96,6 +96,21 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/signInButton" />
 
+        <Button
+            android:id="@+id/kakaoSignInButton"
+            style="@style/Widget.Material3.Button.ElevatedButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="200dp"
+            android:backgroundTint="#FEE500"
+            android:drawableLeft="@drawable/ic_kakao_login"
+            android:text="카카오 로그인"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/passwordEditText" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
