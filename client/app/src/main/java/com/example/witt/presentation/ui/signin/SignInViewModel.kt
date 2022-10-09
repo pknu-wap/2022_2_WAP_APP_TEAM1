@@ -1,5 +1,6 @@
 package com.example.witt.presentation.ui.signin
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -18,52 +19,34 @@ class SignInViewModel @Inject constructor(
     private val signInEmailPassword: SignInEmailPassword
 ): ViewModel() {
 
+    val inputEmail : MutableLiveData<String> = MutableLiveData()
+    val inputPassword : MutableLiveData<String> = MutableLiveData()
+
     private val signInEventChannel = Channel<SignInUiEvent>()
     val signInEvents = signInEventChannel.receiveAsFlow()
-
-    private val validateEmail by lazy{ ValidateEmail() }
-    private val validatePassword by lazy { ValidatePassword()}
-
-    val inputEmail: MutableLiveData<String> = MutableLiveData("")
-    val inputPassword: MutableLiveData<String> = MutableLiveData("")
 
 
     fun onEvent(event: SignUpEvent){
         when(event){
-            is SignUpEvent.SubmitEmailPassword ->{
+            is SignUpEvent.Submit ->{
                 submitData()
             }
-            is SignUpEvent.SubmitNamePhoneNumber ->{
-
-            }
         }
-    }
-
-    private fun validateData(){
-        val emailResult = validateEmail.execute(inputEmail.value ?: "")
-        val passwordResult = validatePassword.execute(inputPassword.value ?: "")
-
-        val hasError = listOf(
-            emailResult,
-            passwordResult,
-        ).any{
-            !it.successful
-        }
-        if(hasError){
-            return
-        }
-        submitData()
     }
 
     private fun submitData(){
-        //kakao access token 가져오기 및 데이터 전송
+        //data 전송
         viewModelScope.launch {
-            val signInResult =
-                signInEmailPassword(accountType = 0, inputEmail.value ?: "", inputPassword.value ?: "")
-            if(signInResult.isSuccess){
-                signInEventChannel.trySend(SignInUiEvent.Success)
+            if(!inputEmail.value.isNullOrBlank() && !inputPassword.value.isNullOrBlank()){
+                val signInResult =
+                    signInEmailPassword(accountType = 0, inputEmail.value ?: "", inputPassword.value ?: "")
+                if(signInResult.isSuccess){
+                    signInEventChannel.trySend(SignInUiEvent.Success)
+                }else{
+                    signInEventChannel.trySend(SignInUiEvent.Failure("네트워크 문제가 발생하였습니다."))
+                }
             }else{
-                signInEventChannel.trySend(SignInUiEvent.Failure("error"))
+                signInEventChannel.trySend(SignInUiEvent.Failure("이메일과 비밀번호를 확인해주세요."))
             }
         }
     }
