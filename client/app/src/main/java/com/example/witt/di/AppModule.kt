@@ -33,5 +33,4 @@ object AppModule {
         return app.getSharedPreferences("prefs", MODE_PRIVATE)
     }
 
-
 }
