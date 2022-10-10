@@ -27,7 +27,7 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(R.layout.fragment_sig
     }
 
     private fun initButton(){
-        binding.goToSignUp2Button.setOnClickListener{
+        binding.signUpButton.setOnClickListener{
             viewModel.onEvent(SignUpEvent.Submit)
         }
     }
