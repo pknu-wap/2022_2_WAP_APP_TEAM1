@@ -35,12 +35,15 @@ class SignInFragment : BaseFragment<FragmentSignInBinding>(R.layout.fragment_sig
     }
     private fun initButton(){
         binding.signInButton.setOnClickListener {
-            viewModel.onEvent(SignUpEvent.Submit)
+            viewModel.onEvent(SignInEvent.Submit)
         }
 
         binding.goToSignUpButton.setOnClickListener{
             val direction = SignInFragmentDirections.actionSignInFragmentToSignUpFragment()
             findNavController().navigate(direction)
+        }
+        binding.kakaoSignInButton.setOnClickListener{
+            viewModel.kakaoLogin()
         }
     }
 
