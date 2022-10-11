@@ -1,14 +1,12 @@
 package com.example.witt.presentation.ui.profile_edit
 
-import android.content.Context
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.View
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContract
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
+import com.canhub.cropper.*
 import com.example.witt.R
 import com.example.witt.databinding.FragmentProfileEditBinding
 import com.example.witt.presentation.base.BaseFragment
@@ -18,38 +16,35 @@ class ProfileEditFragment : BaseFragment<FragmentProfileEditBinding>(R.layout.fr
 
     private val viewModel : ProfileEditViewModel by viewModels()
 
-    /*private val cropActivityResultContract = object: ActivityResultContract<Any?, Uri?>(){
-        override fun createIntent(context: Context, input: Any?): Intent {
-            return CropImage.activity()
-                .setAspectRatio(1, 1)
-                .getIntent(requireActivity())
-        }
-
-        override fun parseResult(resultCode: Int, intent: Intent?): Uri? {
-            return CropImage.getActivityResult(intent)?.uri
+    private val cropImage = registerForActivityResult(CropImageContract()){ result ->
+        if(result.isSuccessful){
+            Glide.with(requireActivity())
+                .load(result.uriContent)
+                .into(binding.profileImage)
+        }else{
+            Toast.makeText(requireActivity(), result.error.toString(), Toast.LENGTH_SHORT).show()
         }
     }
-    private lateinit var cropActivityResultLauncher: ActivityResultLauncher<Any?>*/
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         binding.viewModel = viewModel
-
-        /*cropActivityResultLauncher = registerForActivityResult(cropActivityResultContract){
-            it?.let{ uri ->
-                binding.profileImage.setImageURI(uri)
-            }
-        }*/
-
         initButton()
+
     }
 
     private fun initButton(){
 
-        /*binding.profileImage.setOnClickListener {
-            cropActivityResultLauncher.launch(null)
-        }*/
+        binding.profileImage.setOnClickListener {
+            cropImage.launch(
+                options {
+                    setGuidelines(CropImageView.Guidelines.ON)
+                    setAspectRatio(1, 1)
+                    setCropShape(CropImageView.CropShape.OVAL)
+                }
+            )
+        }
 
         binding.profileEditButton.setOnClickListener{
             val direction = ProfileEditFragmentDirections.actionProfileEditFragmentToHomeFragment()
