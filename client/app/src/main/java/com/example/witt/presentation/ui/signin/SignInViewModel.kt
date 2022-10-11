@@ -13,9 +13,12 @@ import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.user.UserApiClient
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
 @HiltViewModel
 class SignInViewModel @Inject constructor(
@@ -34,7 +37,6 @@ class SignInViewModel @Inject constructor(
     companion object{
         const val  TAG = "KakaoAuthViewModel"
     }
-
 
     fun onEvent(event: SignInEvent){
         when(event){
@@ -65,12 +67,26 @@ class SignInViewModel @Inject constructor(
         object Success: SignInUiEvent()
     }
 
+    val isLoggedIn = MutableStateFlow<Boolean>(false)
+
     fun kakaoLogin(){
+        viewModelScope.launch {
+            isLoggedIn.emit(handleKakaoLogin())
+        }
+    }
+
+
+    private suspend fun handleKakaoLogin():Boolean =
+    suspendCoroutine<Boolean>{ continuation ->
         val callback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
             if (error != null) {
                 Log.e(TAG, "카카오계정으로 로그인 실패", error)
+                continuation.resume(false)
             } else if (token != null) {
                 Log.i(TAG, "카카오계정으로 로그인 성공 ${token.accessToken}")
+                continuation.resume(true)
+                getTokenInfo()
+                getUserInfo()
             }
         }
 
@@ -90,10 +106,42 @@ class SignInViewModel @Inject constructor(
                     UserApiClient.instance.loginWithKakaoAccount(context, callback = callback)
                 } else if (token != null) {
                     Log.i(TAG, "카카오톡으로 로그인 성공 ${token.accessToken}")
+
                 }
             }
         } else {
             UserApiClient.instance.loginWithKakaoAccount(context, callback = callback)
+        }
+
+    }
+
+
+
+
+    private fun getTokenInfo(){
+        UserApiClient.instance.accessTokenInfo { tokenInfo, error ->
+            if (error != null) {
+                Log.e(TAG, "토큰 정보 보기 실패", error)
+            }
+            else if (tokenInfo != null) {
+                Log.i(TAG, "토큰 정보 보기 성공" +
+                        "\n회원번호: ${tokenInfo.id}" +
+                        "\n만료시간: ${tokenInfo.expiresIn} 초")
+            }
+        }
+    }
+    private fun getUserInfo(){
+        UserApiClient.instance.me { user, error ->
+            if (error != null) {
+                Log.e(TAG, "사용자 정보 요청 실패", error)
+            }
+            else if (user != null) {
+                Log.i(TAG, "사용자 정보 요청 성공" +
+                        "\n회원번호: ${user.id}" +
+                        "\n이메일: ${user.kakaoAccount?.email}" +
+                        "\n닉네임: ${user.kakaoAccount?.profile?.nickname}" +
+                        "\n프로필사진: ${user.kakaoAccount?.profile?.thumbnailImageUrl}")
+            }
         }
     }
 }
