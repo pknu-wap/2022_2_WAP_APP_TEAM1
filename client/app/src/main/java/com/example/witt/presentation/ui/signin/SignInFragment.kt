@@ -42,7 +42,7 @@ class SignInFragment : BaseFragment<FragmentSignInBinding>(R.layout.fragment_sig
             findNavController().navigate(direction)
         }
         binding.kakaoSignInButton.setOnClickListener{
-            viewModel.kakaoLogin()
+            viewModel.onEvent(SignInEvent.KakaoSignIn)
         }
     }
 
