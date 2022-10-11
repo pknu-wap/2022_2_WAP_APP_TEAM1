@@ -37,7 +37,7 @@ class User {
                 let query = await raw2str.sqlswap(await db.query(`SELECT * FROM DB_USER WHERE OAUTH_ID = ${this.OauthId}`, { type: QueryTypes.SELECT }));
                 if (query.length == 0) {
                     /* 계정이 없을 경우 회원가입 */
-                    query = await db.query(`INSERT INTO DB_USER (ACCOUNTTYPE, OAUTH_ID, USERNAME, PASSWORD, PHONENUM, NICKNAME) VALUES ('${this.AccountType}', '${this.OauthId}', '${this.Username}', '', '', '')`, { type: QueryTypes.INSERT });
+                    query = await db.query(`INSERT INTO DB_USER (ACCOUNTTYPE, OAUTH_ID, USERNAME, PASSWORD, PHONENUM, NICKNAME) VALUES ('${this.AccountType}', '${this.OauthId}', '', '', '', '')`, { type: QueryTypes.INSERT });
                     query = await raw2str.sqlswap(await db.query(`SELECT * FROM DB_USER WHERE OAUTH_ID = ${this.OauthId}`, { type: QueryTypes.SELECT }));
                     if (query.length == 0) {
                         return { status: false, reason: "계정 등록에 실패했습니다." };
@@ -77,7 +77,7 @@ class User {
     async register() {
         try {
             if (this.AccountType == 0) {
-                const data = await db.query(`INSERT INTO DB_USER (ACCOUNTTYPE, OAUTH_ID, USERNAME, PASSWORD, PHONENUM, NICKNAME) VALUES ('0', '', '${this.Username}', '${this.Password}', '${this.PhoneNum}', '${this.Nickname}')`, { type: QueryTypes.INSERT });
+                const data = await db.query(`INSERT INTO DB_USER (ACCOUNTTYPE, OAUTH_ID, USERNAME, PASSWORD, PHONENUM, NICKNAME) VALUES ('0', '', '${this.Username}', '${this.Password}', '', '')`, { type: QueryTypes.INSERT });
                 return (data.length == 0) ?
                     { status: false, reason: "계정을 생성하는 도중 오류가 발생했습니다." } :
                     { status: true, reason: "계정 생성하는 데 성공하였습니다." };
@@ -103,16 +103,6 @@ class User {
             return { status: false, reason: "파일 저장 실패" };
         }
     }
-    async editNickname() {
-        try {
-            const data = await db.query(`UPDATE DB_USER SET NICKNAME = '${this.Nickname}' WHERE USER_ID = '${this.UserId}'`, { type: QueryTypes.UPDATE });
-            return (data.length == 0) ?
-                { status: false, reason: "유저 아이디를 찾을 수 없습니다." } :
-                { status: true, reason: "닉네임 변경 성공" };
-        } catch (err) {
-            console.log('user->editNickname 도중 오류 발생: ', err);
-        }
-    }
     async getInfo() {
         try {
             let data = await buf2hex(await db.query(`SELECT * FROM DB_USER WHERE USER_ID = '${this.UserId}'`, { type: QueryTypes.SELECT }));
@@ -121,6 +111,16 @@ class User {
                 { status: true, reason: "유저 정보 조회 성공", result: data[0] };
         } catch (err) {
             console.log('user->getInfo 도중 오류 발생: ', err);
+        }
+    }
+    async editInfo() {
+        try {
+            const data = await db.query(`UPDATE DB_USER SET NICKNAME = '${this.Nickname}', PHONENUM = '${this.PhoneNum}' WHERE USER_ID = '${this.UserId}'`, { type: QueryTypes.UPDATE });
+            return (data.length == 0) ?
+                { status: false, reason: "유저 아이디를 찾을 수 없습니다." } :
+                { status: true, reason: "유저 정보 변경 성공" };
+        } catch (err) {
+            console.log('user->editInfo 도중 오류 발생: ', err);
         }
     }
 }

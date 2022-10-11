@@ -26,10 +26,10 @@ const process = {
         let user = new User(req.body);
         return res.send(await user.getInfo());
     },
-    editNickname: async(req, res) => {
+    editInfo: async(req, res) => {
         req.body.UserId = req.token.userId;
         let user = new User(req.body);
-        return res.send(await user.editNickname());
+        return res.send(await user.editInfo());
     }
 }
 module.exports = process;
