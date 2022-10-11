@@ -19,6 +19,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Witt"
         tools:targetApi="31">
+        <activity android:name="com.canhub.cropper.CropImageActivity"
+            android:theme="@style/Base.Theme.AppCompat"/>
         <activity
             android:name=".MainActivity"
             android:exported="true">
