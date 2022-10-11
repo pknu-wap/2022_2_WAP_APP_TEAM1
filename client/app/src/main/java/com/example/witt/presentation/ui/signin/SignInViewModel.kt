@@ -115,9 +115,6 @@ class SignInViewModel @Inject constructor(
 
     }
 
-
-
-
     private fun getTokenInfo(){
         UserApiClient.instance.accessTokenInfo { tokenInfo, error ->
             if (error != null) {

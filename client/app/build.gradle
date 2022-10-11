@@ -42,6 +42,7 @@ android {
     dataBinding {
         enabled = true
     }
+    namespace 'com.example.witt'
 }
 
 dependencies {
