@@ -19,8 +19,7 @@ const process = {
         return res.send(await Plan.getPlan(req.query.PlanId));
     },
     getPlanList: async (req, res) => {
-        let plan = new Plan(req.query);
-        return res.send(await plan.getPlanList());
+        return res.send(await Plan.getPlanList(req.query.OwnerId));
     },
     getParticipantList: async (req, res) => {
         return res.send(await PlanParticipant.getParticipants(req.query.PlanId));
