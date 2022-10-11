@@ -22,7 +22,6 @@ import kotlinx.coroutines.launch
 class SignInFragment : BaseFragment<FragmentSignInBinding>(R.layout.fragment_sign_in) {
 
     private val viewModel : SignInViewModel by viewModels()
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -35,12 +34,15 @@ class SignInFragment : BaseFragment<FragmentSignInBinding>(R.layout.fragment_sig
     }
     private fun initButton(){
         binding.signInButton.setOnClickListener {
-            viewModel.onEvent(SignUpEvent.Submit)
+            viewModel.onEvent(SignInEvent.Submit)
         }
 
         binding.goToSignUpButton.setOnClickListener{
             val direction = SignInFragmentDirections.actionSignInFragmentToSignUpFragment()
             findNavController().navigate(direction)
+        }
+        binding.kakaoSignInButton.setOnClickListener{
+            viewModel.onEvent(SignInEvent.KakaoSignIn)
         }
     }
 

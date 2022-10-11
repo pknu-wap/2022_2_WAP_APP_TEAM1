@@ -4,4 +4,5 @@ sealed class SignInEvent {
 
     object Submit: SignInEvent()
 
+    object KakaoSignIn: SignInEvent()
 }
