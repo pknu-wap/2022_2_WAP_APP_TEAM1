@@ -5,7 +5,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.example.witt.presentation.ui.signup.SignUpViewModel" />
+            type="com.example.witt.presentation.ui.profile_edit.ProfileEditViewModel" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -50,6 +50,7 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="이름을 입력하세요."
+            android:text="@={viewModel.inputName}"
             android:singleLine="true" android:inputType="textPersonName"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -68,18 +69,20 @@
 
         <EditText
             android:id="@+id/phoneNumberEditText"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/phoneNumberTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
             android:singleLine="true"
+            android:text="@={viewModel.inputPhoneNumber}"
             android:hint="(예시) 01012345678"
-            android:inputType="phone" />
+            android:inputType="phone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/phoneNumberTextView"
+            />
 
         <Button
-            android:id="@+id/signUpButton"
+            android:id="@+id/profile_edit_button"
             style="@style/Widget.Material3.Button.ElevatedButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
