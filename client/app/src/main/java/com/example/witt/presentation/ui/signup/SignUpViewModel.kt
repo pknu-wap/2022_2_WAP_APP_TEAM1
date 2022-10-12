@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.witt.domain.use_case.remote.DuplicateEmail
 import com.example.witt.domain.use_case.remote.SignUpEmailPassword
 import com.example.witt.domain.use_case.validate.ValidateEmail
 import com.example.witt.domain.use_case.validate.ValidatePassword
@@ -17,7 +18,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SignUpViewModel @Inject constructor(
-    private val signUp: SignUpEmailPassword
+    private val signUp: SignUpEmailPassword,
+    private val duplicateEmail: DuplicateEmail
 ): ViewModel(){
 
     private val validateEmail by lazy { ValidateEmail() }
@@ -45,6 +47,9 @@ class SignUpViewModel @Inject constructor(
         when(event){
             is SignUpEvent.Submit ->{
                 validateData()
+            }
+            is SignUpEvent.DuplicateEmail ->{
+                duplicateCheckData()
             }
         }
     }
@@ -90,8 +95,22 @@ class SignUpViewModel @Inject constructor(
         }
     }
 
+    private fun duplicateCheckData(){
+        viewModelScope.launch {
+            val result = duplicateEmail(
+                email = inputEmail.value ?: ""
+            )
+            if(result.isSuccess){
+                signUpEventChannel.trySend(SignUpUiEvent.DuplicateChecked(result.getOrNull()?.reason))
+            }else{
+                signUpEventChannel.trySend(SignUpUiEvent.Failure("네트워크 문제가 발생하였습니다."))
+            }
+        }
+    }
+
     sealed class SignUpUiEvent{
         data class Failure(val message: String?): SignUpUiEvent()
+        data class DuplicateChecked(val message: String?): SignUpUiEvent()
         object Success: SignUpUiEvent()
     }
 }

@@ -32,6 +32,9 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(R.layout.fragment_sig
         binding.signUpButton.setOnClickListener{
             viewModel.onEvent(SignUpEvent.Submit)
         }
+        binding.duplcateEmailButton.setOnClickListener {
+            viewModel.onEvent(SignUpEvent.DuplicateEmail)
+        }
     }
 
     private fun initError(){
@@ -55,6 +58,9 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(R.layout.fragment_sig
                         findNavController().navigate(direction)
                     }
                     is SignUpViewModel.SignUpUiEvent.Failure ->{
+                        Toast.makeText(activity, event.message, Toast.LENGTH_SHORT).show()
+                    }
+                    is SignUpViewModel.SignUpUiEvent.DuplicateChecked ->{
                         Toast.makeText(activity, event.message, Toast.LENGTH_SHORT).show()
                     }
                 }
