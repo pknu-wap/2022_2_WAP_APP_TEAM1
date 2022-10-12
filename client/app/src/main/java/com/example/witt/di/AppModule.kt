@@ -3,7 +3,7 @@ package com.example.witt.di
 import android.app.Application
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
-import com.example.witt.data.auth.AuthApi
+import com.example.witt.data.api.DefaultApiService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -19,7 +19,7 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideAuthApi(): AuthApi {
+    fun provideAuthApi(): DefaultApiService {
         return Retrofit.Builder()
             .baseUrl("http://221.161.40.25:3000/")
             .addConverterFactory(MoshiConverterFactory.create())
