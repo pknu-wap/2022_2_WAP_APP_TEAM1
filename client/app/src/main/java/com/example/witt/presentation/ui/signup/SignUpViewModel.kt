@@ -3,14 +3,24 @@ package com.example.witt.presentation.ui.signup
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.witt.domain.use_case.remote.DuplicateEmail
+import com.example.witt.domain.use_case.remote.SignUpEmailPassword
 import com.example.witt.domain.use_case.validate.ValidateEmail
 import com.example.witt.domain.use_case.validate.ValidatePassword
 import com.example.witt.domain.use_case.validate.ValidateRepeatedPassword
 import com.example.witt.presentation.ui.signin.SignInViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class SignUpViewModel: ViewModel(){
+@HiltViewModel
+class SignUpViewModel @Inject constructor(
+    private val signUp: SignUpEmailPassword,
+    private val duplicateEmail: DuplicateEmail
+): ViewModel(){
 
     private val validateEmail by lazy { ValidateEmail() }
     private val validatePassword by lazy { ValidatePassword() }
@@ -37,6 +47,9 @@ class SignUpViewModel: ViewModel(){
         when(event){
             is SignUpEvent.Submit ->{
                 validateData()
+            }
+            is SignUpEvent.DuplicateEmail ->{
+                duplicateCheckData()
             }
         }
     }
@@ -69,11 +82,35 @@ class SignUpViewModel: ViewModel(){
     }
 
     private fun submitData(){
-        signUpEventChannel.trySend(SignUpUiEvent.Success)
+        viewModelScope.launch {
+            val result = signUp(
+                email = inputEmail.value ?: "",
+                password = inputPassword.value ?: ""
+            )
+            if(result.isSuccess){
+                signUpEventChannel.trySend(SignUpUiEvent.Success)
+            }else{
+                signUpEventChannel.trySend(SignUpUiEvent.Failure("네트워크 문제가 발생하였습니다."))
+            }
+        }
+    }
+
+    private fun duplicateCheckData(){
+        viewModelScope.launch {
+            val result = duplicateEmail(
+                email = inputEmail.value ?: ""
+            )
+            if(result.isSuccess){
+                signUpEventChannel.trySend(SignUpUiEvent.DuplicateChecked(result.getOrNull()?.reason))
+            }else{
+                signUpEventChannel.trySend(SignUpUiEvent.Failure("네트워크 문제가 발생하였습니다."))
+            }
+        }
     }
 
     sealed class SignUpUiEvent{
         data class Failure(val message: String?): SignUpUiEvent()
+        data class DuplicateChecked(val message: String?): SignUpUiEvent()
         object Success: SignUpUiEvent()
     }
 }

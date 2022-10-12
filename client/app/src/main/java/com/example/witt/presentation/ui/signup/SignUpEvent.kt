@@ -4,4 +4,6 @@ sealed class SignUpEvent {
 
     object Submit: SignUpEvent()
 
+    object DuplicateEmail: SignUpEvent()
+
 }

@@ -1,17 +1,21 @@
 package com.example.witt.data.repository
 
 import android.content.SharedPreferences
-import com.example.witt.data.auth.AuthApi
-import com.example.witt.data.auth.request.SignInRequest
-import com.example.witt.data.auth.response.SignInResponse
+import com.example.witt.data.api.DefaultApiService
+import com.example.witt.data.api.auth.request.SignInRequest
+import com.example.witt.data.api.auth.request.SignUpRequest
+import com.example.witt.data.api.auth.response.toSignInModel
+import com.example.witt.data.api.auth.response.toSignUpModel
+import com.example.witt.domain.model.SignInModel
+import com.example.witt.domain.model.SignUpModel
 import com.example.witt.domain.repository.AuthRepository
 
 class AuthRepositoryImpl (
-    private val api: AuthApi,
+    private val api: DefaultApiService,
     private val prefs: SharedPreferences
     ): AuthRepository{
 
-    override suspend fun signIn(accountType: Int, email: String, password: String): Result<SignInResponse> {
+    override suspend fun signIn(accountType: Int, email: String, password: String): Result<SignInModel> {
         return try{
             val response = api.signIn(
                 request = SignInRequest(
@@ -24,11 +28,26 @@ class AuthRepositoryImpl (
                 .putString("accessToken", response.AccessToken)
                 .putString("refreshToken", response.RefreshToken)
                 .apply()
-            Result.success(response)
+            Result.success(response.toSignInModel())
 
         } catch (e: Exception){
             e.printStackTrace()
             return Result.failure(e)
+        }
+    }
+
+    override suspend fun signUp(email: String, password: String): Result<SignUpModel> {
+        return try{
+            val response = api.signUp(
+                request = SignUpRequest(
+                    Username =  email,
+                    Password = password
+                )
+            )
+            Result.success(response.toSignUpModel())
+        }catch (e: Exception){
+            e.printStackTrace()
+            Result.failure(e)
         }
     }
 }

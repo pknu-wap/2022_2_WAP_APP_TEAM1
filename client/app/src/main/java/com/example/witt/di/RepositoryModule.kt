@@ -1,9 +1,11 @@
 package com.example.witt.di
 
 import android.content.SharedPreferences
-import com.example.witt.data.auth.AuthApi
+import com.example.witt.data.api.DefaultApiService
 import com.example.witt.data.repository.AuthRepositoryImpl
+import com.example.witt.data.repository.UserRepositoryImpl
 import com.example.witt.domain.repository.AuthRepository
+import com.example.witt.domain.repository.UserRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -16,8 +18,13 @@ object RepositoryModule {
 
     @Provides
     @Singleton
-    fun provideAuthRepository(api: AuthApi, prefs: SharedPreferences): AuthRepository{
+    fun provideAuthRepository(api: DefaultApiService, prefs: SharedPreferences): AuthRepository{
         return AuthRepositoryImpl(api, prefs)
     }
 
+    @Provides
+    @Singleton
+    fun provideUserRepository(api: DefaultApiService): UserRepository{
+        return UserRepositoryImpl(api)
+    }
 }
