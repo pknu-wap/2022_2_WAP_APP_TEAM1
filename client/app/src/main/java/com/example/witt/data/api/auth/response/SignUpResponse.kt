@@ -1,4 +1,4 @@
-package com.example.witt.data.auth.response
+package com.example.witt.data.api.auth.response
 
 import com.example.witt.domain.model.SignUpModel
 
