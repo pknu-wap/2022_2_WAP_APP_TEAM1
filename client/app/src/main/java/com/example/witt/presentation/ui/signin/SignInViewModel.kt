@@ -60,12 +60,14 @@ class SignInViewModel @Inject constructor(
             }
         }
     }
-    sealed class SignInUiEvent{
-        data class Failure(val message: String?): SignInUiEvent()
-        object Success: SignInUiEvent()
+
+    fun kakaoLogin(){
+        viewModelScope.launch {
+            if (handleKakaoLogin()){
+                signInEventChannel.trySend(SignInUiEvent.Success)
+            }
+        }
     }
-
-
 
     private suspend fun handleKakaoLogin():Boolean =
     suspendCancellableCoroutine<Boolean>{ continuation ->
@@ -103,17 +105,6 @@ class SignInViewModel @Inject constructor(
 
     }
 
-
-    fun kakaoLogin(){
-        viewModelScope.launch {
-            if (handleKakaoLogin()){
-                signInEventChannel.trySend(SignInUiEvent.Success)
-            }
-        }
-    }
-
-
-
 //    private fun getUserInfo(){
 //        UserApiClient.instance.me { user, error ->
 //            if (error != null) {
@@ -128,4 +119,8 @@ class SignInViewModel @Inject constructor(
 //            }
 //        }
 //    }
+    sealed class SignInUiEvent{
+        data class Failure(val message: String?): SignInUiEvent()
+        object Success: SignInUiEvent()
+    }
 }
