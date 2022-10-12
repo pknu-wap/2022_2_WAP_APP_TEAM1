@@ -8,8 +8,10 @@ import androidx.navigation.fragment.findNavController
 import com.example.witt.R
 import com.example.witt.databinding.FragmentSignUpBinding
 import com.example.witt.presentation.base.BaseFragment
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class SignUpFragment : BaseFragment<FragmentSignUpBinding>(R.layout.fragment_sign_up) {
 
     private val viewModel : SignUpViewModel by viewModels()
