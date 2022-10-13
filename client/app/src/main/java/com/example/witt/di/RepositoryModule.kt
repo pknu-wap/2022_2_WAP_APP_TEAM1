@@ -6,6 +6,9 @@ import com.example.witt.data.api.DuplicateEmailService
 import com.example.witt.data.api.SignUpService
 import com.example.witt.data.repository.AuthRepositoryImpl
 import com.example.witt.data.repository.UserRepositoryImpl
+import com.example.witt.data.source.remote.duplicate_check.DuplicateEmailDataSource
+import com.example.witt.data.source.remote.signin.SignInDataSource
+import com.example.witt.data.source.remote.signup.SignUpDataSource
 import com.example.witt.domain.repository.AuthRepository
 import com.example.witt.domain.repository.UserRepository
 import dagger.Module
@@ -20,13 +23,13 @@ object RepositoryModule {
 
     @Provides
     @Singleton
-    fun provideAuthRepository(signInService: SignInService, signUpService: SignUpService, prefs: SharedPreferences): AuthRepository{
-        return AuthRepositoryImpl(signInService, signUpService, prefs)
+    fun provideAuthRepository(signInDataSource : SignInDataSource, signUpDataSource: SignUpDataSource, prefs: SharedPreferences): AuthRepository{
+        return AuthRepositoryImpl(signInDataSource, signUpDataSource, prefs)
     }
 
     @Provides
     @Singleton
-    fun provideUserRepository(api: DuplicateEmailService): UserRepository{
-        return UserRepositoryImpl(api)
+    fun provideUserRepository(duplicateEmailDataSource: DuplicateEmailDataSource): UserRepository{
+        return UserRepositoryImpl(duplicateEmailDataSource)
     }
 }
