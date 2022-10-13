@@ -3,14 +3,16 @@ package com.example.witt.di
 import android.app.Application
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
-import com.example.witt.data.api.DefaultApiService
+import com.example.witt.BuildConfig
+import com.example.witt.data.api.SignInService
+import com.example.witt.data.api.DuplicateEmailService
+import com.example.witt.data.api.SignUpService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
-import retrofit2.create
 import javax.inject.Singleton
 
 @Module
@@ -19,13 +21,32 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideAuthApi(): DefaultApiService {
+    fun provideRetrofit(): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("http://221.161.40.25:3000/")
+            .baseUrl(BuildConfig.apiUrl)
             .addConverterFactory(MoshiConverterFactory.create())
             .build()
-            .create()
     }
+
+    @Provides
+    @Singleton
+    fun provideSignInService(
+        retrofit: Retrofit
+    ): SignInService
+        = retrofit.create(SignInService::class.java)
+
+    @Provides
+    @Singleton
+    fun providesSignUpService(
+        retrofit: Retrofit
+    ): SignUpService = retrofit.create(SignUpService::class.java)
+
+    @Provides
+    @Singleton
+    fun providesDuplicateEmailService(
+        retrofit: Retrofit
+    ): DuplicateEmailService = retrofit.create(DuplicateEmailService::class.java)
+
 
     @Provides
     @Singleton
