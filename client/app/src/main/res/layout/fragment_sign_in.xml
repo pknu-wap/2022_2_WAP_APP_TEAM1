@@ -101,6 +101,21 @@
             app:layout_constraintTop_toBottomOf="@+id/signInButton" />
 
         <Button
+            android:id="@+id/naverSignInButton"
+            style="@style/Widget.Material3.Button.ElevatedButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:backgroundTint="#03C75A"
+            android:drawableLeft="@drawable/ic_naver_login"
+            android:text="네이버 로그인"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/kakaoSignInButton" />
+
+        <Button
             android:id="@+id/goToSignUpButton"
             style="@style/Widget.Material3.Button.TextButton"
             android:layout_width="wrap_content"
@@ -109,7 +124,7 @@
             android:textColor="@color/gray"
             android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/kakaoSignInButton" />
+            app:layout_constraintTop_toBottomOf="@+id/naverSignInButton" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
