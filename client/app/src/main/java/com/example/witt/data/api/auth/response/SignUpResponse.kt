@@ -7,7 +7,3 @@ data class SignUpResponse (
     val reason: String
         )
 
-fun SignUpResponse.toSignUpModel() =  SignUpModel(
-        status = status,
-        reason = reason
-)

@@ -1,25 +1,19 @@
 package com.example.witt.presentation.ui.signin
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.*
 import com.example.witt.domain.use_case.remote.SignInEmailPassword
-import com.example.witt.domain.use_case.validate.ValidateEmail
-import com.example.witt.domain.use_case.validate.ValidatePassword
-import com.example.witt.presentation.ui.signup.SignUpEvent
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.user.UserApiClient
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
 import javax.inject.Inject
 import kotlin.coroutines.resume
-import kotlin.coroutines.suspendCoroutine
 
 @HiltViewModel
 class SignInViewModel @Inject constructor(
