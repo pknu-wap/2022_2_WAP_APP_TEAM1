@@ -1,4 +1,4 @@
-package com.example.witt.data.api.user.response
+package com.example.witt.data.model.user.response
 
 data class DuplicateEmailResponse (
     val status: Boolean,

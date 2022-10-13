@@ -1,4 +1,4 @@
-package com.example.witt.data.api.auth.request
+package com.example.witt.data.model.auth.request
 
 data class SignUpRequest (
     val Username : String,
