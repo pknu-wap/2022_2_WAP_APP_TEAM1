@@ -4,13 +4,14 @@ import android.content.SharedPreferences
 import com.example.witt.data.api.DefaultApiService
 import com.example.witt.data.api.auth.request.SignInRequest
 import com.example.witt.data.api.auth.request.SignUpRequest
-import com.example.witt.data.api.auth.response.toSignInModel
-import com.example.witt.data.api.auth.response.toSignUpModel
+import com.example.witt.data.mapper.toSignInModel
+import com.example.witt.data.mapper.toSignUpModel
 import com.example.witt.domain.model.SignInModel
 import com.example.witt.domain.model.SignUpModel
 import com.example.witt.domain.repository.AuthRepository
+import javax.inject.Inject
 
-class AuthRepositoryImpl (
+class AuthRepositoryImpl @Inject constructor(
     private val api: DefaultApiService,
     private val prefs: SharedPreferences
     ): AuthRepository{
