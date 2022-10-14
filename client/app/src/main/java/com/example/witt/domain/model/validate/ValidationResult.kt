@@ -1,4 +1,4 @@
-package com.example.witt.domain.model
+package com.example.witt.domain.model.validate
 
 data class ValidationResult (
     val successful : Boolean,

@@ -1,12 +1,17 @@
 package com.example.witt.presentation.ui.signin
 
 import android.app.Application
+<<<<<<< HEAD
 import android.content.ContentValues.TAG
 import android.provider.Settings.Global.getString
 import android.util.Log
+=======
+import android.content.SharedPreferences
+>>>>>>> feature/#29/store_profile_data_local
 import androidx.lifecycle.*
 import com.example.witt.R
 import com.example.witt.domain.use_case.remote.SignInEmailPassword
+import com.example.witt.domain.use_case.remote.UserTokenSignIn
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
@@ -29,8 +34,10 @@ import kotlin.coroutines.resume
 @HiltViewModel
 class SignInViewModel @Inject constructor(
     private val signInEmailPassword: SignInEmailPassword,
-    application: Application
-): AndroidViewModel(application) {
+    private val userTokenSign: UserTokenSignIn,
+    private val application: Application,
+    private val prefs: SharedPreferences
+): ViewModel() {
 
     val inputEmail : MutableLiveData<String> = MutableLiveData()
     val inputPassword : MutableLiveData<String> = MutableLiveData()
@@ -48,6 +55,8 @@ class SignInViewModel @Inject constructor(
             }
             is SignInEvent.NaverSignIn -> {
                 naverLogin()
+            is SignInEvent.CheckToken -> {
+                tokenSignIn()
             }
         }
     }
@@ -58,10 +67,12 @@ class SignInViewModel @Inject constructor(
             if(!inputEmail.value.isNullOrBlank() && !inputPassword.value.isNullOrBlank()){
                 val signInResult =
                     signInEmailPassword(accountType = 0, inputEmail.value ?: "", inputPassword.value ?: "")
-                if(signInResult.isSuccess){
-                    signInEventChannel.trySend(SignInUiEvent.Success)
-                }else{
-                    signInEventChannel.trySend(SignInUiEvent.Failure("네트워크 문제가 발생하였습니다."))
+                signInResult.mapCatching {
+                    if(it.status){
+                        signInEventChannel.trySend(SignInUiEvent.Success)
+                    }else{
+                        signInEventChannel.trySend(SignInUiEvent.Failure(it.reason))
+                    }
                 }
             }else{
                 signInEventChannel.trySend(SignInUiEvent.Failure("이메일과 비밀번호를 확인해주세요."))
@@ -69,7 +80,7 @@ class SignInViewModel @Inject constructor(
         }
     }
 
-    fun kakaoLogin(){
+    private fun kakaoLogin(){
         viewModelScope.launch {
             if (handleKakaoLogin()){
                 signInEventChannel.trySend(SignInUiEvent.Success)
@@ -77,11 +88,26 @@ class SignInViewModel @Inject constructor(
         }
     }
 
+<<<<<<< HEAD
     fun naverLogin(){
         viewModelScope.launch {
             if (handleNaverLogin()){
                 signInEventChannel.trySend(SignInUiEvent.Success)
                 NaverIdLoginSDK.logout()
+=======
+    private fun tokenSignIn(){
+        viewModelScope.launch {
+
+            val accessToken = prefs.getString("accessToken", null)
+            val refreshToken = prefs.getString("refreshToken", null)
+
+            if(!accessToken.isNullOrBlank() && !refreshToken.isNullOrBlank()){
+                userTokenSign(accessToken, refreshToken).mapCatching { response ->
+                    if(response.status){
+                        signInEventChannel.trySend(SignInUiEvent.Success)
+                    }
+                }
+>>>>>>> feature/#29/store_profile_data_local
             }
         }
     }
@@ -98,8 +124,8 @@ class SignInViewModel @Inject constructor(
         }
 
 // 카카오톡이 설치되어 있으면 카카오톡으로 로그인, 아니면 카카오계정으로 로그인
-        if (UserApiClient.instance.isKakaoTalkLoginAvailable(getApplication())) {
-            UserApiClient.instance.loginWithKakaoTalk(getApplication()) { token, error ->
+        if (UserApiClient.instance.isKakaoTalkLoginAvailable(application)) {
+            UserApiClient.instance.loginWithKakaoTalk(application) { token, error ->
                 if (error != null) {
                     signInEventChannel.trySend(SignInUiEvent.Failure("카카오톡으로 로그인 실패"))
                     continuation.resume(false)
@@ -110,15 +136,14 @@ class SignInViewModel @Inject constructor(
                     }
 
                     // 카카오톡에 연결된 카카오계정이 없는 경우, 카카오계정으로 로그인 시도
-                    UserApiClient.instance.loginWithKakaoAccount(getApplication(), callback = callback)
+                    UserApiClient.instance.loginWithKakaoAccount(application, callback = callback)
                 } else if (token != null) {
                     continuation.resume(true)
                 }
             }
         } else {
-            UserApiClient.instance.loginWithKakaoAccount(getApplication(), callback = callback)
+            UserApiClient.instance.loginWithKakaoAccount(application, callback = callback)
         }
-
     }
 
 //    private fun getUserInfo(){
