@@ -9,7 +9,6 @@ import javax.inject.Inject
 class DuplicateEmail @Inject constructor(
     private val userRepository: UserRepository
 ){
-    suspend operator fun invoke(email: String) : Result<DuplicateEmailModel> = withContext(Dispatchers.IO){
+    suspend operator fun invoke(email: String) : Result<DuplicateEmailModel>  =
         userRepository.duplicateEmail(email)
-    }
 }
