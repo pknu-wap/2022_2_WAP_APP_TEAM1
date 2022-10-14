@@ -87,11 +87,17 @@ dependencies {
 
     //image cropper
     implementation 'com.github.CanHub:Android-Image-Cropper:4.3.2'
+
     //kakao talk module
     implementation "com.kakao.sdk:v2-user:2.11.2" // 카카오 로그인
     implementation "com.kakao.sdk:v2-talk:2.11.2" // 친구, 메시지(카카오톡)
     implementation "com.kakao.sdk:v2-share:2.11.2" // 메시지(카카오톡 공유)
     implementation "com.kakao.sdk:v2-friend:2.11.2" // 카카오톡 소셜 피커, 리소스 번들 파일 포함
 
+    //Room
+    def room_version = "2.4.3"
+    implementation "androidx.room:room-ktx:$room_version"
+    implementation "androidx.room:room-runtime:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
 
 }
