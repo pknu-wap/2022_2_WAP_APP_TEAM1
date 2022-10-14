@@ -6,6 +6,8 @@ import com.example.witt.data.source.remote.signin.SignInDataSource
 import com.example.witt.data.source.remote.signin.SignInDataSourceImpl
 import com.example.witt.data.source.remote.signup.SignUpDataSource
 import com.example.witt.data.source.remote.signup.SignUpDataSourceImpl
+import com.example.witt.data.source.remote.user.UserTokenDataSource
+import com.example.witt.data.source.remote.user.UserTokenDataSourceImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -34,5 +36,11 @@ abstract class DataSourceModule {
     abstract fun provideDuplicateEmailDataSource(
         duplicateEmailDataSourceImpl: DuplicateEmailDataSourceImpl
     ): DuplicateEmailDataSource
+
+    @Binds
+    @Singleton
+    abstract fun provideUserTokenDataSource(
+        userTokenDataSourceImpl: UserTokenDataSourceImpl
+    ): UserTokenDataSource
 
 }
