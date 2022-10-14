@@ -153,7 +153,8 @@ class SignInViewModel @Inject constructor(
         suspendCancellableCoroutine<Boolean>{ continuation2 ->
         val oAuthLoginCallback = object : OAuthLoginCallback {
             override fun onSuccess() {
-
+                val naverAccessToken = NaverIdLoginSDK.getAccessToken()
+                Log.e(TAG, "naverAccessToken : $naverAccessToken")
                 NidOAuthLogin().callProfileApi(object : NidProfileCallback<NidProfileResponse> {
                     override fun onSuccess(result: NidProfileResponse) {
                         continuation2.resume(true)
@@ -161,7 +162,6 @@ class SignInViewModel @Inject constructor(
                         profileImage = result.profile?.profileImage.toString()
                         Log.e(TAG, "네이버 로그인한 유저 정보 - 이름 : $nickname")
                         Log.e(TAG, "네이버 로그인한 유저 정보 - 이메일 : $profileImage")
-
                     }
 
                     override fun onError(errorCode: Int, message: String) {
@@ -175,9 +175,8 @@ class SignInViewModel @Inject constructor(
             }
 
             override fun onError(errorCode: Int, message: String) {
-                val naverAccessToken = NaverIdLoginSDK.getAccessToken()
+
                 signInEventChannel.trySend(SignInUiEvent.Failure("로그인 에러"))
-                Log.e(TAG, "naverAccessToken : $naverAccessToken")
                 continuation2.resume(false)
             }
 
@@ -186,9 +185,10 @@ class SignInViewModel @Inject constructor(
                 continuation2.resume(false)
             }
         }
-            NaverIdLoginSDK.logout()
-            NaverIdLoginSDK.authenticate(getApplication(), oAuthLoginCallback)
+           NaverIdLoginSDK.authenticate(getApplication(), oAuthLoginCallback)
     }
+
+
 }
 
 
