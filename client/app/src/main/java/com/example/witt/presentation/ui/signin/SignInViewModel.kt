@@ -1,12 +1,23 @@
 package com.example.witt.presentation.ui.signin
 
 import android.app.Application
+import android.content.ContentValues.TAG
+import android.provider.Settings.Global.getString
+import android.util.Log
 import androidx.lifecycle.*
+import com.example.witt.R
 import com.example.witt.domain.use_case.remote.SignInEmailPassword
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.user.UserApiClient
+import com.navercorp.nid.NaverIdLoginSDK
+import com.navercorp.nid.NaverIdLoginSDK.oauthLoginCallback
+import com.navercorp.nid.oauth.NidOAuthLogin
+import com.navercorp.nid.oauth.OAuthLoginCallback
+import com.navercorp.nid.profile.NidProfileCallback
+import com.navercorp.nid.profile.data.NidProfileResponse
+import dagger.hilt.android.internal.Contexts
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -35,6 +46,9 @@ class SignInViewModel @Inject constructor(
             is SignInEvent.KakaoSignIn ->{
                 kakaoLogin()
             }
+            is SignInEvent.NaverSignIn -> {
+                naverLogin()
+            }
         }
     }
 
@@ -59,6 +73,15 @@ class SignInViewModel @Inject constructor(
         viewModelScope.launch {
             if (handleKakaoLogin()){
                 signInEventChannel.trySend(SignInUiEvent.Success)
+            }
+        }
+    }
+
+    fun naverLogin(){
+        viewModelScope.launch {
+            if (handleNaverLogin()){
+                signInEventChannel.trySend(SignInUiEvent.Success)
+                NaverIdLoginSDK.logout()
             }
         }
     }
@@ -90,7 +113,6 @@ class SignInViewModel @Inject constructor(
                     UserApiClient.instance.loginWithKakaoAccount(getApplication(), callback = callback)
                 } else if (token != null) {
                     continuation.resume(true)
-
                 }
             }
         } else {
@@ -113,8 +135,55 @@ class SignInViewModel @Inject constructor(
 //            }
 //        }
 //    }
+
     sealed class SignInUiEvent{
         data class Failure(val message: String?): SignInUiEvent()
         object Success: SignInUiEvent()
     }
+
+    var profileImage: String = ""
+    var nickname: String = ""
+
+    private suspend fun handleNaverLogin():Boolean =
+        suspendCancellableCoroutine<Boolean>{ continuation2 ->
+        val oAuthLoginCallback = object : OAuthLoginCallback {
+            override fun onSuccess() {
+                val naverAccessToken = NaverIdLoginSDK.getAccessToken()
+                Log.e(TAG, "naverAccessToken : $naverAccessToken")
+                NidOAuthLogin().callProfileApi(object : NidProfileCallback<NidProfileResponse> {
+                    override fun onSuccess(result: NidProfileResponse) {
+                        continuation2.resume(true)
+                        nickname = result.profile?.nickname.toString()
+                        profileImage = result.profile?.profileImage.toString()
+                        Log.e(TAG, "네이버 로그인한 유저 정보 - 이름 : $nickname")
+                        Log.e(TAG, "네이버 로그인한 유저 정보 - 이메일 : $profileImage")
+                    }
+
+                    override fun onError(errorCode: Int, message: String) {
+                        signInEventChannel.trySend(SignInUiEvent.Failure("사용자 정보 가져오기 오류"))
+                    }
+
+                    override fun onFailure(httpStatus: Int, message: String) {
+                        signInEventChannel.trySend(SignInUiEvent.Failure("사용자 정보 가져오기 실패"))
+                    }
+                })
+            }
+
+            override fun onError(errorCode: Int, message: String) {
+
+                signInEventChannel.trySend(SignInUiEvent.Failure("로그인 에러"))
+                continuation2.resume(false)
+            }
+
+            override fun onFailure(httpStatus: Int, message: String) {
+                signInEventChannel.trySend(SignInUiEvent.Failure("로그인 실패"))
+                continuation2.resume(false)
+            }
+        }
+           NaverIdLoginSDK.authenticate(getApplication(), oAuthLoginCallback)
+    }
+
+
 }
+
+

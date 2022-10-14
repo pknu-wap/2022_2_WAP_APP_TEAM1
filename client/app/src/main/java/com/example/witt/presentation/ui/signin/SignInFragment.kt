@@ -44,6 +44,9 @@ class SignInFragment : BaseFragment<FragmentSignInBinding>(R.layout.fragment_sig
         binding.kakaoSignInButton.setOnClickListener{
             viewModel.onEvent(SignInEvent.KakaoSignIn)
         }
+        binding.naverSignInButton.setOnClickListener {
+            viewModel.onEvent(SignInEvent.NaverSignIn)
+        }
     }
 
     private fun initChannel(){
