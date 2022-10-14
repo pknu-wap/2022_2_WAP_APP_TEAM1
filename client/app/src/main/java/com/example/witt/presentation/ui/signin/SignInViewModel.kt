@@ -51,10 +51,12 @@ class SignInViewModel @Inject constructor(
             if(!inputEmail.value.isNullOrBlank() && !inputPassword.value.isNullOrBlank()){
                 val signInResult =
                     signInEmailPassword(accountType = 0, inputEmail.value ?: "", inputPassword.value ?: "")
-                if(signInResult.isSuccess){
-                    signInEventChannel.trySend(SignInUiEvent.Success)
-                }else{
-                    signInEventChannel.trySend(SignInUiEvent.Failure("네트워크 문제가 발생하였습니다."))
+                signInResult.mapCatching {
+                    if(it.status){
+                        signInEventChannel.trySend(SignInUiEvent.Success)
+                    }else{
+                        signInEventChannel.trySend(SignInUiEvent.Failure(it.reason))
+                    }
                 }
             }else{
                 signInEventChannel.trySend(SignInUiEvent.Failure("이메일과 비밀번호를 확인해주세요."))
@@ -119,7 +121,6 @@ class SignInViewModel @Inject constructor(
         } else {
             UserApiClient.instance.loginWithKakaoAccount(application, callback = callback)
         }
-
     }
 
 //    private fun getUserInfo(){
