@@ -1,8 +1,10 @@
 package com.example.witt.presentation.ui.signin
 
 import android.app.Application
+import android.content.SharedPreferences
 import androidx.lifecycle.*
 import com.example.witt.domain.use_case.remote.SignInEmailPassword
+import com.example.witt.domain.use_case.remote.UserTokenSignIn
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
@@ -18,8 +20,10 @@ import kotlin.coroutines.resume
 @HiltViewModel
 class SignInViewModel @Inject constructor(
     private val signInEmailPassword: SignInEmailPassword,
-    application: Application
-): AndroidViewModel(application) {
+    private val userTokenSign: UserTokenSignIn,
+    private val application: Application,
+    private val prefs: SharedPreferences
+): ViewModel() {
 
     val inputEmail : MutableLiveData<String> = MutableLiveData()
     val inputPassword : MutableLiveData<String> = MutableLiveData()
@@ -34,6 +38,9 @@ class SignInViewModel @Inject constructor(
             }
             is SignInEvent.KakaoSignIn ->{
                 kakaoLogin()
+            }
+            is SignInEvent.CheckToken -> {
+                tokenSignIn()
             }
         }
     }
@@ -55,10 +62,26 @@ class SignInViewModel @Inject constructor(
         }
     }
 
-    fun kakaoLogin(){
+    private fun kakaoLogin(){
         viewModelScope.launch {
             if (handleKakaoLogin()){
                 signInEventChannel.trySend(SignInUiEvent.Success)
+            }
+        }
+    }
+
+    private fun tokenSignIn(){
+        viewModelScope.launch {
+
+            val accessToken = prefs.getString("accessToken", null)
+            val refreshToken = prefs.getString("refreshToken", null)
+
+            if(!accessToken.isNullOrBlank() && !refreshToken.isNullOrBlank()){
+                userTokenSign(accessToken, refreshToken).mapCatching { response ->
+                    if(response.status){
+                        signInEventChannel.trySend(SignInUiEvent.Success)
+                    }
+                }
             }
         }
     }
@@ -75,8 +98,8 @@ class SignInViewModel @Inject constructor(
         }
 
 // 카카오톡이 설치되어 있으면 카카오톡으로 로그인, 아니면 카카오계정으로 로그인
-        if (UserApiClient.instance.isKakaoTalkLoginAvailable(getApplication())) {
-            UserApiClient.instance.loginWithKakaoTalk(getApplication()) { token, error ->
+        if (UserApiClient.instance.isKakaoTalkLoginAvailable(application)) {
+            UserApiClient.instance.loginWithKakaoTalk(application) { token, error ->
                 if (error != null) {
                     signInEventChannel.trySend(SignInUiEvent.Failure("카카오톡으로 로그인 실패"))
                     continuation.resume(false)
@@ -87,14 +110,14 @@ class SignInViewModel @Inject constructor(
                     }
 
                     // 카카오톡에 연결된 카카오계정이 없는 경우, 카카오계정으로 로그인 시도
-                    UserApiClient.instance.loginWithKakaoAccount(getApplication(), callback = callback)
+                    UserApiClient.instance.loginWithKakaoAccount(application, callback = callback)
                 } else if (token != null) {
                     continuation.resume(true)
 
                 }
             }
         } else {
-            UserApiClient.instance.loginWithKakaoAccount(getApplication(), callback = callback)
+            UserApiClient.instance.loginWithKakaoAccount(application, callback = callback)
         }
 
     }
