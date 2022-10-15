@@ -97,8 +97,11 @@ dependencies {
     implementation "com.kakao.sdk:v2-talk:2.11.2" // 친구, 메시지(카카오톡)
     implementation "com.kakao.sdk:v2-share:2.11.2" // 메시지(카카오톡 공유)
     implementation "com.kakao.sdk:v2-friend:2.11.2" // 카카오톡 소셜 피커, 리소스 번들 파일 포함
+    
     //naver login module
-    implementation 'com.navercorp.nid:oauth:5.1.0'
+    implementation ('com.navercorp.nid:oauth:5.1.0'){
+        exclude group : "com.squareup.moshi"
+    }
 
     //Room
     def room_version = "2.4.3"

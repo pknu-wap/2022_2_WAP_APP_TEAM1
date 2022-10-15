@@ -4,14 +4,19 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.canhub.cropper.*
 import com.example.witt.R
 import com.example.witt.databinding.FragmentProfileEditBinding
 import com.example.witt.presentation.base.BaseFragment
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
-
+@AndroidEntryPoint
 class ProfileEditFragment : BaseFragment<FragmentProfileEditBinding>(R.layout.fragment_profile_edit) {
 
     private val viewModel : ProfileEditViewModel by viewModels()
@@ -21,6 +26,7 @@ class ProfileEditFragment : BaseFragment<FragmentProfileEditBinding>(R.layout.fr
             Glide.with(requireActivity())
                 .load(result.uriContent)
                 .into(binding.profileImage)
+            viewModel.onEvent(ProfileEditEvent.SubmitProfileImage(result.uriContent.toString()))
         }else{
             Toast.makeText(requireActivity(), result.error.toString(), Toast.LENGTH_SHORT).show()
         }
@@ -30,7 +36,10 @@ class ProfileEditFragment : BaseFragment<FragmentProfileEditBinding>(R.layout.fr
         super.onViewCreated(view, savedInstanceState)
 
         binding.viewModel = viewModel
+        viewModel.onEvent(ProfileEditEvent.GetProfile)
+
         initButton()
+        initChannel()
 
     }
 
@@ -47,8 +56,32 @@ class ProfileEditFragment : BaseFragment<FragmentProfileEditBinding>(R.layout.fr
         }
 
         binding.profileEditButton.setOnClickListener{
-            val direction = ProfileEditFragmentDirections.actionProfileEditFragmentToHomeFragment()
-            findNavController().navigate(direction)
+            viewModel.onEvent(ProfileEditEvent.SubmitProfile)
+        }
+    }
+
+    private fun initChannel(){
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) { //repeated Life Cycle
+                viewModel.profileEditEvents.collect { event ->
+                    when (event) {
+                        is ProfileEditViewModel.ProfileEditUiEvent.SuccessToGetProfile -> {
+                            Glide.with(requireActivity())
+                                .load(event.profileUri)
+                                .into(binding.profileImage)
+                            binding.nameEditText.setText(event.userName)
+                        }
+                        is ProfileEditViewModel.ProfileEditUiEvent.Failure -> {
+
+                        }
+                        is ProfileEditViewModel.ProfileEditUiEvent.SuccessToSetProfile -> {
+                            val direction =
+                                ProfileEditFragmentDirections.actionProfileEditFragmentToHomeFragment()
+                            findNavController().navigate(direction)
+                        }
+                    }
+                }
+            }
         }
     }
 
