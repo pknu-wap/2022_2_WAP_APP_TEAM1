@@ -1,15 +1,10 @@
 package com.example.witt.presentation.ui.signin
 
 import android.app.Application
-<<<<<<< HEAD
 import android.content.ContentValues.TAG
-import android.provider.Settings.Global.getString
 import android.util.Log
-=======
 import android.content.SharedPreferences
->>>>>>> feature/#29/store_profile_data_local
 import androidx.lifecycle.*
-import com.example.witt.R
 import com.example.witt.domain.use_case.remote.SignInEmailPassword
 import com.example.witt.domain.use_case.remote.UserTokenSignIn
 import com.kakao.sdk.auth.model.OAuthToken
@@ -17,12 +12,10 @@ import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.user.UserApiClient
 import com.navercorp.nid.NaverIdLoginSDK
-import com.navercorp.nid.NaverIdLoginSDK.oauthLoginCallback
 import com.navercorp.nid.oauth.NidOAuthLogin
 import com.navercorp.nid.oauth.OAuthLoginCallback
 import com.navercorp.nid.profile.NidProfileCallback
 import com.navercorp.nid.profile.data.NidProfileResponse
-import dagger.hilt.android.internal.Contexts
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -55,6 +48,7 @@ class SignInViewModel @Inject constructor(
             }
             is SignInEvent.NaverSignIn -> {
                 naverLogin()
+            }
             is SignInEvent.CheckToken -> {
                 tokenSignIn()
             }
@@ -88,13 +82,14 @@ class SignInViewModel @Inject constructor(
         }
     }
 
-<<<<<<< HEAD
-    fun naverLogin(){
+    fun naverLogin() {
         viewModelScope.launch {
-            if (handleNaverLogin()){
+            if (handleNaverLogin()) {
                 signInEventChannel.trySend(SignInUiEvent.Success)
                 NaverIdLoginSDK.logout()
-=======
+            }
+        }
+    }
     private fun tokenSignIn(){
         viewModelScope.launch {
 
@@ -107,7 +102,6 @@ class SignInViewModel @Inject constructor(
                         signInEventChannel.trySend(SignInUiEvent.Success)
                     }
                 }
->>>>>>> feature/#29/store_profile_data_local
             }
         }
     }
@@ -205,10 +199,8 @@ class SignInViewModel @Inject constructor(
                 continuation2.resume(false)
             }
         }
-           NaverIdLoginSDK.authenticate(getApplication(), oAuthLoginCallback)
+           NaverIdLoginSDK.authenticate(application, oAuthLoginCallback)
     }
-
-
 }
 
 
