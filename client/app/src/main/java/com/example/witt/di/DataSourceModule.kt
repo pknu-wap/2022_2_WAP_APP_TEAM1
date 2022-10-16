@@ -4,6 +4,8 @@ import com.example.witt.data.source.local.user_profile.ProfileDataSource
 import com.example.witt.data.source.local.user_profile.ProfileDataSourceImpl
 import com.example.witt.data.source.remote.duplicate_check.DuplicateEmailDataSource
 import com.example.witt.data.source.remote.duplicate_check.DuplicateEmailDataSourceImpl
+import com.example.witt.data.source.remote.profile.ProfileUploadDataSource
+import com.example.witt.data.source.remote.profile.ProfileUploadDataSourceImpl
 import com.example.witt.data.source.remote.signin.SignInDataSource
 import com.example.witt.data.source.remote.signin.SignInDataSourceImpl
 import com.example.witt.data.source.remote.signup.SignUpDataSource
@@ -50,4 +52,10 @@ abstract class DataSourceModule {
     abstract fun provideProfileDataSource(
         profileDataSourceImpl: ProfileDataSourceImpl
     ): ProfileDataSource
+
+    @Binds
+    @Singleton
+    abstract fun provideProfileUploadDataSource(
+        profileUploadDataSourceImpl: ProfileUploadDataSourceImpl
+    ): ProfileUploadDataSource
 }
