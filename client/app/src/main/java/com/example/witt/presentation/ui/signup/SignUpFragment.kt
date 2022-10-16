@@ -54,7 +54,7 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(R.layout.fragment_sig
             viewModel.signUpEvents.collect{ event ->
                 when(event){
                     is SignUpViewModel.SignUpUiEvent.Success -> {
-                        val direction = SignUpFragmentDirections.actionSignUpFragmentToProfileEditFragment()
+                        val direction = SignUpFragmentDirections.actionSignUpFragmentToProfileEditFragment("","")
                         findNavController().navigate(direction)
                     }
                     is SignUpViewModel.SignUpUiEvent.Failure ->{
