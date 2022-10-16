@@ -15,8 +15,9 @@ module.exports = async function(buffer, originalfilename) {
         if (response.length != 0) {
             return {result: true, fileName: filename};
         }
+        fs.writeFileSync(path.join(__dirname, '../data', filename), buffer);
+        
         response = await db.query(`INSERT INTO DB_FILE_INFO (FILENAME, SHA256, MD5) VALUES ('${filename}', '${sha256}', '${md5}')`, { type: QueryTypes.INSERT });
-        fs.writeFileSync(path.join(__dirname, '../../data', filename), buffer);
         return {result: true, fileName: filename};
     } catch (err) {
         console.log('error ', err);

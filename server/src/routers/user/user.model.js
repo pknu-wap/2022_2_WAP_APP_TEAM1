@@ -1,9 +1,9 @@
 'use strict';
 
 const { QueryTypes } = require("sequelize");
-const db = require("../util/database");
-const raw2str = require("../util/rawtostr");
-const token = require("../util/jwt");
+const db = require("../../util/database");
+const raw2str = require("../../util/rawtostr");
+const token = require("../../util/jwt");
 class User {
     constructor(param) { //Object.assign(this, param);
         this.UserId = param.UserId;
@@ -14,7 +14,7 @@ class User {
         this.PhoneNum = param.PhoneNum;
         this.Nickname = param.Nickname;
         this.ProfileImage = param.ProfileImage;
-        this.dbsetup = require("../util/database");
+        this.dbsetup = require("../../util/database");
     }
 
     async login() {
@@ -37,7 +37,7 @@ class User {
                 }
             }
             /* 카카오,네이버 로그인 */
-            else if (this.AccountType == 1 || this.AccountType == 2) { 
+            else if (this.AccountType == 1 || this.AccountType == 2) {
                 let query = await raw2str.sqlswap(await db.query(`SELECT * FROM DB_USER WHERE OAUTH_ID = ${this.OauthId}`, { type: QueryTypes.SELECT }));
                 if (query.length == 0) {
                     /* 계정이 없을 경우 회원가입 */
@@ -88,33 +88,15 @@ class User {
     }
     async register() {
         try {
-            if (this.AccountType == 0) {
-                const data = await db.query(`INSERT INTO DB_USER (ACCOUNTTYPE, OAUTH_ID, USERNAME, PASSWORD, PHONENUM, NICKNAME) VALUES ('0', '', '${this.Username}', '${this.Password}', '', '')`, { type: QueryTypes.INSERT });
-                return (data.length == 0) ?
-                    { status: false, reason: "계정을 생성하는 도중 오류가 발생했습니다." } :
-                    { status: true, reason: "계정 생성하는 데 성공하였습니다." };
-            }
+            const data = await db.query(`INSERT INTO DB_USER (ACCOUNTTYPE, OAUTH_ID, USERNAME, PASSWORD, PHONENUM, NICKNAME) VALUES ('0', '', '${this.Username}', '${this.Password}', '', '')`, { type: QueryTypes.INSERT });
+            return (data.length == 0) ?
+                { status: false, reason: "계정을 생성하는 도중 오류가 발생했습니다." } :
+                { status: true, reason: "계정 생성하는 데 성공하였습니다." };
         } catch (err) {
             console.log('user->register 도중 오류 발생: ', err);
             return { status: false, reason: "계정을 생성하는 도중 오류가 발생했습니다." };
         }
     }
-<<<<<<< Updated upstream:server/src/model/db_user.js
-    async editProfileImage(image) {
-        let result = await require("../util/file")(image.buffer, image.originalname);
-        if (result.result) {
-            try {
-                const data = await db.query(`UPDATE DB_USER SET PROFILEIMAGE = '${result.fileName}' WHERE USER_ID = '${this.UserId}'`, { type: QueryTypes.UPDATE });
-                return (data.length == 0) ?
-                    { status: false, reason: "유저 아이디를 찾을 수 없습니다." } :
-                    { status: true, reason: "프로필 이미지 변경 성공" };
-            } catch (err) {
-                console.log('user->editProfileImage 도중 오류 발생: ', err);
-            }
-        }
-        else {
-            return { status: false, reason: "파일 저장 실패" };
-=======
     async editInfo(image) {
         try {
             const userData = await db.query(`SELECT * FROM DB_USER WHERE USER_ID = '${this.UserId}'`, { type: QueryTypes.SELECT });
@@ -147,7 +129,6 @@ class User {
         catch (err) {
             console.log('user->editProfile 도중 오류 발생: ', err);
             return { status: false, reason: "프로필을 수정하는 도중 오류가 발생했습니다." };
->>>>>>> Stashed changes:server/src/routers/user/user.model.js
         }
     }
     async getInfo() {
