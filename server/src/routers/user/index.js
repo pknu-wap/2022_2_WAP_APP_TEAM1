@@ -6,6 +6,6 @@ userRouter.post("/login", userController.login);
 userRouter.post("/register", userController.register);
 userRouter.get("/duplicate", userController.duplicate_id);
 userRouter.get("/me", token.authenticateAccessToken, userController.getInfo);
-userRouter.post("/me", upload.single('profile'), token.authenticateAccessToken, userController.editInfo);
+userRouter.post("/me", upload.single('Image'), token.authenticateAccessToken, userController.editInfo);
 
 module.exports = userRouter;
