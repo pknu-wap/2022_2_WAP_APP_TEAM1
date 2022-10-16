@@ -90,17 +90,12 @@ class SignInViewModel @Inject constructor(
             }
         }
     }
+
     private fun tokenSignIn(){
         viewModelScope.launch {
-
-            val accessToken = prefs.getString("accessToken", null)
-            val refreshToken = prefs.getString("refreshToken", null)
-
-            if(!accessToken.isNullOrBlank() && !refreshToken.isNullOrBlank()){
-                userTokenSign(accessToken, refreshToken).mapCatching { response ->
-                    if(response.status){
-                        signInEventChannel.trySend(SignInUiEvent.Success)
-                    }
+            userTokenSign().mapCatching { response ->
+                if(response.status){
+                    signInEventChannel.trySend(SignInUiEvent.Success)
                 }
             }
         }

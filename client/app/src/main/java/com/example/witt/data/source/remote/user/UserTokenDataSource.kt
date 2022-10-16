@@ -4,5 +4,5 @@ import com.example.witt.data.model.user.response.UserTokenResponse
 
 interface UserTokenDataSource {
 
-    suspend fun userTokenSignIn(accessToken: String, refreshToken: String) : Result<UserTokenResponse>
+    suspend fun userTokenSignIn() : Result<UserTokenResponse>
 }

@@ -11,18 +11,18 @@ class UserTokenDataSourceImpl @Inject constructor(
     private val userService: UserTokenService,
     @IoDispatcher private val coroutineDispatcher: CoroutineDispatcher
 ) : UserTokenDataSource{
-    override suspend fun userTokenSignIn(accessToken: String, refreshToken: String): Result<UserTokenResponse> =
+    override suspend fun userTokenSignIn(): Result<UserTokenResponse> =
         withContext(coroutineDispatcher){
-        try{
-            val response = userService.tokenSignIn(accessToken)
-            if(response.status){
-            Result.success(response)
-            }else{
-                Result.success(userService.tokenSignIn(refreshToken))
+            try{
+                val response = userService.tokenSignIn()
+                if(response.status){
+                    Result.success(response)
+                }else{
+                    Result.success(userService.tokenSignIn())
+                }
+            }catch(e: Exception){
+                e.printStackTrace()
+                Result.failure(e)
             }
-        }catch(e: Exception){
-            e.printStackTrace()
-            Result.failure(e)
         }
-    }
 }
