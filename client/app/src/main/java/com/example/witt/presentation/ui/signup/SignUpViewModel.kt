@@ -87,9 +87,13 @@ class SignUpViewModel @Inject constructor(
                 email = inputEmail.value ?: "",
                 password = inputPassword.value ?: ""
             )
-            if(result.isSuccess){
-                signUpEventChannel.trySend(SignUpUiEvent.Success)
-            }else{
+            result.mapCatching {
+                if(it.status) {
+                    signUpEventChannel.trySend(SignUpUiEvent.Success)
+                }else{
+                    signUpEventChannel.trySend(SignUpUiEvent.Failure(it.reason))
+                }
+            }.onFailure {
                 signUpEventChannel.trySend(SignUpUiEvent.Failure("네트워크 문제가 발생하였습니다."))
             }
         }

@@ -1,4 +1,4 @@
-package com.example.witt.domain.model
+package com.example.witt.domain.model.auth
 
 import java.security.cert.CertPathValidatorException
 

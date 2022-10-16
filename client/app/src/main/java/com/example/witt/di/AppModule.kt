@@ -7,6 +7,7 @@ import com.example.witt.BuildConfig
 import com.example.witt.data.api.SignInService
 import com.example.witt.data.api.DuplicateEmailService
 import com.example.witt.data.api.SignUpService
+import com.example.witt.data.api.UserTokenService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -46,6 +47,12 @@ object AppModule {
     fun providesDuplicateEmailService(
         retrofit: Retrofit
     ): DuplicateEmailService = retrofit.create(DuplicateEmailService::class.java)
+
+    @Provides
+    @Singleton
+    fun providesUserTokenService(
+        retrofit: Retrofit
+    ): UserTokenService = retrofit.create(UserTokenService::class.java)
 
 
     @Provides
