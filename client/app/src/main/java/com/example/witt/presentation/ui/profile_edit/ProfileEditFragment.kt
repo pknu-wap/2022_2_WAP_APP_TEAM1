@@ -29,7 +29,9 @@ class ProfileEditFragment : BaseFragment<FragmentProfileEditBinding>(R.layout.fr
             Glide.with(requireActivity())
                 .load(result.uriContent)
                 .into(binding.profileImage)
-            viewModel.onEvent(ProfileEditEvent.SubmitProfileImage(result.uriContent.toString()))
+            result.getUriFilePath(requireActivity())?.let{
+                viewModel.onEvent(ProfileEditEvent.SubmitProfileImage(it))
+            }
         }else{
             Toast.makeText(requireActivity(), result.error.toString(), Toast.LENGTH_SHORT).show()
         }
@@ -38,7 +40,6 @@ class ProfileEditFragment : BaseFragment<FragmentProfileEditBinding>(R.layout.fr
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.viewModel = viewModel
-        viewModel.onEvent(ProfileEditEvent.GetProfile)
 
         initButton()
         initProfile()
@@ -68,16 +69,10 @@ class ProfileEditFragment : BaseFragment<FragmentProfileEditBinding>(R.layout.fr
             repeatOnLifecycle(Lifecycle.State.STARTED) { //repeated Life Cycle
                 viewModel.profileEditEvents.collect { event ->
                     when (event) {
-                        is ProfileEditViewModel.ProfileEditUiEvent.SuccessToGetProfile -> {
-                            Glide.with(requireActivity())
-                                .load(event.profileUri)
-                                .into(binding.profileImage)
-                            binding.nameEditText.setText(event.userName)
-                        }
                         is ProfileEditViewModel.ProfileEditUiEvent.Failure -> {
-
+                            Toast.makeText(requireActivity(), event.message, Toast.LENGTH_SHORT).show()
                         }
-                        is ProfileEditViewModel.ProfileEditUiEvent.SuccessToSetProfile -> {
+                        is ProfileEditViewModel.ProfileEditUiEvent.Success -> {
                             val direction =
                                 ProfileEditFragmentDirections.actionProfileEditFragmentToHomeFragment()
                             findNavController().navigate(direction)

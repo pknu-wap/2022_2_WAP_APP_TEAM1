@@ -3,10 +3,12 @@ package com.example.witt.data.mapper
 import com.example.witt.data.model.auth.response.SignInResponse
 import com.example.witt.data.model.auth.response.SignUpResponse
 import com.example.witt.data.model.local.UserProfile
+import com.example.witt.data.model.profile.response.ProfileUploadResponse
 import com.example.witt.data.model.user.response.DuplicateEmailResponse
 import com.example.witt.data.model.user.response.UserTokenResponse
 import com.example.witt.domain.model.auth.SignInModel
 import com.example.witt.domain.model.auth.SignUpModel
+import com.example.witt.domain.model.profile.remote.ProfileUploadModel
 import com.example.witt.domain.model.user.DuplicateEmailModel
 import com.example.witt.domain.model.user.UserProfileModel
 import com.example.witt.domain.model.user.UserTokenModel
@@ -31,4 +33,8 @@ fun UserTokenResponse.toUserTokenModel()= UserTokenModel(
 fun UserProfile.toUserProfileModel() = UserProfileModel(
     userName = userName,
     profileUri = profileUri
+)
+fun ProfileUploadResponse.toProfileUploadModel() = ProfileUploadModel(
+    status = status,
+    reason = reason
 )
