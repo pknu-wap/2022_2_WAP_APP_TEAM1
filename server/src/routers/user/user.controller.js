@@ -1,5 +1,5 @@
 "use strict";
-const User = require("../model/db_user")
+const User = require("./user.model")
 
 const process = {
     /* NO NEED TOKEN */
@@ -16,20 +16,15 @@ const process = {
         return res.send(await user.duplicate_id());
     },
     /* NEED TOKEN */
-    editProfileImage: async(req, res) => {
+    editInfo: async(req, res) => {
         req.body.UserId = req.token.userId;
         let user = new User(req.body);
-        return res.send(await user.editProfileImage(req.file));
+        return res.send(await user.editInfo(req.file));
     },
     getInfo: async(req, res) => {
         req.body.UserId = req.token.userId;
         let user = new User(req.body);
         return res.send(await user.getInfo());
-    },
-    editInfo: async(req, res) => {
-        req.body.UserId = req.token.userId;
-        let user = new User(req.body);
-        return res.send(await user.editInfo());
     }
 }
 module.exports = process;

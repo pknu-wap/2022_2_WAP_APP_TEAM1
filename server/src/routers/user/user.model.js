@@ -1,9 +1,9 @@
 'use strict';
 
 const { QueryTypes } = require("sequelize");
-const db = require("../util/database");
-const raw2str = require("../util/rawtostr");
-const token = require("../util/jwt");
+const db = require("../../util/database");
+const raw2str = require("../../util/rawtostr");
+const token = require("../../util/jwt");
 class User {
     constructor(param) { //Object.assign(this, param);
         this.UserId = param.UserId;
@@ -14,7 +14,7 @@ class User {
         this.PhoneNum = param.PhoneNum;
         this.Nickname = param.Nickname;
         this.ProfileImage = param.ProfileImage;
-        this.dbsetup = require("../util/database");
+        this.dbsetup = require("../../util/database");
     }
 
     async login() {
@@ -27,13 +27,17 @@ class User {
                     return { status: false, reason: "아이디나 비밀번호가 맞지 않습니다." }
                 }
                 else {
+                    let isProfileExists = true;
+                    if (data[0].NICKNAME == null || data[0].NICKNAME == "") {
+                        isProfileExists = false;
+                    }
                     let AccessToken = token.generateAccessToken(data[0].USER_ID);
                     let RefreshToken = token.generateRefreshToken(data[0].USER_ID);
-                    return { status: true, reason: "로그인 성공", AccessToken: AccessToken, RefreshToken: RefreshToken };
+                    return { status: true, reason: "로그인 성공", AccessToken: AccessToken, RefreshToken: RefreshToken, isProfileExists: isProfileExists };
                 }
             }
             /* 카카오,네이버 로그인 */
-            else if (this.AccountType == 1 || this.AccountType == 2) { 
+            else if (this.AccountType == 1 || this.AccountType == 2) {
                 let query = await raw2str.sqlswap(await db.query(`SELECT * FROM DB_USER WHERE OAUTH_ID = ${this.OauthId}`, { type: QueryTypes.SELECT }));
                 if (query.length == 0) {
                     /* 계정이 없을 경우 회원가입 */
@@ -42,14 +46,22 @@ class User {
                     if (query.length == 0) {
                         return { status: false, reason: "계정 등록에 실패했습니다." };
                     }
+                    let isProfileExists = true;
+                    if (data[0].NICKNAME == null || data[0].NICKNAME == "") {
+                        isProfileExists = false;
+                    }
                     let AccessToken = token.generateAccessToken(q3[0].USER_ID);
                     let RefreshToken = token.generateRefreshToken(q3[0].USER_ID);
-                    return { status: true, reason: "로그인 성공", AccessToken: AccessToken, RefreshToken: RefreshToken };
+                    return { status: true, reason: "로그인 성공", AccessToken: AccessToken, RefreshToken: RefreshToken, isProfileExists: isProfileExists };
                 }
                 else {
+                    let isProfileExists = true;
+                    if (data[0].NICKNAME == null || data[0].NICKNAME == "") {
+                        isProfileExists = false;
+                    }
                     let AccessToken = token.generateAccessToken(q1[0].USER_ID);
                     let RefreshToken = token.generateRefreshToken(q1[0].USER_ID);
-                    return { status: true, reason: "로그인 성공", AccessToken: AccessToken, RefreshToken: RefreshToken };
+                    return { status: true, reason: "로그인 성공", AccessToken: AccessToken, RefreshToken: RefreshToken, isProfileExists: isProfileExists };
                 }
 
             }
@@ -76,51 +88,57 @@ class User {
     }
     async register() {
         try {
-            if (this.AccountType == 0) {
-                const data = await db.query(`INSERT INTO DB_USER (ACCOUNTTYPE, OAUTH_ID, USERNAME, PASSWORD, PHONENUM, NICKNAME) VALUES ('0', '', '${this.Username}', '${this.Password}', '', '')`, { type: QueryTypes.INSERT });
-                return (data.length == 0) ?
-                    { status: false, reason: "계정을 생성하는 도중 오류가 발생했습니다." } :
-                    { status: true, reason: "계정 생성하는 데 성공하였습니다." };
-            }
+            const data = await db.query(`INSERT INTO DB_USER (ACCOUNTTYPE, OAUTH_ID, USERNAME, PASSWORD, PHONENUM, NICKNAME) VALUES ('0', '', '${this.Username}', '${this.Password}', '', '')`, { type: QueryTypes.INSERT });
+            return (data.length == 0) ?
+                { status: false, reason: "계정을 생성하는 도중 오류가 발생했습니다." } :
+                { status: true, reason: "계정 생성하는 데 성공하였습니다." };
         } catch (err) {
             console.log('user->register 도중 오류 발생: ', err);
             return { status: false, reason: "계정을 생성하는 도중 오류가 발생했습니다." };
         }
     }
-    async editProfileImage(image) {
-        let result = await require("../util/file")(image.buffer, image.originalname);
-        if (result.result) {
-            try {
-                const data = await db.query(`UPDATE DB_USER SET PROFILEIMAGE = '${result.fileName}' WHERE USER_ID = '${this.UserId}'`, { type: QueryTypes.UPDATE });
-                return (data.length == 0) ?
-                    { status: false, reason: "유저 아이디를 찾을 수 없습니다." } :
-                    { status: true, reason: "프로필 이미지 변경 성공" };
-            } catch (err) {
-                console.log('user->editProfileImage 도중 오류 발생: ', err);
+    async editInfo(image) {
+        try {
+            const userData = await db.query(`SELECT * FROM DB_USER WHERE USER_ID = '${this.UserId}'`, { type: QueryTypes.SELECT });
+            console.log(userData);
+            if (this.Nickname == undefined) {
+                this.Nickname = userData[0].NICKNAME;
             }
+            if (this.PhoneNum == undefined) {
+                this.PhoneNum = userData[0].PHONENUM;
+            }
+            if (this.ProfileImage == undefined) {
+                this.ProfileImage = userData[0].PROFILEIMAGE;
+            }
+            if (image != undefined) {
+                let image_result = await require("../../util/file")(image.buffer, image.originalname);
+                if (image_result.result)
+                {
+                    this.ProfileImage = image_result.fileName;
+                }
+                else
+                {
+                    return { status: false, reason: "프로필 이미지를 업로드하는 도중 오류가 발생했습니다." };
+                }
+            }
+            const data = await db.query(`UPDATE DB_USER SET NICKNAME = '${this.Nickname}', PHONENUM = '${this.PhoneNum}', PROFILEIMAGE = '${this.ProfileImage}' WHERE USER_ID = '${this.UserId}'`, { type: QueryTypes.UPDATE });
+            return (data.length == 0) ?
+                { status: false, reason: "프로필을 수정하는 도중 오류가 발생했습니다." } :
+                { status: true, reason: "프로필을 수정하는 데 성공하였습니다." };       
         }
-        else {
-            return { status: false, reason: "파일 저장 실패" };
+        catch (err) {
+            console.log('user->editProfile 도중 오류 발생: ', err);
+            return { status: false, reason: "프로필을 수정하는 도중 오류가 발생했습니다." };
         }
     }
     async getInfo() {
         try {
-            let data = await buf2hex(await db.query(`SELECT * FROM DB_USER WHERE USER_ID = '${this.UserId}'`, { type: QueryTypes.SELECT }));
+            let data = await raw2str.sqlswap(await db.query(`SELECT * FROM DB_USER WHERE USER_ID = '${this.UserId}'`, { type: QueryTypes.SELECT }));
             return (data.length == 0) ?
                 { status: false, reason: "유저 아이디를 찾을 수 없습니다." } :
                 { status: true, reason: "유저 정보 조회 성공", result: data[0] };
         } catch (err) {
             console.log('user->getInfo 도중 오류 발생: ', err);
-        }
-    }
-    async editInfo() {
-        try {
-            const data = await db.query(`UPDATE DB_USER SET NICKNAME = '${this.Nickname}', PHONENUM = '${this.PhoneNum}' WHERE USER_ID = '${this.UserId}'`, { type: QueryTypes.UPDATE });
-            return (data.length == 0) ?
-                { status: false, reason: "유저 아이디를 찾을 수 없습니다." } :
-                { status: true, reason: "유저 정보 변경 성공" };
-        } catch (err) {
-            console.log('user->editInfo 도중 오류 발생: ', err);
         }
     }
 }
