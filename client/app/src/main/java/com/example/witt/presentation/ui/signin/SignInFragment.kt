@@ -25,7 +25,7 @@ class SignInFragment : BaseFragment<FragmentSignInBinding>(R.layout.fragment_sig
         binding.viewModel = viewModel
 
         //token 검사
-        viewModel.onEvent(SignInEvent.CheckToken)
+        //viewModel.onEvent(SignInEvent.CheckToken)
 
         initButton()
         initChannel()
