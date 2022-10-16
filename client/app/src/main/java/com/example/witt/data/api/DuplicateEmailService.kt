@@ -7,7 +7,7 @@ import retrofit2.http.POST
 
 interface DuplicateEmailService {
 
-    @POST("/api/users/duplicate")
+    @POST("/api/user/duplicate")
     suspend fun duplicateEmailCheck(
         @Body request: DuplicateEmailRequest
     ): DuplicateEmailResponse
