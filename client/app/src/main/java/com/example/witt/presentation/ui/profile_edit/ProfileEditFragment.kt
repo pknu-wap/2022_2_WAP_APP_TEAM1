@@ -83,6 +83,15 @@ class ProfileEditFragment : BaseFragment<FragmentProfileEditBinding>(R.layout.fr
         }
     }
 
+    private fun initError(){
+        viewModel.errorNickName.observe(viewLifecycleOwner){ errorMessage ->
+            binding.nameEditText.error = errorMessage
+        }
+        viewModel.errorPhoneNum.observe(viewLifecycleOwner){ errorMessage ->
+            binding.phoneNumberEditText.error = errorMessage
+        }
+    }
+
     private fun initProfile(){
         Log.d("arg",arg.nickName.toString())
         Log.d("arg",arg.profileImage.toString())
