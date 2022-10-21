@@ -32,7 +32,7 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(R.layout.fragment_sig
         binding.signUpButton.setOnClickListener{
             viewModel.onEvent(SignUpEvent.Submit)
         }
-        binding.duplcateEmailButton.setOnClickListener {
+        binding.duplicateEmailButton.setOnClickListener {
             viewModel.onEvent(SignUpEvent.DuplicateEmail)
         }
     }
@@ -61,7 +61,7 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(R.layout.fragment_sig
                         Toast.makeText(activity, event.message, Toast.LENGTH_SHORT).show()
                     }
                     is SignUpViewModel.SignUpUiEvent.DuplicateChecked ->{
-                        Toast.makeText(activity, event.message, Toast.LENGTH_SHORT).show()
+                        binding.duplicateEmailButton.text = "사용 가능"
                     }
                 }
             }
