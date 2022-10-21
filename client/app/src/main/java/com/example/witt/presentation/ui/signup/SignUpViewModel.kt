@@ -9,7 +9,6 @@ import com.example.witt.domain.use_case.remote.SignUpEmailPassword
 import com.example.witt.domain.use_case.validate.ValidateEmail
 import com.example.witt.domain.use_case.validate.ValidatePassword
 import com.example.witt.domain.use_case.validate.ValidateRepeatedPassword
-import com.example.witt.presentation.ui.signin.SignInViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -33,6 +32,8 @@ class SignUpViewModel @Inject constructor(
     val inputEmail : MutableLiveData<String> = MutableLiveData()
     val inputPassword : MutableLiveData<String> = MutableLiveData()
     val inputRepeatedPassword : MutableLiveData<String> = MutableLiveData()
+    //이메일 중복 체크
+    private val duplicateCheckedState : MutableLiveData<Boolean> = MutableLiveData()
 
     private val _errorEmail : MutableLiveData<String> = MutableLiveData()
     val errorEmail : LiveData<String> get() = _errorEmail
@@ -42,6 +43,7 @@ class SignUpViewModel @Inject constructor(
 
     private val _errorRepeatedPassword : MutableLiveData<String> = MutableLiveData()
     val errorRepeatedPassword: LiveData<String> get() = _errorRepeatedPassword
+
 
     fun onEvent(event: SignUpEvent){
         when(event){
@@ -82,19 +84,21 @@ class SignUpViewModel @Inject constructor(
     }
 
     private fun submitData(){
-        viewModelScope.launch {
-            val result = signUp(
-                email = inputEmail.value ?: "",
-                password = inputPassword.value ?: ""
-            )
-            result.mapCatching {
-                if(it.status) {
-                    signUpEventChannel.trySend(SignUpUiEvent.Success)
-                }else{
-                    signUpEventChannel.trySend(SignUpUiEvent.Failure(it.reason))
+        if(duplicateCheckedState.value == true) {
+            viewModelScope.launch {
+                val result = signUp(
+                    email = inputEmail.value ?: "",
+                    password = inputPassword.value ?: ""
+                )
+                result.mapCatching {
+                    if (it.status) {
+                        signUpEventChannel.trySend(SignUpUiEvent.Success)
+                    } else {
+                        signUpEventChannel.trySend(SignUpUiEvent.Failure(it.reason))
+                    }
+                }.onFailure {
+                    signUpEventChannel.trySend(SignUpUiEvent.Failure("네트워크 문제가 발생하였습니다."))
                 }
-            }.onFailure {
-                signUpEventChannel.trySend(SignUpUiEvent.Failure("네트워크 문제가 발생하였습니다."))
             }
         }
     }
@@ -106,10 +110,16 @@ class SignUpViewModel @Inject constructor(
             )
             if(result.isSuccess){
                 signUpEventChannel.trySend(SignUpUiEvent.DuplicateChecked(result.getOrNull()?.reason))
+                duplicateCheckedState.value = true
             }else{
                 signUpEventChannel.trySend(SignUpUiEvent.Failure("네트워크 문제가 발생하였습니다."))
             }
         }
+    }
+
+    //이메일 변경시 다시 체크해야됨
+    fun onTextChanged(s: CharSequence, start :Int, before : Int, count: Int){
+        duplicateCheckedState.value = false
     }
 
     sealed class SignUpUiEvent{
