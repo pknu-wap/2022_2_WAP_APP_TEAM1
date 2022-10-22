@@ -19,11 +19,11 @@
 
 - Minumum SDK 23
 - Kotlin
-    - Coroutines
+    - Coroutines & Flow 
 - Dagger-Hilt
 - Room
 - Android Jetpack
-    - LiveData
+    - LiveData & ViewModel
     - Navigation Component
     - SharedPreference
     - DataBinding
