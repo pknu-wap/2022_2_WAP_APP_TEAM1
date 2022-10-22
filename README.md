@@ -54,7 +54,7 @@ Thanks goes to these wonderful people
     <td align="center"><a href="http://github.com/jeongjaino"><img src="https://avatars.githubusercontent.com/u/77484719?v=4" width="100px;" alt=""/><br /><sub><b>JinHo Jeong</sub></a><br /><a href="http://github.com/jeongjaino" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/SeongHoonC"><img src="https://avatars.githubusercontent.com/u/108349655?v=4" width="100px;" alt=""/><br /><sub><b>SeongHoon Choi</b></sub></a><br /><a href="http://github.com/SeongHoonC" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/winocreative"><img src="https://avatars.githubusercontent.com/u/26576118?v=4" width="100px;" at=""/><br /><sub><b>JaeWan Seo</b></sub></a><br /><a href="http://github.com/winocreative" title="Code">💻</a></td>
-    <td align="center"><a href="https://github.com/Yenniiii"><img src="https://avatars.githubusercontent.com/u/102972001?v=4" width="100px;" at=""/><br /><sub><b>YaeEun Lee</b></sub></a><br /><a href="http://github.com/Yenniiii" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/Yenniiii"><img src="https://avatars.githubusercontent.com/u/102972001?v=4" width="100px;" at=""/><br /><sub><b>YeEun Lee</b></sub></a><br /><a href="http://github.com/Yenniiii" title="Code">💻</a></td>
   </tr>
     <tr>
     <td align="center">안드로이드</td>
