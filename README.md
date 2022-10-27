@@ -44,7 +44,7 @@ WitT는 Android 공식문서에 서술된 [Android App Architecture](https://dev
 
 ## Contributors ✨
 
-Thanks goes to these wonderful people
+컴퓨터를 누르면 우리팀의 활동을 볼 수 있어요!
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 <!-- prettier-ignore-start -->
