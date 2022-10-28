@@ -2,7 +2,7 @@ package com.example.witt.domain.repository
 
 import com.example.witt.domain.model.auth.SignInModel
 import com.example.witt.domain.model.auth.SignUpModel
-import com.example.witt.domain.model.user.TokenModel
+import com.example.witt.domain.model.auth.TokenModel
 
 interface AuthRepository {
 

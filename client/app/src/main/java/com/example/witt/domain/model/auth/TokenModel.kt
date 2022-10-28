@@ -1,4 +1,4 @@
-package com.example.witt.domain.model.user
+package com.example.witt.domain.model.auth
 
 data class TokenModel(
     val status: Boolean,

@@ -11,7 +11,7 @@ import com.example.witt.data.source.remote.signup.SignUpDataSource
 import com.example.witt.data.source.remote.token_signin.TokenSignInDataSource
 import com.example.witt.domain.model.auth.SignInModel
 import com.example.witt.domain.model.auth.SignUpModel
-import com.example.witt.domain.model.user.TokenModel
+import com.example.witt.domain.model.auth.TokenModel
 import com.example.witt.domain.repository.AuthRepository
 import javax.inject.Inject
 

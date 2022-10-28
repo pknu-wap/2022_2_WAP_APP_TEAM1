@@ -10,7 +10,7 @@ import com.example.witt.domain.model.auth.SignInModel
 import com.example.witt.domain.model.auth.SignUpModel
 import com.example.witt.domain.model.profile.remote.ProfileUploadModel
 import com.example.witt.domain.model.user.DuplicateEmailModel
-import com.example.witt.domain.model.user.TokenModel
+import com.example.witt.domain.model.auth.TokenModel
 import com.example.witt.domain.model.user.UserProfileModel
 
 fun SignUpResponse.toSignUpModel() =  SignUpModel(
