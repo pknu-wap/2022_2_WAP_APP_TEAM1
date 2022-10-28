@@ -18,10 +18,11 @@
             android:layout_width="96dp"
             android:layout_height="96dp"
             android:layout_marginTop="32dp"
-            android:src="@drawable/ic_launcher_background"
+            android:src="@drawable/penguin"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/signUp2TextView" />
+            app:layout_constraintTop_toBottomOf="@+id/signUp2TextView"
+            />
 
         <TextView
             android:id="@+id/signUp2TextView"
