@@ -5,16 +5,20 @@ import com.example.witt.data.model.auth.request.SignInRequest
 import com.example.witt.data.model.auth.request.SignUpRequest
 import com.example.witt.data.mapper.toSignInModel
 import com.example.witt.data.mapper.toSignUpModel
+import com.example.witt.data.mapper.toTokenModel
 import com.example.witt.data.source.remote.signin.SignInDataSource
 import com.example.witt.data.source.remote.signup.SignUpDataSource
+import com.example.witt.data.source.remote.token_signin.TokenSignInDataSource
 import com.example.witt.domain.model.auth.SignInModel
 import com.example.witt.domain.model.auth.SignUpModel
+import com.example.witt.domain.model.user.TokenModel
 import com.example.witt.domain.repository.AuthRepository
 import javax.inject.Inject
 
 class AuthRepositoryImpl @Inject constructor(
     private val signInDataSource: SignInDataSource,
     private val signUpDataSource: SignUpDataSource,
+    private val tokenSignInDataSource: TokenSignInDataSource,
     private val prefs: SharedPreferences
     ): AuthRepository{
 
@@ -43,5 +47,12 @@ class AuthRepositoryImpl @Inject constructor(
        ).mapCatching { response ->
            response.toSignUpModel()
        }
+    }
+
+    override suspend fun tokenSignIn(): Result<TokenModel> {
+        return tokenSignInDataSource.tokenSignIn()
+            .mapCatching { response ->
+                response.toTokenModel()
+            }
     }
 }

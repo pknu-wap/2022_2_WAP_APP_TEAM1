@@ -1,6 +1,6 @@
 package com.example.witt.data.model.user.response
 
-data class UserTokenResponse (
+data class TokenResponse (
     val status: Boolean,
     val reason: String,
     val result : UserInfo

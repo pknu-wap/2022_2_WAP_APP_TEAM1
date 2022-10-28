@@ -5,13 +5,13 @@ import com.example.witt.data.model.auth.response.SignUpResponse
 import com.example.witt.data.model.local.UserProfile
 import com.example.witt.data.model.profile.response.ProfileUploadResponse
 import com.example.witt.data.model.user.response.DuplicateEmailResponse
-import com.example.witt.data.model.user.response.UserTokenResponse
+import com.example.witt.data.model.user.response.TokenResponse
 import com.example.witt.domain.model.auth.SignInModel
 import com.example.witt.domain.model.auth.SignUpModel
 import com.example.witt.domain.model.profile.remote.ProfileUploadModel
 import com.example.witt.domain.model.user.DuplicateEmailModel
+import com.example.witt.domain.model.user.TokenModel
 import com.example.witt.domain.model.user.UserProfileModel
-import com.example.witt.domain.model.user.UserTokenModel
 
 fun SignUpResponse.toSignUpModel() =  SignUpModel(
     status = status,
@@ -26,7 +26,7 @@ fun DuplicateEmailResponse.toDuplicateEmailModel() = DuplicateEmailModel(
         reason = reason
 )
 
-fun UserTokenResponse.toUserTokenModel()= UserTokenModel(
+fun TokenResponse.toTokenModel()= TokenModel(
     status = status,
     reason = reason
 )

@@ -73,9 +73,9 @@ object ApiModule {
 
     @Provides
     @Singleton
-    fun providesUserTokenService(
+    fun providesTokenService(
         retrofit: Retrofit
-    ): UserTokenService = retrofit.create(UserTokenService::class.java)
+    ): TokenSignInService = retrofit.create(TokenSignInService::class.java)
 
 
     @Provides
