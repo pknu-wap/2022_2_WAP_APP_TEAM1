@@ -1,7 +1,6 @@
 package com.example.witt.presentation.ui.profile_edit
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.viewModels
@@ -26,12 +25,7 @@ class ProfileEditFragment : BaseFragment<FragmentProfileEditBinding>(R.layout.fr
 
     private val cropImage = registerForActivityResult(CropImageContract()){ result ->
         if(result.isSuccessful){
-            Glide.with(requireActivity())
-                .load(result.uriContent)
-                .into(binding.profileImage)
-            result.getUriFilePath(requireActivity())?.let{
-                viewModel.onEvent(ProfileEditEvent.SubmitProfileImage(it))
-            }
+            uploadProfileImage(imageUri = result.getUriFilePath(requireActivity()))
         }else{
             Toast.makeText(requireActivity(), result.error.toString(), Toast.LENGTH_SHORT).show()
         }
@@ -44,6 +38,7 @@ class ProfileEditFragment : BaseFragment<FragmentProfileEditBinding>(R.layout.fr
         initButton()
         initProfile()
         initChannel()
+        initError()
 
     }
 
@@ -92,12 +87,19 @@ class ProfileEditFragment : BaseFragment<FragmentProfileEditBinding>(R.layout.fr
         }
     }
 
+    //todo arg 처리하기
     private fun initProfile(){
-        Log.d("arg",arg.nickName.toString())
-        Log.d("arg",arg.profileImage.toString())
-        viewModel.inputName.postValue(arg.nickName.toString())
-        Glide.with(requireActivity())
-            .load(arg.profileImage.toString())
-            .into(binding.profileImage)
+        viewModel.inputName.postValue(arg.nickName)
+        uploadProfileImage(arg.profileImage)
+    }
+
+    private fun uploadProfileImage(imageUri: String?){
+        imageUri?.let{
+            Glide.with(requireActivity())
+                .load(imageUri)
+                .placeholder(R.drawable.penguin)
+                .into(binding.profileImage)
+            viewModel.onEvent(ProfileEditEvent.SubmitProfileImage(imageUri))
+        }
     }
 }
