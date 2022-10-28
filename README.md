@@ -1,4 +1,7 @@
 <h1 align="center">2022 2학기 APP 1팀 WitT</h1>
+<p align="center">
+	    <img src="./image/proto.png"/ width="50%">
+</p>	   
 
 <p align="center">
     <img src="https://img.shields.io/badge/Kotlin-1.7.20-7F52FF?style=for-the-badge&logo=Kotlin&logoColor=white"/>
@@ -12,7 +15,6 @@
 	<h3 align="center">
 		 공유 플랜 여행서비스<br>WitT(With Trip)
 	</h3>	
-
 </p>
 
 <h2>Android Tech Stack</h2>
