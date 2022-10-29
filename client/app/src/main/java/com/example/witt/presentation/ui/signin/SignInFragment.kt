@@ -52,18 +52,22 @@ class SignInFragment : BaseFragment<FragmentSignInBinding>(R.layout.fragment_sig
         lifecycleScope.launch{
             viewModel.signInEvents.collect { event ->
                 when(event){
-                    is SignInViewModel.SignInUiEvent.Success ->{
-                        val direction = SignInFragmentDirections.actionSignInFragmentToProfileEditFragment("","")
+                    is SignInViewModel.SignInUiEvent.Success ->{ //프로필 있는 상태에서 로그인 성공시 홈으로
+                        val direction = SignInFragmentDirections.actionSignInFragmentToHomeFragment()
                         findNavController().navigate(direction)
                     }
-                    is SignInViewModel.SignInUiEvent.Failure ->{
+                    is SignInViewModel.SignInUiEvent.Failure ->{ //실패시 Toast 메세지
                         Toast.makeText(activity, event.message, Toast.LENGTH_SHORT).show()
                     }
-                    is SignInViewModel.SignInUiEvent.SuccessSocialLogin ->{
+                    is SignInViewModel.SignInUiEvent.SuccessSocialLogin ->{ //프로필 없는 상태에서 소셜 로그인 성공
                         val direction = SignInFragmentDirections.actionSignInFragmentToProfileEditFragment(
                             profileImage = event.profileImage,
                             nickName = event.nickName
                         )
+                        findNavController().navigate(direction)
+                    }
+                    is SignInViewModel.SignInUiEvent.HasNoProfile ->{ //프로필 없는 상태에서 이메일 로그인 성공
+                        val direction = SignInFragmentDirections.actionSignInFragmentToProfileEditFragment("","")
                         findNavController().navigate(direction)
                     }
                 }

@@ -78,7 +78,11 @@ class SignInViewModel @Inject constructor(
                     signInEmailPassword(EMAIL_TYPE, inputEmail.value ?: "", inputPassword.value ?: "")
                 signInResult.mapCatching {
                     if(it.status){
-                        signInEventChannel.trySend(SignInUiEvent.Success)
+                        if(it.isProfileExists){
+                            signInEventChannel.trySend(SignInUiEvent.Success)
+                        }else {
+                            signInEventChannel.trySend(SignInUiEvent.HasNoProfile)
+                        }
                     }else{
                         signInEventChannel.trySend(SignInUiEvent.Failure(it.reason))
                     }
@@ -96,9 +100,13 @@ class SignInViewModel @Inject constructor(
                   val signInResult =
                       socialSignIn(KAKAO_TYPE, oauthId.value ?: "")
                   signInResult.mapCatching {
-                      if (it.status) {
-                          signInEventChannel.trySend(SignInUiEvent.SuccessSocialLogin(
-                              socialProfileImage.value ?: "", socialNickName.value ?: ""))
+                      if (it.status) { //로그인 성공
+                          if(it.isProfileExists){ //프로필이 존재할 때
+                              signInEventChannel.trySend(SignInUiEvent.Success)
+                          }else { //프로필이 존재하지 않을 때
+                              signInEventChannel.trySend(SignInUiEvent.SuccessSocialLogin(
+                                  socialProfileImage.value ?: "", socialNickName.value ?: ""))
+                          }
                       } else {
                           signInEventChannel.trySend(SignInUiEvent.Failure(it.reason))
                       }
@@ -117,9 +125,13 @@ class SignInViewModel @Inject constructor(
                 val signInResult =
                     socialSignIn(NAVER_TYPE, oauthId.value ?: "")
                 signInResult.mapCatching {
-                    if (it.status) {
-                        signInEventChannel.trySend(SignInUiEvent.SuccessSocialLogin(
-                            socialProfileImage.value ?: "", socialNickName.value ?: ""))
+                    if (it.status) { //로그인 성공
+                        if(it.isProfileExists){ //프로필이 존재할 때
+                            signInEventChannel.trySend(SignInUiEvent.Success)
+                        }else { //프로필이 존재하지 않을 때
+                            signInEventChannel.trySend(SignInUiEvent.SuccessSocialLogin(
+                                socialProfileImage.value ?: "", socialNickName.value ?: ""))
+                        }
                         NaverIdLoginSDK.logout()
                     }else{
                         signInEventChannel.trySend(SignInUiEvent.Failure(it.reason))
@@ -233,8 +245,9 @@ class SignInViewModel @Inject constructor(
 
     sealed class SignInUiEvent{
         data class Failure(val message: String?): SignInUiEvent()
-        object Success: SignInUiEvent()
         data class SuccessSocialLogin(val profileImage: String, val nickName: String): SignInUiEvent()
+        object Success: SignInUiEvent()
+        object HasNoProfile: SignInUiEvent()
     }
 }
 
