@@ -30,9 +30,7 @@ class ProfileEditViewModel @Inject constructor(
     val inputName : MutableLiveData<String> = MutableLiveData()
     val inputPhoneNumber : MutableLiveData<String> = MutableLiveData()
 
-    //수정 필요,, 이미지 양방향 확인해야할듯, 기본 이미지도 초기화 해줘야할듯
-    private val inputImage: MutableLiveData<String> = MutableLiveData()
-
+    private val profileImageUri: MutableLiveData<String> = MutableLiveData()
 
     private val _errorNickName : MutableLiveData<String> = MutableLiveData()
     val errorNickName : LiveData<String> get() = _errorNickName
@@ -49,8 +47,7 @@ class ProfileEditViewModel @Inject constructor(
                 validateData()
             }
             is ProfileEditEvent.SubmitProfileImage ->{
-                //자른 이미지 liveData Mapping
-                inputImage.value = event.profileImage
+                profileImageUri.postValue(event.profileImage)
             }
         }
     }
@@ -79,32 +76,39 @@ class ProfileEditViewModel @Inject constructor(
 
     private fun submitProfile(){
         viewModelScope.launch(coroutineDispatcher) {
-            //todo refactor : 소셜 로그인을 위한 양방향 이미지 처리 구현 및 nullSafety 구현 완벽히
-            if(!inputName.value.isNullOrBlank() && !inputPhoneNumber.value.isNullOrBlank() && !inputImage.value.isNullOrBlank()){
-                val profileFile = File(inputImage.value!!)
-                val file = File(application.cacheDir, "profile.jpg")
-                file.createNewFile()
-                file.outputStream().use {
-                    profileFile.inputStream().copyTo(it)
-                }
-
-                val response = uploadRemoteProfile(file, inputName.value ?: "", inputPhoneNumber.value ?: "")
-
-                response.mapCatching {
-                    if(it.status){
-                        profileEditChannel.trySend(ProfileEditUiEvent.Success)
-                    }else{
-                        profileEditChannel.trySend(ProfileEditUiEvent.Failure(it.reason))
+            val file = File(application.cacheDir, "profile.jpg")
+            runCatching { //createNewFile, 에셋 열기에서 exception 발생가능성 있음.
+                file.createNewFile()  //캐시 디렉토리에 프로파일 이미지 파일 생성
+                if(!profileImageUri.value.isNullOrBlank()) {//프로필 이미지가 등록되어 있는 경우
+                    file.outputStream().use {
+                        File(profileImageUri.value!!).inputStream().copyTo(it)
                     }
-                }.onFailure {
-                    profileEditChannel.trySend(ProfileEditUiEvent.Failure("네트워크를 확인해주세요."))
                 }
+                else {
+                    file.outputStream().use { //아닌 경우
+                        application.assets.open("default_profile.jpg")
+                            .copyTo(it) //assets의 기본 이미지 저장후 가져오기
+                    }
+                }
+            }.onFailure {
+                profileEditChannel.trySend(ProfileEditUiEvent.Failure("프로필 이미지를 저장하는데 실패하였습니다."))
             }
-            else {
-                profileEditChannel.trySend(ProfileEditUiEvent.Failure("빈칸을 확인해주세요."))
+
+            val response =
+                uploadRemoteProfile(file, inputName.value ?: "", inputPhoneNumber.value ?: "")
+
+            response.mapCatching {
+                if (it.status) {
+                    profileEditChannel.trySend(ProfileEditUiEvent.Success)
+                } else {
+                    profileEditChannel.trySend(ProfileEditUiEvent.Failure(it.reason))
+                }
+            }.onFailure {
+                profileEditChannel.trySend(ProfileEditUiEvent.Failure("네트워크를 확인해주세요."))
             }
         }
     }
+
 
     sealed class ProfileEditUiEvent{
         data class Failure(val message: String?): ProfileEditUiEvent()

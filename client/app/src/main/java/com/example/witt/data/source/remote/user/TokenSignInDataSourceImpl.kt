@@ -1,17 +1,17 @@
-package com.example.witt.data.source.remote.user
+package com.example.witt.data.source.remote.token_signin
 
-import com.example.witt.data.api.UserTokenService
-import com.example.witt.data.model.user.response.UserTokenResponse
+import com.example.witt.data.api.TokenSignInService
+import com.example.witt.data.model.user.response.TokenResponse
 import com.example.witt.di.IoDispatcher
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class UserTokenDataSourceImpl @Inject constructor(
-    private val userService: UserTokenService,
+class TokenSignInDataSourceImpl @Inject constructor(
+    private val userService: TokenSignInService,
     @IoDispatcher private val coroutineDispatcher: CoroutineDispatcher
-) : UserTokenDataSource{
-    override suspend fun userTokenSignIn(): Result<UserTokenResponse> =
+) : TokenSignInDataSource{
+    override suspend fun tokenSignIn(): Result<TokenResponse> =
         withContext(coroutineDispatcher){
             try{
                 val response = userService.tokenSignIn()

@@ -46,7 +46,7 @@
             android:inputType="textEmailAddress"
             android:singleLine="true"
             android:text="@={viewModel.inputEmail}"
-            android:onTextChanged="@{viewModel.onTextChanged}"
+            android:onTextChanged="@{viewModel::onTextChanged}"
             app:layout_constraintEnd_toStartOf="@+id/duplicateEmailButton"
             app:layout_constraintHorizontal_bias="0.727"
             app:layout_constraintStart_toStartOf="parent"

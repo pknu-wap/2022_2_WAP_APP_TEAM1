@@ -10,8 +10,10 @@ import com.example.witt.data.source.remote.signin.SignInDataSource
 import com.example.witt.data.source.remote.signin.SignInDataSourceImpl
 import com.example.witt.data.source.remote.signup.SignUpDataSource
 import com.example.witt.data.source.remote.signup.SignUpDataSourceImpl
-import com.example.witt.data.source.remote.user.UserTokenDataSource
-import com.example.witt.data.source.remote.user.UserTokenDataSourceImpl
+import com.example.witt.data.source.remote.social_signin.SocialSignInDataSource
+import com.example.witt.data.source.remote.social_signin.SocialSignInDataSourceImpl
+import com.example.witt.data.source.remote.token_signin.TokenSignInDataSource
+import com.example.witt.data.source.remote.token_signin.TokenSignInDataSourceImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -43,9 +45,9 @@ abstract class DataSourceModule {
 
     @Binds
     @Singleton
-    abstract fun provideUserTokenDataSource(
-        userTokenDataSourceImpl: UserTokenDataSourceImpl
-    ): UserTokenDataSource
+    abstract fun provideTokenDataSource(
+        TokenDataSourceImpl: TokenSignInDataSourceImpl
+    ): TokenSignInDataSource
 
     @Binds
     @Singleton
@@ -58,4 +60,10 @@ abstract class DataSourceModule {
     abstract fun provideProfileUploadDataSource(
         profileUploadDataSourceImpl: ProfileUploadDataSourceImpl
     ): ProfileUploadDataSource
+
+    @Binds
+    @Singleton
+    abstract fun provideSocialSignInDataSource(
+        socialSignInDataSourceImpl: SocialSignInDataSourceImpl
+    ): SocialSignInDataSource
 }

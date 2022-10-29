@@ -8,7 +8,8 @@ import com.example.witt.data.source.remote.duplicate_check.DuplicateEmailDataSou
 import com.example.witt.data.source.remote.profile.ProfileUploadDataSource
 import com.example.witt.data.source.remote.signin.SignInDataSource
 import com.example.witt.data.source.remote.signup.SignUpDataSource
-import com.example.witt.data.source.remote.user.UserTokenDataSource
+import com.example.witt.data.source.remote.social_signin.SocialSignInDataSource
+import com.example.witt.data.source.remote.token_signin.TokenSignInDataSource
 import com.example.witt.domain.repository.AuthRepository
 import com.example.witt.domain.repository.UserRepository
 import dagger.Module
@@ -25,17 +26,19 @@ object RepositoryModule {
     @Singleton
     fun provideAuthRepository(signInDataSource : SignInDataSource,
                               signUpDataSource: SignUpDataSource,
+                              tokenSignInDataSource: TokenSignInDataSource,
+                              socialSignInDataSource: SocialSignInDataSource,
                               prefs: SharedPreferences): AuthRepository{
-        return AuthRepositoryImpl(signInDataSource, signUpDataSource, prefs)
+        return AuthRepositoryImpl(signInDataSource, signUpDataSource,tokenSignInDataSource,
+            socialSignInDataSource, prefs)
     }
 
     @Provides
     @Singleton
     fun provideUserRepository(duplicateEmailDataSource: DuplicateEmailDataSource,
-                              userTokenDataSource: UserTokenDataSource,
                               profileDataSource: ProfileDataSource,
                               profileUploadDataSource: ProfileUploadDataSource
     ): UserRepository{
-        return UserRepositoryImpl(duplicateEmailDataSource, userTokenDataSource, profileDataSource,profileUploadDataSource)
+        return UserRepositoryImpl(duplicateEmailDataSource, profileDataSource,profileUploadDataSource)
     }
 }
