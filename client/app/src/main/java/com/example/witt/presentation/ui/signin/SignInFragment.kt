@@ -53,13 +53,18 @@ class SignInFragment : BaseFragment<FragmentSignInBinding>(R.layout.fragment_sig
             viewModel.signInEvents.collect { event ->
                 when(event){
                     is SignInViewModel.SignInUiEvent.Success ->{
-                        val nickname = viewModel.socialProfile.nickName
-                        val profileImage = viewModel.socialProfile.profileImage
-                        val direction = SignInFragmentDirections.actionSignInFragmentToProfileEditFragment(nickname, profileImage)
+                        val direction = SignInFragmentDirections.actionSignInFragmentToProfileEditFragment("","")
                         findNavController().navigate(direction)
                     }
                     is SignInViewModel.SignInUiEvent.Failure ->{
                         Toast.makeText(activity, event.message, Toast.LENGTH_SHORT).show()
+                    }
+                    is SignInViewModel.SignInUiEvent.SuccessSocialLogin ->{
+                        val direction = SignInFragmentDirections.actionSignInFragmentToProfileEditFragment(
+                            profileImage = event.profileImage,
+                            nickName = event.nickName
+                        )
+                        findNavController().navigate(direction)
                     }
                 }
             }

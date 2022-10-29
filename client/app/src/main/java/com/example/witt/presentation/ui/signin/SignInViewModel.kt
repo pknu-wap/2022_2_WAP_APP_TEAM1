@@ -1,11 +1,14 @@
 package com.example.witt.presentation.ui.signin
 
 import android.app.Application
-import android.content.SharedPreferences
+import android.util.Log
 import androidx.lifecycle.*
+import com.example.witt.di.IoDispatcher
 import com.example.witt.domain.use_case.remote.SignInEmailPassword
-import com.example.witt.domain.use_case.remote.UserTokenSignIn
+import com.example.witt.domain.use_case.remote.SocialSignIn
+import com.example.witt.domain.use_case.remote.TokenSignIn
 import com.kakao.sdk.auth.model.OAuthToken
+import com.kakao.sdk.common.KakaoSdk
 import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.user.UserApiClient
@@ -15,20 +18,30 @@ import com.navercorp.nid.oauth.OAuthLoginCallback
 import com.navercorp.nid.profile.NidProfileCallback
 import com.navercorp.nid.profile.data.NidProfileResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
+import kotlin.coroutines.coroutineContext
 import kotlin.coroutines.resume
 
 @HiltViewModel
 class SignInViewModel @Inject constructor(
     private val signInEmailPassword: SignInEmailPassword,
-    private val userTokenSign: UserTokenSignIn,
+    private val tokenSign: TokenSignIn,
     private val application: Application,
-    private val prefs: SharedPreferences
+    private val socialSignIn: SocialSignIn,
+    @IoDispatcher private val coroutineDispatcher: CoroutineDispatcher
 ): ViewModel() {
+
+    companion object {
+        const val NAVER_TYPE = 2
+        const val KAKAO_TYPE = 1
+        const val EMAIL_TYPE = 0
+    }
 
     val inputEmail : MutableLiveData<String> = MutableLiveData()
     val inputPassword : MutableLiveData<String> = MutableLiveData()
@@ -36,19 +49,20 @@ class SignInViewModel @Inject constructor(
     private val signInEventChannel = Channel<SignInUiEvent>()
     val signInEvents = signInEventChannel.receiveAsFlow()
 
-    //socialProfile 객체 생성
-    val socialProfile = SocialProfile("","","")
+    private val oauthId : MutableLiveData<String> = MutableLiveData()
+    private val socialNickName : MutableLiveData<String> = MutableLiveData()
+    private val socialProfileImage : MutableLiveData<String> = MutableLiveData()
 
     fun onEvent(event: SignInEvent){
         when(event) {
             is SignInEvent.Submit -> {
-                submitData()
+                emailPasswordSignIn()
             }
             is SignInEvent.KakaoSignIn ->{
-                kakaoLogin()
+                kakaoSignIn()
             }
             is SignInEvent.NaverSignIn -> {
-                naverLogin()
+                naverSignIn()
             }
             is SignInEvent.CheckToken -> {
                 tokenSignIn()
@@ -56,12 +70,12 @@ class SignInViewModel @Inject constructor(
         }
     }
 
-    private fun submitData(){
+    private fun emailPasswordSignIn(){
         //data 전송
         viewModelScope.launch {
             if(!inputEmail.value.isNullOrBlank() && !inputPassword.value.isNullOrBlank()){
                 val signInResult =
-                    signInEmailPassword(accountType = 0, inputEmail.value ?: "", inputPassword.value ?: "")
+                    signInEmailPassword(EMAIL_TYPE, inputEmail.value ?: "", inputPassword.value ?: "")
                 signInResult.mapCatching {
                     if(it.status){
                         signInEventChannel.trySend(SignInUiEvent.Success)
@@ -75,28 +89,51 @@ class SignInViewModel @Inject constructor(
         }
     }
 
-    private fun kakaoLogin(){
-        viewModelScope.launch {
-            if (handleKakaoLogin()){
-                getKakaoUserInfo()
-                signInEventChannel.trySend(SignInUiEvent.Success)
+    private fun kakaoSignIn(){
+        viewModelScope.launch(coroutineDispatcher) {
+            if(handleKakaoSignIn()) { //사용자 카카오 로그인
+              if(getKakaoUserInfo()){
+                  val signInResult =
+                      socialSignIn(KAKAO_TYPE, oauthId.value ?: "")
+                  signInResult.mapCatching {
+                      if (it.status) {
+                          signInEventChannel.trySend(SignInUiEvent.SuccessSocialLogin(
+                              socialProfileImage.value ?: "", socialNickName.value ?: ""))
+                      } else {
+                          signInEventChannel.trySend(SignInUiEvent.Failure(it.reason))
+                      }
+                  }
+              }
+            } else {
+                signInEventChannel.trySend(SignInUiEvent.Failure(""))
             }
         }
     }
 
 
-    private fun naverLogin(){
+    private fun naverSignIn(){
         viewModelScope.launch {
-            if (handleNaverLogin()) {
-                signInEventChannel.trySend(SignInUiEvent.Success)
-                NaverIdLoginSDK.logout()
+            if (handleNaverSignIn()) {
+                val signInResult =
+                    socialSignIn(NAVER_TYPE, oauthId.value ?: "")
+                signInResult.mapCatching {
+                    if (it.status) {
+                        signInEventChannel.trySend(SignInUiEvent.SuccessSocialLogin(
+                            socialProfileImage.value ?: "", socialNickName.value ?: ""))
+                        NaverIdLoginSDK.logout()
+                    }else{
+                        signInEventChannel.trySend(SignInUiEvent.Failure(it.reason))
+                    }
+                }
+            }else{
+                signInEventChannel.trySend(SignInUiEvent.Failure("인터넷 연결을 확인해주세요."))
             }
         }
     }
 
     private fun tokenSignIn(){
         viewModelScope.launch {
-            userTokenSign().mapCatching { response ->
+            tokenSign().mapCatching { response ->
                 if(response.status){
                     signInEventChannel.trySend(SignInUiEvent.Success)
                 }
@@ -104,16 +141,16 @@ class SignInViewModel @Inject constructor(
         }
     }
 
-    private suspend fun handleKakaoLogin():Boolean =
-    suspendCancellableCoroutine<Boolean>{ continuation ->
-        val callback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
-            if (error != null) {
-                signInEventChannel.trySend(SignInUiEvent.Failure("카카오계정으로 로그인 실패"))
-                continuation.resume(false)
-            } else if (token != null) {
-                continuation.resume(true)
+    private suspend fun handleKakaoSignIn() : Boolean =
+        suspendCancellableCoroutine { continuation ->
+            val callback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
+                if (error != null) {
+                    signInEventChannel.trySend(SignInUiEvent.Failure("카카오계정으로 로그인 실패"))
+                    continuation.resume(false)
+                } else if (token != null) {
+                    continuation.resume(true)
+                }
             }
-        }
 
 // 카카오톡이 설치되어 있으면 카카오톡으로 로그인, 아니면 카카오계정으로 로그인
         if (UserApiClient.instance.isKakaoTalkLoginAvailable(application)) {
@@ -129,52 +166,54 @@ class SignInViewModel @Inject constructor(
                     // 카카오톡에 연결된 카카오계정이 없는 경우, 카카오계정으로 로그인 시도
                     UserApiClient.instance.loginWithKakaoAccount(application, callback = callback)
                 } else if (token != null) {
-                    continuation.resume(true)
+                    viewModelScope.launch {
+                        continuation.resume(true)
+                    }
                 }
             }
         } else {
             UserApiClient.instance.loginWithKakaoAccount(application, callback = callback)
         }
     }
-    private suspend fun getKakaoUserInfo():Boolean =
-        suspendCancellableCoroutine<Boolean> { continuation ->
+
+    private suspend fun getKakaoUserInfo() : Boolean =
+        suspendCancellableCoroutine { continuation ->
         UserApiClient.instance.me { user, error ->
             if (error != null) {
                 signInEventChannel.trySend(SignInUiEvent.Failure("사용자 정보 요청 실패"))
                 continuation.resume(false)
             }
-            else if (user != null) {
-                socialProfile.socialId = user.id.toString()
-                socialProfile.nickName = user.kakaoAccount?.profile?.nickname
-                socialProfile.profileImage=user.kakaoAccount?.profile?.thumbnailImageUrl
+            user?.let{
+                oauthId.postValue(user.id.toString())
+                socialNickName.postValue(user.kakaoAccount?.profile?.nickname ?:  "")
+                socialProfileImage.postValue(user.kakaoAccount?.profile?.thumbnailImageUrl ?: "")
                 continuation.resume(true)
             }
         }
     }
 
-    sealed class SignInUiEvent{
-        data class Failure(val message: String?): SignInUiEvent()
-        object Success: SignInUiEvent()
-    }
-
     //naver login
-    private suspend fun handleNaverLogin():Boolean =
+    private suspend fun handleNaverSignIn():Boolean =
         suspendCancellableCoroutine{ continuation ->
         val oAuthLoginCallback = object : OAuthLoginCallback {
             override fun onSuccess() {
                 NidOAuthLogin().callProfileApi(object : NidProfileCallback<NidProfileResponse> {
                     override fun onSuccess(result: NidProfileResponse) {
-                        socialProfile.nickName = result.profile?.nickname.toString()
-                        socialProfile.profileImage = result.profile?.profileImage.toString()
-                        socialProfile.socialId = result.profile?.id.toString()
-                        continuation.resume(true)
+                        result.profile?.let{ profile ->
+                            socialProfileImage.postValue(profile.profileImage ?: "")
+                            socialNickName.postValue(profile.nickname ?: "")
+                            oauthId.postValue(profile.id ?: "")
+                            continuation.resume(true)
+                        }
                     }
                     override fun onError(errorCode: Int, message: String) {
                         signInEventChannel.trySend(SignInUiEvent.Failure("사용자 정보 가져오기 오류"))
+                        continuation.resume(false)
                     }
 
                     override fun onFailure(httpStatus: Int, message: String) {
                         signInEventChannel.trySend(SignInUiEvent.Failure("사용자 정보 가져오기 실패"))
+                        continuation.resume(false)
                     }
                 })
             }
@@ -188,7 +227,14 @@ class SignInViewModel @Inject constructor(
                 continuation.resume(false)
             }
         }
+            //todo activity context를 넣어줘야함
            NaverIdLoginSDK.authenticate(application, oAuthLoginCallback)
+    }
+
+    sealed class SignInUiEvent{
+        data class Failure(val message: String?): SignInUiEvent()
+        object Success: SignInUiEvent()
+        data class SuccessSocialLogin(val profileImage: String, val nickName: String): SignInUiEvent()
     }
 }
 
