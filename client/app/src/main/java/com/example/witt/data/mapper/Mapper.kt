@@ -2,12 +2,14 @@ package com.example.witt.data.mapper
 
 import com.example.witt.data.model.auth.response.SignInResponse
 import com.example.witt.data.model.auth.response.SignUpResponse
+import com.example.witt.data.model.auth.response.SocialSignInResponse
 import com.example.witt.data.model.local.UserProfile
 import com.example.witt.data.model.profile.response.ProfileUploadResponse
 import com.example.witt.data.model.user.response.DuplicateEmailResponse
 import com.example.witt.data.model.user.response.TokenResponse
 import com.example.witt.domain.model.auth.SignInModel
 import com.example.witt.domain.model.auth.SignUpModel
+import com.example.witt.domain.model.auth.SocialSignInModel
 import com.example.witt.domain.model.profile.remote.ProfileUploadModel
 import com.example.witt.domain.model.user.DuplicateEmailModel
 import com.example.witt.domain.model.auth.TokenModel
@@ -37,4 +39,9 @@ fun UserProfile.toUserProfileModel() = UserProfileModel(
 fun ProfileUploadResponse.toProfileUploadModel() = ProfileUploadModel(
     status = status,
     reason = reason
+)
+fun SocialSignInResponse.toSocialSignInModel() = SocialSignInModel(
+    status = status,
+    reason = reason,
+    isProfileExists = isProfileExists
 )
