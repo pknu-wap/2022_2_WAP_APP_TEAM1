@@ -21,7 +21,8 @@ fun SignUpResponse.toSignUpModel() =  SignUpModel(
 )
 fun SignInResponse.toSignInModel() = SignInModel(
     status = status,
-    reason = reason
+    reason = reason,
+    isProfileExists = isProfileExists
 )
 fun DuplicateEmailResponse.toDuplicateEmailModel() = DuplicateEmailModel(
         status = status,

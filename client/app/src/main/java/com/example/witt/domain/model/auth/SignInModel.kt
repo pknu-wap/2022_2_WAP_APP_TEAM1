@@ -2,5 +2,6 @@ package com.example.witt.domain.model.auth
 
 data class SignInModel (
     val status: Boolean,
-    val reason: String
-    )
+    val reason: String,
+    val isProfileExists: Boolean
+)
