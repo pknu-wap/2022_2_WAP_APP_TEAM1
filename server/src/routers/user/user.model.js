@@ -16,7 +16,7 @@ class User {
         this.ProfileImage = param.ProfileImage;
         this.dbsetup = require("../../util/database");
     }
-
+    
     async login() {
         try {
             /* 일반 로그인 */
@@ -38,11 +38,11 @@ class User {
             }
             /* 카카오,네이버 로그인 */
             else if (this.AccountType == 1 || this.AccountType == 2) {
-                let query = await raw2str.sqlswap(await db.query(`SELECT * FROM DB_USER WHERE OAUTH_ID = ${this.OauthId}`, { type: QueryTypes.SELECT }));
+                let query = await raw2str.sqlswap(await db.query(`SELECT * FROM DB_USER WHERE OAUTH_ID = '${this.OauthId}'`, { type: QueryTypes.SELECT }));
                 if (query.length == 0) {
                     /* 계정이 없을 경우 회원가입 */
                     query = await db.query(`INSERT INTO DB_USER (ACCOUNTTYPE, OAUTH_ID, USERNAME, PASSWORD, PHONENUM, NICKNAME) VALUES ('${this.AccountType}', '${this.OauthId}', '', '', '', '')`, { type: QueryTypes.INSERT });
-                    query = await raw2str.sqlswap(await db.query(`SELECT * FROM DB_USER WHERE OAUTH_ID = ${this.OauthId}`, { type: QueryTypes.SELECT }));
+                    query = await raw2str.sqlswap(await db.query(`SELECT * FROM DB_USER WHERE OAUTH_ID = '${this.OauthId}'`, { type: QueryTypes.SELECT }));
                     if (query.length == 0) {
                         return { status: false, reason: "계정 등록에 실패했습니다." };
                     }
@@ -101,13 +101,13 @@ class User {
         try {
             const userData = await db.query(`SELECT * FROM DB_USER WHERE USER_ID = '${this.UserId}'`, { type: QueryTypes.SELECT });
             console.log(userData);
-            if (this.Nickname == undefined) {
+            if (this.Nickname == undefined || this.Nickname == '') {
                 this.Nickname = userData[0].NICKNAME;
             }
-            if (this.PhoneNum == undefined) {
+            if (this.PhoneNum == undefined || this.PhoneNum == '') {
                 this.PhoneNum = userData[0].PHONENUM;
             }
-            if (this.ProfileImage == undefined) {
+            if (this.ProfileImage == undefined || this.ProfileImage == '') {
                 this.ProfileImage = userData[0].PROFILEIMAGE;
             }
             if (image != undefined) {
