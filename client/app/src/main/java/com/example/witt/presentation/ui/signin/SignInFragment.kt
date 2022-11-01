@@ -1,5 +1,7 @@
 package com.example.witt.presentation.ui.signin
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -25,6 +27,7 @@ class SignInFragment : BaseFragment<FragmentSignInBinding>(R.layout.fragment_sig
 
     private val viewModel : SignInViewModel by viewModels()
     private val userApiClient = UserApiClient.instance
+    private val prefs: SharedPreferences by lazy { requireContext().getSharedPreferences("prefs", Context.MODE_PRIVATE)}
 
     private val kakaoSignInCallback: (OAuthToken?, Throwable?) -> Unit = { token, _ ->
         if (token != null) {
@@ -38,6 +41,7 @@ class SignInFragment : BaseFragment<FragmentSignInBinding>(R.layout.fragment_sig
                     val oauthId = user.id.toString()
                     val profile = user.kakaoAccount?.profile?.thumbnailImageUrl
                     val nickName = user.kakaoAccount?.profile?.nickname
+                    initDataStore(nickName ?: "", profile ?: "")
                     viewModel.onEvent(SignInEvent.KakaoSignIn(oauthId))
                 }
             }
@@ -54,6 +58,7 @@ class SignInFragment : BaseFragment<FragmentSignInBinding>(R.layout.fragment_sig
                         val oauthId = user.id.toString()
                         val profile = user.profileImage
                         val nickName = user.nickname
+                        initDataStore(nickName ?: "", profile ?: "")
                         viewModel.onEvent(SignInEvent.NaverSignIn(oauthId))
                     }
                 }
@@ -122,6 +127,13 @@ class SignInFragment : BaseFragment<FragmentSignInBinding>(R.layout.fragment_sig
         }
     }
 
+    private fun initDataStore(nickName: String, profile: String){
+        prefs.edit()
+            .putString("profile", profile)
+            .putString("nickName", nickName)
+            .apply()
+    }
+
     private fun initChannel(){
         lifecycleScope.launch{
             viewModel.signInEvents.collect { event ->
@@ -134,11 +146,11 @@ class SignInFragment : BaseFragment<FragmentSignInBinding>(R.layout.fragment_sig
                         Toast.makeText(activity, event.message, Toast.LENGTH_SHORT).show()
                     }
                     is SignInViewModel.SignInUiEvent.SuccessSocialLogin ->{ //프로필 없는 상태에서 소셜 로그인 성공
-                        val direction = SignInFragmentDirections.actionSignInFragmentToProfileEditFragment("", "")
+                        val direction = SignInFragmentDirections.actionSignInFragmentToProfileEditFragment()
                         findNavController().navigate(direction)
                     }
                     is SignInViewModel.SignInUiEvent.HasNoProfile ->{ //프로필 없는 상태에서 이메일 로그인 성공
-                        val direction = SignInFragmentDirections.actionSignInFragmentToProfileEditFragment("","")
+                        val direction = SignInFragmentDirections.actionSignInFragmentToProfileEditFragment()
                         findNavController().navigate(direction)
                     }
                 }
