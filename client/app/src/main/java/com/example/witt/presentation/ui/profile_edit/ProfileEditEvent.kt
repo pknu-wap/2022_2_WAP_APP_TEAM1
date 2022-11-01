@@ -8,4 +8,5 @@ sealed class ProfileEditEvent {
 
     data class SubmitProfileImage(val profileImage: File) : ProfileEditEvent()
 
+    data class SubmitNickName(val nickName: String) : ProfileEditEvent()
 }

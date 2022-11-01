@@ -1,6 +1,8 @@
 package com.example.witt.presentation.ui.profile_edit
 
 import android.Manifest
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -9,7 +11,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.canhub.cropper.*
 import com.example.witt.R
@@ -26,7 +27,7 @@ import java.net.URL
 class ProfileEditFragment : BaseFragment<FragmentProfileEditBinding>(R.layout.fragment_profile_edit) {
 
     private val viewModel : ProfileEditViewModel by viewModels()
-    private val arg: ProfileEditFragmentArgs by navArgs()
+    private val prefs: SharedPreferences by lazy { requireContext().getSharedPreferences("prefs", Context.MODE_PRIVATE)}
 
     //image cropping
     private val cropImage = registerForActivityResult(CropImageContract()){ result ->
@@ -55,7 +56,7 @@ class ProfileEditFragment : BaseFragment<FragmentProfileEditBinding>(R.layout.fr
         binding.viewModel = viewModel
 
         initButton()
-        //initProfile()
+        initProfile()
         initChannel()
         initError()
 
@@ -88,11 +89,19 @@ class ProfileEditFragment : BaseFragment<FragmentProfileEditBinding>(R.layout.fr
         )
     }
 
-    //todo arg 처리하기
     private fun initProfile(){
-        viewModel.inputName.postValue(arg.nickName)
-        getPathFromRemoteUri(arg.profileImage)
-        uploadImage(arg.profileImage)
+        val nickName =  prefs.getString("nickName", null)
+        val profile = prefs.getString("profile", null)
+        initNickNameTextView(nickName)
+        getPathFromRemoteUri(profile)
+        uploadImage(profile)
+    }
+
+    private fun initNickNameTextView(nickName: String?){
+        nickName?.let {
+            binding.nameEditText.setText(nickName)
+            viewModel.onEvent(ProfileEditEvent.SubmitNickName(nickName))
+        }
     }
 
     private fun getPathFromRemoteUri(imageUrl: String?){
@@ -171,5 +180,4 @@ class ProfileEditFragment : BaseFragment<FragmentProfileEditBinding>(R.layout.fr
             binding.phoneNumberEditText.error = errorMessage
         }
     }
-
 }
