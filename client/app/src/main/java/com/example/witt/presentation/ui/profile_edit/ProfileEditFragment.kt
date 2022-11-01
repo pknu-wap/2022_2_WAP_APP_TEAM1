@@ -18,7 +18,9 @@ import com.example.witt.presentation.base.BaseFragment
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.normal.TedPermission
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
+import java.io.File
+import java.net.URL
 
 @AndroidEntryPoint
 class ProfileEditFragment : BaseFragment<FragmentProfileEditBinding>(R.layout.fragment_profile_edit) {
@@ -29,9 +31,11 @@ class ProfileEditFragment : BaseFragment<FragmentProfileEditBinding>(R.layout.fr
     //image cropping
     private val cropImage = registerForActivityResult(CropImageContract()){ result ->
         if(result.isSuccessful){
-            uploadProfileImage(imageUri = result.getUriFilePath(requireActivity()))
+            val imageUri = result.getUriFilePath(requireContext())
+            getPathFromLocalUri(imageUri)
+            uploadImage(imageUri)
         }else{
-            Toast.makeText(requireActivity(), result.error.toString(), Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), result.error.toString(), Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -42,7 +46,7 @@ class ProfileEditFragment : BaseFragment<FragmentProfileEditBinding>(R.layout.fr
         }
 
         override fun onPermissionDenied(deniedPermissions: MutableList<String>?) {
-            Toast.makeText(requireActivity(), "설정에서 권한을 다시 설정할 수 있습니다.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireContext(), "설정에서 권한을 다시 설정할 수 있습니다.", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -51,7 +55,7 @@ class ProfileEditFragment : BaseFragment<FragmentProfileEditBinding>(R.layout.fr
         binding.viewModel = viewModel
 
         initButton()
-        initProfile()
+        //initProfile()
         initChannel()
         initError()
 
@@ -87,20 +91,58 @@ class ProfileEditFragment : BaseFragment<FragmentProfileEditBinding>(R.layout.fr
     //todo arg 처리하기
     private fun initProfile(){
         viewModel.inputName.postValue(arg.nickName)
-        uploadProfileImage(arg.profileImage)
+        getPathFromRemoteUri(arg.profileImage)
+        uploadImage(arg.profileImage)
     }
 
-    private fun uploadProfileImage(imageUri: String?){
+    private fun getPathFromRemoteUri(imageUrl: String?){
+        CoroutineScope(Dispatchers.IO).launch {
+            runCatching {
+                val file = File(requireContext().cacheDir, "profile.jpg")
+                if (!imageUrl.isNullOrBlank()) {//프로필 이미지가 등록되어 있는 경우
+                    val url = URL(imageUrl)
+                    val stream = url.openStream()
+                    file.outputStream().use{
+                        stream.copyTo(it)
+                    }
+                } else {
+                    file.outputStream().use { //아닌 경우
+                        requireContext().assets.open("default_profile.jpg").copyTo(it) //assets의 기본 이미지 저장후 가져오기
+                    }
+                }
+                viewModel.onEvent(ProfileEditEvent.SubmitProfileImage(file))
+            }
+        }
+    }
+
+    private fun getPathFromLocalUri(imageUri: String?){
+        // uri이 두가지, 하나는 인터넷의 uri, 하나는 내 파일 속 uri
+        CoroutineScope(Dispatchers.IO).launch {
+            runCatching { //createNewFile, 에셋 열기에서 exception 발생가능성 있음.
+                val file = File(requireActivity().cacheDir, "profile.jpg")
+                file.createNewFile()  //캐시 디렉토리에 프로파일 이미지 파일 생성
+                if (!imageUri.isNullOrBlank()) {//프로필 이미지가 등록되어 있는 경우
+                    file.outputStream().use {
+                        File(imageUri).inputStream().copyTo(it)
+                    }
+                } else {
+                    file.outputStream().use { //아닌 경우
+                        requireContext().assets.open("default_profile.jpg").copyTo(it) //assets의 기본 이미지 저장후 가져오기
+                    }
+                }
+                viewModel.onEvent(ProfileEditEvent.SubmitProfileImage(file))
+            }
+        }
+    }
+
+    private fun uploadImage(imageUri: String?){
         imageUri?.let{
             Glide.with(requireActivity())
                 .load(imageUri)
                 .placeholder(R.drawable.penguin)
                 .into(binding.profileImage)
-            viewModel.onEvent(ProfileEditEvent.SubmitProfileImage(imageUri))
         }
     }
-
-
 
     private fun initChannel(){
         lifecycleScope.launch {
