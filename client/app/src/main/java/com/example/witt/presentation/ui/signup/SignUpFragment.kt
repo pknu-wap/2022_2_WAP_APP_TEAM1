@@ -58,10 +58,10 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(R.layout.fragment_sig
                         findNavController().navigate(direction)
                     }
                     is SignUpViewModel.SignUpUiEvent.Failure ->{
-                        Toast.makeText(activity, event.message, Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireActivity(), event.message, Toast.LENGTH_SHORT).show()
                     }
                     is SignUpViewModel.SignUpUiEvent.DuplicateChecked ->{
-                        binding.duplicateEmailButton.text = "사용 가능"
+                        Toast.makeText(requireActivity(), "사용 가능한 이메일입니다.", Toast.LENGTH_SHORT).show()
                     }
                 }
             }
