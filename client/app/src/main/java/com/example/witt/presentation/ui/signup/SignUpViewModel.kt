@@ -100,6 +100,8 @@ class SignUpViewModel @Inject constructor(
                     signUpEventChannel.trySend(SignUpUiEvent.Failure("네트워크 문제가 발생하였습니다."))
                 }
             }
+        }else{
+            signUpEventChannel.trySend(SignUpUiEvent.Failure("이메일 중복을 확인해주세요."))
         }
     }
 
@@ -108,10 +110,14 @@ class SignUpViewModel @Inject constructor(
             val result = duplicateEmail(
                 email = inputEmail.value ?: ""
             )
-            if(result.isSuccess){
-                signUpEventChannel.trySend(SignUpUiEvent.DuplicateChecked(result.getOrNull()?.reason))
-                duplicateCheckedState.value = true
-            }else{
+            result.mapCatching {
+                if(it.status){
+                    signUpEventChannel.trySend(SignUpUiEvent.DuplicateChecked(it.reason))
+                    duplicateCheckedState.value = true
+                }else{
+                    signUpEventChannel.trySend(SignUpUiEvent.Failure(it.reason))
+                }
+            }.onFailure {
                 signUpEventChannel.trySend(SignUpUiEvent.Failure("네트워크 문제가 발생하였습니다."))
             }
         }

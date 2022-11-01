@@ -44,6 +44,9 @@ class ProfileEditViewModel @Inject constructor(
             is ProfileEditEvent.SubmitProfileImage ->{
                 profileImage.postValue(event.profileImage)
             }
+            is ProfileEditEvent.SubmitNickName ->{
+                inputName.value = event.nickName
+            }
         }
     }
 
