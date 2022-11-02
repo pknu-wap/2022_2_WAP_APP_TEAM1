@@ -34,7 +34,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
             dateRangePicker.show(requireActivity().supportFragmentManager, "datePicker")
         }
         dateRangePicker.addOnPositiveButtonClickListener {
-            val direction = HomeFragmentDirections.actionHomeFragmentToMakePlanFragment()
+            val direction = HomeFragmentDirections.actionHomeFragmentToMakePlanFragment(it.first, it.second)
             findNavController().navigate(direction)
         }
     }

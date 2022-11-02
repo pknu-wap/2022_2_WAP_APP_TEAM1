@@ -50,5 +50,12 @@
     <fragment
         android:id="@+id/makePlanFragment"
         android:name="com.example.witt.presentation.ui.plan.make_plan.MakePlanFragment"
-        android:label="MakePlanFragment" />
+        android:label="MakePlanFragment" >
+        <argument
+            android:name="startDate"
+            app:argType="long" />
+        <argument
+            android:name="endDate"
+            app:argType="long" />
+    </fragment>
 </navigation>
