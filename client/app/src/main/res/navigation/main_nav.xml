@@ -42,5 +42,13 @@
         android:id="@+id/homeFragment"
         android:name="com.example.witt.presentation.ui.home.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_makePlanFragment"
+            app:destination="@id/makePlanFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/makePlanFragment"
+        android:name="com.example.witt.presentation.ui.plan.make_plan.MakePlanFragment"
+        android:label="MakePlanFragment" />
 </navigation>
