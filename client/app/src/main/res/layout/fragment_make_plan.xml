@@ -1,10 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android">
-    <FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".presentation.ui.plan.make_plan.MakePlanFragment">
+        android:padding="16dp">
 
-    </FrameLayout>
+        <TextView
+            android:id="@+id/make_plan_textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="어디로 여행 가실 예정인가요?"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <Button
+            android:id="@+id/destination_seoul_button"
+            style="@style/Widget.Material3.Button.ElevatedButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="서울"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/make_plan_textView" />
+
+        <Button
+            android:id="@+id/destination_busan_button"
+            style="@style/Widget.Material3.Button.ElevatedButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="16dp"
+            android:text="부산/경남"
+            app:layout_constraintStart_toEndOf="@+id/destination_seoul_button"
+            app:layout_constraintTop_toBottomOf="@+id/make_plan_textView" />
+
+        <Button
+            android:id="@+id/destination_gyeongju_button"
+            style="@style/Widget.Material3.Button.ElevatedButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="16dp"
+            android:text="대구/경북"
+            app:layout_constraintStart_toEndOf="@+id/destination_busan_button"
+            app:layout_constraintTop_toBottomOf="@+id/make_plan_textView" />
+
+        <Button
+            android:id="@+id/destination_jeonju_button"
+            style="@style/Widget.Material3.Button.ElevatedButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="16dp"
+            android:text="광주/전남"
+            app:layout_constraintStart_toEndOf="@+id/destination_gangreung_button"
+            app:layout_constraintTop_toBottomOf="@+id/destination_busan_button" />
+
+        <Button
+            android:id="@+id/destination_gangreung_button"
+            style="@style/Widget.Material3.Button.ElevatedButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="강릉/강원"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/destination_seoul_button" />
+
+        <Button
+            android:id="@+id/destination_jeju_button"
+            style="@style/Widget.Material3.Button.ElevatedButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="16dp"
+            android:text="제주/우도"
+            app:layout_constraintStart_toEndOf="@+id/destination_jeonju_button"
+            app:layout_constraintTop_toBottomOf="@+id/destination_gyeongju_button" />
+
+        <Button
+            android:id="@+id/destination_etc_button"
+            style="@style/Widget.Material3.Button.ElevatedButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="그 외 여행지"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/destination_gangreung_button" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
