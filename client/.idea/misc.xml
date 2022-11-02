@@ -3,6 +3,10 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/jaino/2022_2_WAP_APP_TEAM1/client/app/src/main/res/drawable/button_sel.xml" value="0.2515" />
+        <entry key="..\:/Users/jaino/2022_2_WAP_APP_TEAM1/client/app/src/main/res/drawable/button_unsel.xml" value="0.2515" />
+        <entry key="..\:/Users/jaino/2022_2_WAP_APP_TEAM1/client/app/src/main/res/drawable/destination_button_state.xml" value="0.2515" />
+        <entry key="..\:/Users/jaino/2022_2_WAP_APP_TEAM1/client/app/src/main/res/drawable/ic_baseline_add_24.xml" value="0.2515" />
         <entry key="..\:/Users/jaino/2022_2_WAP_APP_TEAM1/client/app/src/main/res/drawable/ic_launcher_background.xml" value="0.2595" />
         <entry key="..\:/Users/jaino/2022_2_WAP_APP_TEAM1/client/app/src/main/res/drawable/ic_naver_login.xml" value="0.2595" />
         <entry key="..\:/Users/jaino/2022_2_WAP_APP_TEAM1/client/app/src/main/res/layout/activity_main.xml" value="0.1" />
