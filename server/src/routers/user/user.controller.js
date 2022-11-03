@@ -8,7 +8,6 @@ const process = {
             req.body.AccountType <= AccountType
             req.body.Username <= Username
             req.body.Password <= Password
-            req.body.OauthId <= OauthId
     */
     login: async(req, res) => {
         let user = new User(req.body);
