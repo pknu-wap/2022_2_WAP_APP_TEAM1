@@ -24,7 +24,7 @@ app.listen(port, async () => {
     {
         const kiwi_api = require('./kiwi-api');
         let kiwi = new kiwi_api();
-        await kiwi.findFlight('PUS', 'GMP', '2022-11-01', '2022-11-01', '', '', 'oneway', 1, 0, 10);
+        await kiwi.findFlight('PUS', 'GMP', '2022-11-03', '2022-11-03', '', '', 'oneway', 1, 0, 10);
     }
     catch(err)
     {
