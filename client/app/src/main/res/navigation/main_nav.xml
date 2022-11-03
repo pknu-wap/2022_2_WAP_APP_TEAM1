@@ -57,5 +57,12 @@
         <argument
             android:name="endDate"
             app:argType="long" />
+        <action
+            android:id="@+id/action_makePlanFragment_to_drawUpPlanFragment"
+            app:destination="@id/drawUpPlanFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/drawUpPlanFragment"
+        android:name="com.example.witt.presentation.ui.plan.drawup_plan.DrawUpPlanFragment"
+        android:label="DrawUpPlanFragment" />
 </navigation>

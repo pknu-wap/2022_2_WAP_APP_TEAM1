@@ -14,7 +14,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
     private val dateRangePicker by lazy {
         MaterialDatePicker.Builder.dateRangePicker()
             .setTheme(R.style.CustomThemeOverlay_MaterialCalendar_Fullscreen)
-            .setTitleText("일정을 등록하세요.")
+            .setTitleText("언제 여행을 떠나세요?")
             .setSelection(
                 Pair(
                     MaterialDatePicker.thisMonthInUtcMilliseconds(),
@@ -27,16 +27,20 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initButton()
+        initDateRangePicker()
     }
 
     private fun initButton(){
         binding.goToMakePlanButton.setOnClickListener {
             dateRangePicker.show(requireActivity().supportFragmentManager, "datePicker")
         }
+    }
+    private fun initDateRangePicker() {
+        //todo 백스택 후 재사용시 navigate 오류 발생
         dateRangePicker.addOnPositiveButtonClickListener {
-            val direction = HomeFragmentDirections.actionHomeFragmentToMakePlanFragment(it.first, it.second)
+            val direction =
+                HomeFragmentDirections.actionHomeFragmentToMakePlanFragment(it.first, it.second)
             findNavController().navigate(direction)
         }
     }
-
 }
