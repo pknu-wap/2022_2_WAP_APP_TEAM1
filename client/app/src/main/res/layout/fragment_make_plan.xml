@@ -11,6 +11,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        tools:context=".presentation.ui.plan.make_plan.MakePlanFragment"
         android:padding="16dp">
 
         <TextView
@@ -115,6 +116,25 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/name_plan_textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="여행 이름을 붙여주세요."
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginTop="32dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/destination_etc_button" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint= "Witt와 함께하는 여행"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/name_plan_textView"
+            />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
