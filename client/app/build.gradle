@@ -29,6 +29,10 @@ android {
 
         buildConfigField "String", "apiUrl",properties['api_url']
         resValue "string", "kakao_oauth_host", properties['kakao_oauth_host']
+
+        ndk {
+            abiFilters 'arm64-v8a', 'armeabi', 'armeabi-v7a'
+        }
     }
 
     buildTypes {
@@ -47,6 +51,7 @@ android {
     dataBinding {
         enabled = true
     }
+
     namespace 'com.example.witt'
 }
 
@@ -97,7 +102,11 @@ dependencies {
     implementation "com.kakao.sdk:v2-talk:2.11.2" // 친구, 메시지(카카오톡)
     implementation "com.kakao.sdk:v2-share:2.11.2" // 메시지(카카오톡 공유)
     implementation "com.kakao.sdk:v2-friend:2.11.2" // 카카오톡 소셜 피커, 리소스 번들 파일 포함
-    
+
+    //kakao map module
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation files('libs/libDaumMapAndroid.jar')
+
     //naver login module
     implementation ('com.navercorp.nid:oauth:5.1.0'){
         exclude group : "com.squareup.moshi"

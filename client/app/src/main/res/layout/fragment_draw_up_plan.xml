@@ -36,12 +36,23 @@
             android:id="@+id/destination_textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
             android:layout_marginStart="16dp"
-            android:textSize="16sp"
+            android:layout_marginTop="16dp"
             android:text="(목적지) 여행"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toTopOf="@+id/mapView"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/planName_text_view" />
+
+        <RelativeLayout
+            android:id="@+id/mapView"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintBottom_toTopOf="@+id/plan_recyclerView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/destination_textView" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/plan_recyclerView"
@@ -50,7 +61,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/date_text_view" />
+            app:layout_constraintTop_toBottomOf="@+id/mapView" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

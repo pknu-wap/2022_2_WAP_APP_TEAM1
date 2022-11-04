@@ -10,6 +10,7 @@ import com.example.witt.presentation.base.BaseFragment
 import com.example.witt.presentation.ui.plan.drawup_plan.adapter.DatePlanAdapter
 import com.example.witt.presentation.ui.plan.drawup_plan.adapter.TimePlanAdapter
 import com.example.witt.presentation.ui.plan.drawup_plan.example.PlanDummy
+import net.daum.mf.map.api.MapView
 
 class DrawUpPlanFragment  : BaseFragment<FragmentDrawUpPlanBinding>(R.layout.fragment_draw_up_plan) {
 
@@ -18,6 +19,9 @@ class DrawUpPlanFragment  : BaseFragment<FragmentDrawUpPlanBinding>(R.layout.fra
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val mapView by lazy { MapView(requireActivity()) }
+        binding.mapView.addView(mapView)
 
         initAdapter()
         initView()
