@@ -45,7 +45,7 @@
                     app:layout_constraintStart_toEndOf="@+id/plan_date_dayTextView" />
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/plan_date_recyclerVIew"
+                    android:id="@+id/time_plan_recyclerVIew"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
