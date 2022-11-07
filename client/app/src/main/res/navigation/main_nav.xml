@@ -71,6 +71,6 @@
     </fragment>
     <fragment
         android:id="@+id/writeMemoFragment"
-        android:name="com.example.witt.presentation.ui.plan.drawup_plan.WriteMemoFragment"
+        android:name="com.example.witt.presentation.ui.plan.drawup_plan.memo_dialog.WriteMemoFragment"
         android:label="WriteMemoFragment" />
 </navigation>
