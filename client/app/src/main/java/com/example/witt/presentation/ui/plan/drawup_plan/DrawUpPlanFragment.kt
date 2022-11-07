@@ -12,19 +12,19 @@ import com.example.witt.presentation.ui.plan.drawup_plan.adapter.TimePlanAdapter
 import com.example.witt.presentation.ui.plan.drawup_plan.example.PlanDummy
 import net.daum.mf.map.api.MapView
 
+
 class DrawUpPlanFragment  : BaseFragment<FragmentDrawUpPlanBinding>(R.layout.fragment_draw_up_plan) {
 
     private lateinit var timePlanAdapter: TimePlanAdapter
     private lateinit var datePlanAdapter: DatePlanAdapter
+    private lateinit var mapView: MapView
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val mapView by lazy { MapView(requireActivity()) }
-        binding.mapView.addView(mapView)
-
         initAdapter()
         initView()
+        //initMap()
     }
 
     private fun initView(){
@@ -57,8 +57,12 @@ class DrawUpPlanFragment  : BaseFragment<FragmentDrawUpPlanBinding>(R.layout.fra
             }
         )
         datePlanAdapter.submitList(PlanDummy.getDatePlan())
-        binding.planRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-        binding.planRecyclerView.adapter = datePlanAdapter
+        binding.datePlanRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+        binding.datePlanRecyclerView.adapter = datePlanAdapter
 
+    }
+    private fun initMap(){
+        mapView = MapView(requireActivity())
+        binding.mapView.addView(mapView)
     }
 }
