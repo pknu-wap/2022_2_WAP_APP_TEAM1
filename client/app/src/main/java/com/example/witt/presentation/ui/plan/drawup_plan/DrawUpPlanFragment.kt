@@ -1,0 +1,68 @@
+package com.example.witt.presentation.ui.plan.drawup_plan
+
+import android.os.Bundle
+import android.view.View
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.witt.R
+import com.example.witt.databinding.FragmentDrawUpPlanBinding
+import com.example.witt.presentation.base.BaseFragment
+import com.example.witt.presentation.ui.plan.drawup_plan.adapter.DatePlanAdapter
+import com.example.witt.presentation.ui.plan.drawup_plan.adapter.TimePlanAdapter
+import com.example.witt.presentation.ui.plan.drawup_plan.example.PlanDummy
+import com.example.witt.presentation.ui.plan.drawup_plan.memo_dialog.WriteMemoFragment
+import net.daum.mf.map.api.MapView
+
+
+class DrawUpPlanFragment  : BaseFragment<FragmentDrawUpPlanBinding>(R.layout.fragment_draw_up_plan) {
+
+    private lateinit var timePlanAdapter: TimePlanAdapter
+    private lateinit var datePlanAdapter: DatePlanAdapter
+    private lateinit var mapView: MapView
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        initAdapter()
+        initView()
+        //initMap()
+    }
+
+    private fun initView(){
+        binding.dateTextView.text = "2022.11.21 ~ 2022.11.23"
+        binding.destinationTextView.text = "부산/경상"
+        binding.planNameTextView.text = "성훈쿤의 생일기념 여행"
+    }
+
+    private fun initAdapter(){
+        //시간순 어댑터
+        timePlanAdapter = TimePlanAdapter(
+            memoClick = {
+                //todo memo 수정 페이지 전환
+            }
+        )
+
+        timePlanAdapter.submitList(PlanDummy.getTimePlan())
+
+
+        //날짜 어댑터
+        datePlanAdapter = DatePlanAdapter(
+            context = requireContext(),
+            timePlanAdapter = timePlanAdapter,
+            memoButtonClick = {
+                              val memoDialog = WriteMemoFragment()
+                memoDialog.show(requireActivity().supportFragmentManager, "MEMO")
+            },
+            placeButtonClick = {
+               //todo place 작성페이지 전환
+            }
+        )
+        datePlanAdapter.submitList(PlanDummy.getDatePlan())
+        binding.datePlanRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+        binding.datePlanRecyclerView.adapter = datePlanAdapter
+
+    }
+    private fun initMap(){
+        mapView = MapView(requireActivity())
+        binding.mapView.addView(mapView)
+    }
+}

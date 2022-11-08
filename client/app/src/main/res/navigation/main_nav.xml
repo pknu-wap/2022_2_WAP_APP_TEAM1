@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/login_nav"
-    app:startDestination="@id/signInFragment">
+    app:startDestination="@id/drawUpPlanFragment">
 
     <fragment
         android:id="@+id/signInFragment"
@@ -42,5 +42,35 @@
         android:id="@+id/homeFragment"
         android:name="com.example.witt.presentation.ui.home.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_makePlanFragment"
+            app:destination="@id/makePlanFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/makePlanFragment"
+        android:name="com.example.witt.presentation.ui.plan.make_plan.MakePlanFragment"
+        android:label="MakePlanFragment" >
+        <argument
+            android:name="startDate"
+            app:argType="long" />
+        <argument
+            android:name="endDate"
+            app:argType="long" />
+        <action
+            android:id="@+id/action_makePlanFragment_to_drawUpPlanFragment"
+            app:destination="@id/drawUpPlanFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/drawUpPlanFragment"
+        android:name="com.example.witt.presentation.ui.plan.drawup_plan.DrawUpPlanFragment"
+        android:label="DrawUpPlanFragment" >
+        <action
+            android:id="@+id/action_drawUpPlanFragment_to_writeMemoFragment"
+            app:destination="@id/writeMemoFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/writeMemoFragment"
+        android:name="com.example.witt.presentation.ui.plan.drawup_plan.memo_dialog.WriteMemoFragment"
+        android:label="WriteMemoFragment" />
 </navigation>
