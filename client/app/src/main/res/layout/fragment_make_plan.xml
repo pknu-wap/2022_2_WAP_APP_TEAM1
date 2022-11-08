@@ -135,6 +135,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint= "Witt와 함께하는 여행"
+            android:text="@={viewModel.inputPlanId}"
             app:counterMaxLength="20"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/name_plan_textView">
