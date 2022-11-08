@@ -16,10 +16,10 @@ class MakePlanViewModel: ViewModel() {
     }
 
     private val planStartDate : MutableLiveData<String> = MutableLiveData()
-
     private val planEndDate : MutableLiveData<String> = MutableLiveData()
 
     val planDestination : MutableLiveData<String> = MutableLiveData()
+    val inputPlanId: MutableLiveData<String> = MutableLiveData()
 
     fun onButtonEvent(destination: Int){
         when(destination){
