@@ -39,12 +39,12 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <EditText
+                    android:id="@+id/memoEditTextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="16dp"
                     android:backgroundTint="@android:color/transparent"
                     android:hint="메모를 작성할 수 있어요"
-                    android:text="@={viewModel.inputMemo}"
                     android:textSize="14sp"
                     app:layout_constraintBottom_toTopOf="@+id/cancelMemoButton"
                     app:layout_constraintEnd_toEndOf="parent"

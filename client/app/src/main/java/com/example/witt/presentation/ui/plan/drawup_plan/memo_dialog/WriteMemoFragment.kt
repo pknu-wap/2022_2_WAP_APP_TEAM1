@@ -6,14 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.viewModels
 import com.example.witt.R
 import com.example.witt.databinding.FragmentWriteMemoBinding
 import com.example.witt.utils.dialogFragmentResize
 
 class WriteMemoFragment: DialogFragment() {
 
-    private val viewModel: WriteMemoViewModel by viewModels()
     private var _binding: FragmentWriteMemoBinding? = null
     val binding get() = _binding ?: throw IllegalStateException()
 
@@ -27,8 +25,12 @@ class WriteMemoFragment: DialogFragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.lifecycleOwner = viewLifecycleOwner
 
+        //memo data mapping
+        arguments?.getString("memo")?.let{
+            binding.memoEditTextView.setText(it)
+        }
+
         binding.WriteMemoButton.setOnClickListener{
-            //viewModel.submitData()
             dismiss()
         }
         binding.cancelMemoButton.setOnClickListener{
