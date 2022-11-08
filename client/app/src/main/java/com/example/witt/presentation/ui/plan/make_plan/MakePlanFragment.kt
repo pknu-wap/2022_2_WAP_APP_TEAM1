@@ -25,9 +25,19 @@ class MakePlanFragment : BaseFragment<FragmentMakePlanBinding>(R.layout.fragment
         binding.viewModel = viewModel
         initDates()
         observeData()
+        initButton()
+    }
+
+    private fun initButton(){
         binding.goToDrawUpPlanButton.setOnClickListener{
-            val direction = MakePlanFragmentDirections.actionMakePlanFragmentToDrawUpPlanFragment()
-            findNavController().navigate(direction)
+            if(binding.planIdEditTextView.text.isNullOrBlank()) {
+                binding.planIdTextField.error = "여행 이름을 붙여주세요!"
+            }
+            else {
+                val direction =
+                    MakePlanFragmentDirections.actionMakePlanFragmentToDrawUpPlanFragment()
+                findNavController().navigate(direction)
+            }
         }
     }
 
