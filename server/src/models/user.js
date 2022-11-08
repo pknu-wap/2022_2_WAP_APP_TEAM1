@@ -48,14 +48,12 @@ module.exports = function (sequelize, DataTypes) {
                     type: sequelize.QueryTypes.SELECT
                 });
                 user.UserId = raw2str(result)[0].USER_ID;
-            },
-            afterQuery: (result, options) => {
-                return raw2str(result);
             }
         }
     });
     User.associate = function (models) {
         models.User.hasMany(models.PlanParticipant, { foreignKey: 'UserId', sourceKey: 'UserId' });
+        models.User.hasMany(models.Plan, { foreignKey: 'OwnerId', sourceKey: 'UserId' });
     };
     return User;
 }

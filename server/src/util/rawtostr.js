@@ -37,6 +37,16 @@ const raw2str = (sql) => {
     if (sql instanceof Model) {
         iterateModel(sql);
     }
+    if (sql instanceof Array) {
+        for (var i = 0; i < sql.length; i++) {
+            if (sql[i] instanceof Model) {
+                iterateModel(sql[i]);
+            }
+            if (sql[i] instanceof Buffer) {
+                sql[i] = sql[i].toString('hex').toUpperCase();
+            }
+        }   
+    }
     return sql;
 }
 exports.raw2str = raw2str;
