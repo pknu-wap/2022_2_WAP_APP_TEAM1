@@ -7,13 +7,23 @@ module.exports = function (sequelize, DataTypes) {
             type: DataTypes.STRING(32),
             primaryKey: true,
             allowNull: false,
-            defaultValue: ''
+            defaultValue: '',
+            get: function () {
+                let value = raw2str(this.getDataValue('PlanDetailId'));
+                this.setDataValue('PlanDetailId', value);
+                return value;
+            }
         },
         PlanId:
         {
             field: 'PLAN_ID',
             type: DataTypes.STRING(32),
-            allowNull: false
+            allowNull: false,
+            get: function () {
+                let value = raw2str(this.getDataValue('PlanId'));
+                this.setDataValue('PlanId', value);
+                return value;
+            }
         },
         OrderIndex:
         {
@@ -36,9 +46,6 @@ module.exports = function (sequelize, DataTypes) {
                     type: sequelize.QueryTypes.SELECT
                 });
                 plan_detail.PlanDetailId = raw2str(result)[0].PLAN_DETAIL_ID;
-            },
-            afterQuery: (result, options) => {
-                return raw2str(result);
             }
         }
     });

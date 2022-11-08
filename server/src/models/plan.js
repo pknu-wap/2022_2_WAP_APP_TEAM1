@@ -6,11 +6,22 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING(32),
             primaryKey: true,
             allowNull: false,
+            defaultValue: '',
+            get: function () {
+                let value = raw2str(this.getDataValue('PlanId'));
+                this.setDataValue('PlanId', value);
+                return value;
+            }
         },
         OwnerId: {
             field: 'OWNER_ID',
             type: DataTypes.STRING(32),
             allowNull: false,
+            get: function () {
+                let value = raw2str(this.getDataValue('OwnerId'));
+                this.setDataValue('OwnerId', value);
+                return value;
+            }
         },
         StartDate: {
             field: 'START_DATE',
@@ -45,7 +56,28 @@ module.exports = (sequelize, DataTypes) => {
             }
         }
     });
-    
+    Plan.isMemberOf = async function(models, planId, userId) {
+        Plan.findOne({
+            where: {
+                PlanId: planId
+            },
+            include: [{
+                model: models.PlanParticipant
+            }]
+        }).then(plan => {
+            if (plan) {
+                let isMember = plan.OwnerId === userId;
+                plan.PlanParticipants.forEach(participant => {
+                    if (participant.UserId === userId) {
+                        isMember = true;
+                    }
+                });
+                return isMember;
+            } else {
+                return false;
+            }
+        });
+    };
     Plan.associate = function (models) {
         models.Plan.hasMany(models.PlanParticipant, { foreignKey: 'PlanId', sourceKey: 'PlanId' });
     };

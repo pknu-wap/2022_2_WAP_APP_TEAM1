@@ -36,5 +36,6 @@ app.listen(port, async () => {
     
    // const result = await models.PlanDetail.create({PlanId: 'EA7579917B4ABAF3E05011AC020001C4', OrderIndex: 4});
    // console.log(result.getDataValue('PlanDetailId'));
+  
     console.log(`http://localhost:${port}`)
 })
