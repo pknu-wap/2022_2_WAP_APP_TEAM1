@@ -80,6 +80,7 @@ module.exports = (sequelize, DataTypes) => {
     };
     Plan.associate = function (models) {
         models.Plan.hasMany(models.PlanParticipant, { foreignKey: 'PlanId', sourceKey: 'PlanId' });
+        models.plan.hasMany(models.PlanDetail, { foreignKey: 'PlanId', sourceKey: 'PlanId' });
     };
     return Plan;
 }
