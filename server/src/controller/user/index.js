@@ -1,9 +1,9 @@
 const models = require("../../models")
+const { raw2str } = require("../../util/rawtostr")
 const token = require("../../util/jwt")
 module.exports = {
     //Login(POST)
     login(req, res) {
-        console.log(req);
         if (req.body.AccountType === undefined || req.body.Username === undefined) {
             return res.status(400).send({
                 message: "Bad Request"
@@ -23,6 +23,7 @@ module.exports = {
                     Password: req.body.Password
                 }
             }).then(user => {
+                user = raw2str(user);
                 if (user === null) {
                     return res.status(401).send({
                         message: "Unauthorized"
@@ -49,6 +50,7 @@ module.exports = {
                 Username: req.body.Username
             }
         }).then(user => {
+            user = raw2str(user);
             if (user === null) {
                 return res.status(401).send({
                     message: "Unauthorized"
@@ -81,6 +83,7 @@ module.exports = {
             Username: req.body.Username,
             Password: req.body.Password
         }).then(user => {
+            user = raw2str(user);
             let AccessToken = token.generateAccessToken(user.UserId);
             let RefreshToken = token.generateRefreshToken(user.UserId);
             return res.status(200).send({
@@ -100,11 +103,7 @@ module.exports = {
                 message: "Bad Request"
             });
         }
-        models.User.findOne({
-            where: {
-                Username: req.query.Username
-            }
-        }).then(user => {
+        models.User.findByPk(req.query.Username).then(user => {
             if (user === null) {
                 return res.status(200).send({
                     message: { status: true, reason: "사용 가능한 아이디입니다." }
@@ -121,11 +120,8 @@ module.exports = {
     },
     //Get Info(GET)
     getInfo(req, res) {
-        models.User.findOne({
-            where: {
-                UserId: req.token.UserId
-            }
-        }).then(user => {
+        models.User.findByPk(req.token.userId).then(user => {
+            user = raw2str(user);
             if (user === null) {
                 return res.status(401).send({
                     message: "Unauthorized"
@@ -142,11 +138,7 @@ module.exports = {
     },
     //Update Info(PUT)
     updateInfo(req, res) {
-        models.User.findOne({
-            where: {
-                UserId: req.token.UserId
-            }
-        }).then(user => {
+        models.User.findByPk(req.token.userId).then(user => {
             if (req.body.Nickname !== undefined && req.body.Nickname !== "") {
                 user.Nickname = req.body.Nickname;
             }
@@ -174,13 +166,13 @@ module.exports = {
                 message: err.message
             });
         });
-    }, 
+    },
     //Update Token(HEAD)
     updateToken(req, res) {
         let AccessToken = token.generateAccessToken(req.token.userId);
         let RefreshToken = token.generateRefreshToken(req.token.userId);
         res.set('x-access-token', AccessToken);
         res.set('x-refresh-token', RefreshToken);
-        return res.sendStatus(200); 
+        return res.sendStatus(200);
     }
 }

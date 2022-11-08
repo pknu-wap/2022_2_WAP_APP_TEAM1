@@ -7,21 +7,11 @@ module.exports = (sequelize, DataTypes) => {
             primaryKey: true,
             allowNull: false,
             defaultValue: '',
-            get: function () {
-                let value = raw2str(this.getDataValue('PlanId'));
-                this.setDataValue('PlanId', value);
-                return value;
-            }
         },
         OwnerId: {
             field: 'OWNER_ID',
             type: DataTypes.STRING(32),
             allowNull: false,
-            get: function () {
-                let value = raw2str(this.getDataValue('OwnerId'));
-                this.setDataValue('OwnerId', value);
-                return value;
-            }
         },
         StartDate: {
             field: 'START_DATE',
@@ -79,8 +69,9 @@ module.exports = (sequelize, DataTypes) => {
         });
     };
     Plan.associate = function (models) {
-        models.Plan.hasMany(models.PlanParticipant, { foreignKey: 'PlanId', sourceKey: 'PlanId' });
-        models.plan.hasMany(models.PlanDetail, { foreignKey: 'PlanId', sourceKey: 'PlanId' });
+        Plan.hasMany(models.PlanParticipant, { foreignKey: 'PlanId', sourceKey: 'PlanId' });
+        Plan.hasMany(models.PlanDetail, { foreignKey: 'PlanId', sourceKey: 'PlanId' });
+        Plan.belongsTo(models.User, { foreignKey: 'OwnerId', targetKey: 'UserId' });
     };
     return Plan;
 }
