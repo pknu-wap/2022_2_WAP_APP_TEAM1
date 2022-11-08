@@ -22,7 +22,7 @@ class Board{
 
         this.dbsetup = require("../../util/database");
     }
-    async createBoard(){ //detail_db에서 detailID에 해당하는 다른 정보들도 가져오기, 순서에 맞춰서 정렬(작은 것부터)/ 항공권 선택 못하게 막기
+    async createBoard(){ 
         try{
             const planDetail=await db.query(`SELECT * FROM DB_PLAN_PLACE JOIN DB_PLAN_MEMO WHERE PLAN_DETAIL_ID ='${this.PlanDetailId} ORDER BY ORDER INDEX'`,{type: QueryTypes.SELECT});
             if (planDetail==0){
