@@ -33,7 +33,7 @@ class DrawUpPlanFragment  : BaseFragment<FragmentDrawUpPlanBinding>(R.layout.fra
         initView()
         initButton()
         initAdapter()
-        initMap()
+        //initMap()
     }
 
     private fun initView(){
@@ -52,7 +52,7 @@ class DrawUpPlanFragment  : BaseFragment<FragmentDrawUpPlanBinding>(R.layout.fra
         //시간순 어댑터
         timePlanAdapter = TimePlanAdapter(
             memoClick = {
-                //todo memo 수정 페이지 전환
+                showMemoDialog(it.memo)
             }
         )
 
@@ -64,8 +64,7 @@ class DrawUpPlanFragment  : BaseFragment<FragmentDrawUpPlanBinding>(R.layout.fra
             context = requireContext(),
             timePlanAdapter = timePlanAdapter,
             memoButtonClick = {
-                              val memoDialog = WriteMemoFragment()
-                memoDialog.show(requireActivity().supportFragmentManager, "MEMO")
+                showMemoDialog(null)
             },
             placeButtonClick = {
                //todo place 작성페이지 전환
@@ -76,11 +75,22 @@ class DrawUpPlanFragment  : BaseFragment<FragmentDrawUpPlanBinding>(R.layout.fra
         binding.datePlanRecyclerView.adapter = datePlanAdapter
 
     }
+
+    private fun showMemoDialog(memo: String?){
+        val memoDialog = WriteMemoFragment()
+        memo?.let{
+            val args = Bundle()
+            args.putString("memo", it)
+            memoDialog.arguments = args
+        }
+        memoDialog.show(requireActivity().supportFragmentManager, "MEMO")
+    }
+
+
     private fun initMap(){
         mapView = MapView(requireActivity())
         binding.mapView.addView(mapView)
     }
-
 
     private fun sendKakaoLink(context: Context, defaultFeed: FeedTemplate) {
         if (ShareClient.instance.isKakaoTalkSharingAvailable(context)) {
