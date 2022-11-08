@@ -1,7 +1,7 @@
 'use strict';
 const { raw2str } = require('../util/rawtostr');
 module.exports = function (sequelize, DataTypes) {
-    const PlanMemo = sequelize.define('PlanMemo', {
+    const PlanPlace = sequelize.define('PlanPlace', {
         PlanDetailId:
         {
             field: 'PLAN_DETAIL_ID',
@@ -14,24 +14,18 @@ module.exports = function (sequelize, DataTypes) {
         {
             field: 'PLACE_ID',
             type: DataTypes.STRING(32),
-            allowNull: true
-        },
-        Content:
-        {
-            field: 'CONTENT',
-            type: DataTypes.STRING(2000),
-            allowNull: true
+            allowNull: false
         }
     }, {
         underscored: true,
         freezeTableName: true,
-        tableName: 'PLAN_MEMO',
+        tableName: 'PLAN_PLACE',
         timestamps: true
     });
 
-    PlanMemo.associate = function (models) {
-        PlanMemo.belongsTo(models.PlanDetail, { foreignKey: 'PlanDetailId', targetKey: 'PlanDetailId' });
-        PlanMemo.belongsTo(models.Place, { foreignKey: 'PlaceId', targetKey: 'PlaceId' });
+    PlanPlace.associate = function (models) {
+        PlanPlace.belongsTo(models.PlanDetail, { foreignKey: 'PlanDetailId', targetKey: 'PlanDetailId' });
+        PlanPlace.belongsTo(models.Place, { foreignKey: 'PlaceId', targetKey: 'PlaceId' });
     };
-    return PlanMemo;
-};
+    return PlanPlace;
+}

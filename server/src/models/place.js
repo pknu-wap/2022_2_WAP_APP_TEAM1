@@ -55,6 +55,7 @@ module.exports = function (sequelize, DataTypes) {
     });
 
     Place.associate = function (models) {
+        Place.hasMany(models.PlanPlace, { foreignKey: 'PlaceId', sourceKey: 'PlaceId' });
     };
     return Place;
 };
