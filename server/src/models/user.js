@@ -54,5 +54,8 @@ module.exports = function (sequelize, DataTypes) {
             }
         }
     });
+    User.associate = function (models) {
+        models.User.hasMany(models.PlanParticipant, { foreignKey: 'UserId', sourceKey: 'UserId' });
+    };
     return User;
 }

@@ -17,11 +17,7 @@ const PlanParticipant = require("./participant.model");
  */
 class Plan {
     constructor(param) {
-        this.PlanId = param.PlanId;
-        this.OwnerId = param.OwnerId;
-        this.StartDate = param.StartDate;
-        this.EndDate = param.EndDate;
-        this.Name = param.Name;
+       
     }
     /**
      * 해당 계획의 참여자인지 여부를 반환합니다.

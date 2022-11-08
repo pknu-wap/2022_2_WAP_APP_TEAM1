@@ -1,16 +1,8 @@
 const planRouter = require('express').Router()
-const planController = require('./plan.controller')
+const planService = require('../../controller/plan/service')
 const token = require('../../util/jwt')
 const upload = require('../../util/multer')
 
-planController.
+planRouter.get("/:PlanId", token.authenticateAccessToken, planService.getPlan);
 
-userRouter.get("/me", token.authenticateAccessToken, userController.getInfo);
-userRouter.post("/me", userController.login);
-userRouter.patch("/me", upload.single('Image'), token.authenticateAccessToken, userController.editInfo);
-userRouter.head("/me", token.authenticateRefreshToken, userController.updateToken);
-
-userRouter.get("/new", userController.duplicate_id);
-userRouter.post("/new", userController.register);
-
-module.exports = userRouter;
+module.exports = planRouter;
