@@ -1,3 +1,4 @@
+'use strict';
 const { raw2str } = require('../util/rawtostr');
 module.exports = function (sequelize, DataTypes) {
     const PlanDetail = sequelize.define('PlanDetail', {
@@ -7,23 +8,13 @@ module.exports = function (sequelize, DataTypes) {
             type: DataTypes.STRING(32),
             primaryKey: true,
             allowNull: false,
-            defaultValue: '',
-            get: function () {
-                let value = raw2str(this.getDataValue('PlanDetailId'));
-                this.setDataValue('PlanDetailId', value);
-                return value;
-            }
+            defaultValue: ''
         },
         PlanId:
         {
             field: 'PLAN_ID',
             type: DataTypes.STRING(32),
-            allowNull: false,
-            get: function () {
-                let value = raw2str(this.getDataValue('PlanId'));
-                this.setDataValue('PlanId', value);
-                return value;
-            }
+            allowNull: false
         },
         OrderIndex:
         {
