@@ -1,3 +1,4 @@
+'use strict'; 
 const planRouter = require('express').Router()
 const planService = require('../../controller/plan')
 const planInviteService = require('../../controller/plan/invite')
