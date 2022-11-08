@@ -12,21 +12,12 @@ const PlanParticipant = require("./participant.model");
  * @property {string} OwnerId - 일정의 소유자 ID
  * @property {string} Name - 일정의 이름
  * @property {string} StartDate - YYYY-MM-DD
- * @property {string} EndDate - YYYY-MM-DD
- * 
- * @private
- * @property {Object} dbsetup - sequelize DB 연결 객체
- * 
+ * @property {string} EndDate - YYYY-MM-DD 
  * 이 클래스는 Plan 테이블에 대한 모델입니다.
  */
 class Plan {
     constructor(param) {
-        this.PlanId = param.PlanId;
-        this.OwnerId = param.OwnerId;
-        this.StartDate = param.StartDate;
-        this.EndDate = param.EndDate;
-        this.Name = param.Name;
-        this.dbsetup = require("../../util/database");
+       
     }
     /**
      * 해당 계획의 참여자인지 여부를 반환합니다.
