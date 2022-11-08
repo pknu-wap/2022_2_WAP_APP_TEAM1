@@ -21,7 +21,11 @@ function iterateModel(model) {
     }
 }
 const raw2str = (sql) => {
-
+    // Buffer Check
+    if (sql instanceof Buffer) {
+        return sql.toString('hex').toUpperCase();
+    }
+    // SQL Query Check
     for (var i = 0; i < sql.length; i++) {
         for (var prop in sql[i]) {
             if (sql[i][prop] instanceof Buffer) {
@@ -29,7 +33,7 @@ const raw2str = (sql) => {
             }
         }
     }
-    // for Model
+    // ORM Check
     if (sql instanceof Model) {
         iterateModel(sql);
     }

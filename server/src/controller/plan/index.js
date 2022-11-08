@@ -66,21 +66,38 @@ module.exports = {
                 message: "Bad Request"
             });
         }
-        models.Plan.findOne({
-            where: {
-                PlanId: req.params.PlanId
-            },
-            include: [{
-                model: models.PlanParticipant,
-            }]
-        }).then(plan => {
-            plan = raw2str(plan);
-            return res.status(200).send(plan);
+        models.Plan.isMemberOf(models, req.params.PlanId, req.token.UserId).then(isMember => {
+            if (isMember === false) {
+                return res.status(403).send({
+                    message: "Forbidden"
+                });
+            }
+            models.Plan.findOne({
+                where: {
+                    PlanId: req.params.PlanId
+                },
+                include: [{
+                    model: models.PlanParticipant,
+                    attributes: ["UserId"],
+                    include: [{
+                        model: models.User,
+                        attributes: ["UserId", "Nickname", "PhoneNum", "ProfileImage"]
+                    }]
+                }]
+            }).then(plan => {
+                plan = JSON.parse(JSON.stringify(raw2str(plan).dataValues));
+                plan.Participants = plan.PlanParticipants.map(participant => participant.User);
+                delete plan.PlanParticipants;
+                return res.status(200).send(plan);
+            }).catch(err => {
+                return res.status(500).send({
+                    message: err.message
+                });
+            });
         }).catch(err => {
             return res.status(500).send({
                 message: err.message
             });
-        }
-        );
+        });
     }
 }

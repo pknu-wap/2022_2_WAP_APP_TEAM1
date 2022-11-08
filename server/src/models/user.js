@@ -6,7 +6,14 @@ module.exports = function (sequelize, DataTypes) {
             type: DataTypes.STRING(32),
             primaryKey: true,
             allowNull: false,
-            defaultValue: ''
+            defaultValue: '',
+            get: function () {
+                console.log('User.UserId.get()');
+                let data = raw2str(this.getDataValue('UserId'));
+                this.setDataValue('UserId', data);
+                console.log(data.name);
+                return data;
+            }
         },
         AccountType: {
             field: 'ACCOUNTTYPE',
