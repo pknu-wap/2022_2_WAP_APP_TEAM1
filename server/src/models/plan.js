@@ -5,12 +5,12 @@ module.exports = (sequelize, DataTypes) => {
             field: 'PLAN_ID',
             type: DataTypes.STRING(32),
             primaryKey: true,
-            allowNull: false
+            allowNull: false,
         },
         OwnerId: {
             field: 'OWNER_ID',
             type: DataTypes.STRING(32),
-            allowNull: false
+            allowNull: false,
         },
         StartDate: {
             field: 'START_DATE',
@@ -26,6 +26,11 @@ module.exports = (sequelize, DataTypes) => {
             field: 'NAME',
             type: DataTypes.STRING(20),
             allowNull: false
+        },
+        Region: {
+            field: 'REGION',
+            type: DataTypes.STRING(20),
+            allowNull: false
         }
     }, {
         underscored: true,
@@ -37,12 +42,12 @@ module.exports = (sequelize, DataTypes) => {
                     type: sequelize.QueryTypes.SELECT
                 });
                 plan.PlanId = raw2str(result)[0].PLAN_ID;
-            },
-            afterQuery: (result, options) => {
-                return raw2str(result);
             }
         }
     });
     
+    Plan.associate = function (models) {
+        models.Plan.hasMany(models.PlanParticipant, { foreignKey: 'PlanId', sourceKey: 'PlanId' });
+    };
     return Plan;
 }
