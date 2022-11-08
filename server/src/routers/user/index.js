@@ -1,5 +1,5 @@
 const userRouter = require('express').Router()
-const userService = require('../../controller/user/service')
+const userService = require('../../controller/user')
 const token = require('../../util/jwt')
 const upload = require('../../util/multer')
 
