@@ -35,7 +35,6 @@ class User {
     
     async login() {
         try {
-            const transaction = await db.transaction();
             /* 일반 로그인 */
             if (this.AccountType == 0) {
                 let data = raw2str(await db.query(`SELECT * FROM DB_USER WHERE USERNAME = '${this.Username}' and PASSWORD = '${this.Password}' and ACCOUNTTYPE = 0`, { type: QueryTypes.SELECT }));
