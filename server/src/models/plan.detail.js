@@ -49,5 +49,9 @@ module.exports = function (sequelize, DataTypes) {
             }
         }
     });
+
+    PlanDetail.associate = function (models) {
+        PlanDetail.belongsTo(models.Plan, { foreignKey: 'PlanId', targetKey: 'PlanId' });
+    }; 
     return PlanDetail;
 };
