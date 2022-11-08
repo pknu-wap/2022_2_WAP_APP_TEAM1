@@ -9,6 +9,7 @@ const upload = require('../../util/multer')
 planRouter.get("/:PlanId", token.authenticateAccessToken, planService.getPlan);
 planRouter.put("/", token.authenticateAccessToken, planService.createPlan);
 planRouter.delete("/:PlanId", token.authenticateAccessToken, planService.deletePlan);
+planRouter.get("/", token.authenticateAccessToken, planService.getPlanList);
 
 // Plan Member
 planRouter.put("/:PlanId/participants", token.authenticateAccessToken, planInviteService.joinPlan);

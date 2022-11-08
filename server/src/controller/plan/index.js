@@ -12,7 +12,7 @@ module.exports = {
             });
         }
         models.Plan.create({
-            OwnerId: req.token.UserId,
+            OwnerId: req.token.userId,
             StartDate: req.body.StartDate,
             EndDate: req.body.EndDate,
             Name: req.body.Name,
@@ -44,7 +44,7 @@ module.exports = {
                     message: "Not Found"
                 });
             }
-            if (plan.OwnerId !== req.token.UserId) {
+            if (plan.OwnerId !== req.token.userId) {
                 return res.status(403).send({
                     message: "Forbidden"
                 });
@@ -66,7 +66,7 @@ module.exports = {
                 message: "Bad Request"
             });
         }
-        models.Plan.isMemberOf(models, req.params.PlanId, req.token.UserId).then(isMember => {
+        models.Plan.isMemberOf(models, req.params.PlanId, req.token.userId).then(isMember => {
             if (isMember === false) {
                 return res.status(403).send({
                     message: "Forbidden"
@@ -85,15 +85,56 @@ module.exports = {
                     }]
                 }]
             }).then(plan => {
-                plan = JSON.parse(JSON.stringify(raw2str(plan).dataValues));
-                plan.Participants = plan.PlanParticipants.map(participant => participant.User);
-                delete plan.PlanParticipants;
-                return res.status(200).send(plan);
+                plan = raw2str(plan);
+                models.PlanDetail.findOne({
+                    where: {
+                        PlanId: plan.PlanId
+                    },
+                    include: [{
+                        model: models.PlanMemo,
+                        attributes: ["PlaceId", "Content"]
+                    }, {
+                        model: models.PlanPlace,
+                        attributes: ["PlaceId"]
+                    }]
+                }).then(planDetail => {
+                    planDetail = raw2str(planDetail);
+                    return res.status(200).send(planDetail);
+                }).catch(err => {
+                    return res.status(500).send({
+                        message: err.message
+                    });
+                });
+                //plan = JSON.parse(JSON.stringify(raw2str(plan).dataValues));
+                //plan.Participants = plan.PlanParticipants.map(participant => participant.User);
+                //delete plan.PlanParticipants;
+                //return res.status(200).send(plan);
             }).catch(err => {
                 return res.status(500).send({
                     message: err.message
                 });
             });
+        }).catch(err => {
+            return res.status(500).send({
+                message: err.message
+            });
+        });
+    },
+    //Get Plan List(GET)
+    getPlanList(req, res) {
+        models.User.findAll({
+            attributes: ["UserId"],
+            where: {
+                UserId: req.token.userId
+            },
+            include: [
+                { model: models.Plan, attributes: ["PlanId", "StartDate", "EndDate", "Name", "Region"] },
+                { model: models.PlanParticipant, attributes: ["PlanId"], include: [{ model: models.Plan, attributes: ["PlanId", "StartDate", "EndDate", "Name", "Region"] }] }
+            ]
+        }).then(plans => {
+            plans = raw2str(plans);
+            plans = plans.map(plan => plan.Plans).flat().concat(plans.map(plan => plan.PlanParticipants).flat().map(participant => participant.Plan));
+            return res.status(200).send(plans);
         }).catch(err => {
             return res.status(500).send({
                 message: err.message
