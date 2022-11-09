@@ -29,10 +29,7 @@ android {
 
         buildConfigField "String", "apiUrl",properties['api_url']
         resValue "string", "kakao_oauth_host", properties['kakao_oauth_host']
-
-        ndk {
-            abiFilters 'arm64-v8a', 'armeabi', 'armeabi-v7a'
-        }
+        resValue "string", "kakao_native_app_key", properties["kakao_native_app_key"]
     }
 
     buildTypes {

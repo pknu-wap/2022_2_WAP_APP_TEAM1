@@ -52,8 +52,8 @@ class DatePlanAdapter(
             }
             binding.planDateDateTextView.text = datePlanItem.day
             binding.planDateDayTextView.text = datePlanItem.date
-            binding.planDateRecyclerVIew.layoutManager = LinearLayoutManager(context)
-            binding.planDateRecyclerVIew.adapter = timePlanAdapter
+            binding.timePlanRecyclerVIew.layoutManager = LinearLayoutManager(context)
+            binding.timePlanRecyclerVIew.adapter = timePlanAdapter
         }
     }
 
