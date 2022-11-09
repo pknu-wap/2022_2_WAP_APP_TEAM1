@@ -1,6 +1,6 @@
 <h1 align="center">2022 2학기 APP 1팀 WitT</h1>
 <p align="center">
-	    <img src="./image/proto.png"/ width="50%">
+	    <img src="./image/icon.png"/ width="50%">
 </p>	   
 
 <p align="center">
