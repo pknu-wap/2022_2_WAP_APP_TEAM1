@@ -9,7 +9,7 @@ import com.example.witt.databinding.ItemTimePlanBinding
 import com.example.witt.domain.model.plan.TimePlanModel
 
 class TimePlanAdapter(
-    val memoClick : () -> Unit
+    val memoClick : (TimePlanModel) -> Unit
 ) : ListAdapter<TimePlanModel, TimePlanAdapter.PlanDateViewHolder>(diffutil){
 
     companion object{
@@ -36,6 +36,9 @@ class TimePlanAdapter(
         : RecyclerView.ViewHolder(binding.root){
         fun bind(item: TimePlanModel){
             binding.timePlanMemoTextView.text = item.memo
+            binding.timePlanCardView.setOnClickListener{
+                memoClick(TimePlanModel(item.memo))
+            }
         }
     }
 }

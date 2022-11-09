@@ -6,8 +6,10 @@ import retrofit2.http.Body
 import retrofit2.http.POST
 
 interface SocialSignInService {
-    @POST("/api/user/login")
+
+    @POST("/api/user/me")
     suspend fun signIn(
         @Body request: SocialSignInRequest
     ): SocialSignInResponse
+
 }

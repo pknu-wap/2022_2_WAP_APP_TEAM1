@@ -28,6 +28,8 @@ android {
         buildConfigField "String", "NAVER_CLIENT_SECRET",properties['naver_client_secret']
 
         buildConfigField "String", "apiUrl",properties['api_url']
+        buildConfigField "String", "host_domain", properties['host_domain']
+
         resValue "string", "kakao_oauth_host", properties['kakao_oauth_host']
         resValue "string", "kakao_native_app_key", properties["kakao_native_app_key"]
     }

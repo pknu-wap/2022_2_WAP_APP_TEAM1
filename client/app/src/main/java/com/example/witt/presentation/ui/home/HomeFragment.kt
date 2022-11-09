@@ -36,11 +36,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
         }
     }
     private fun initDateRangePicker() {
-        //todo 백스택 후 재사용시 navigate 오류 발생
+        //백스택 후 재사용시 navigate 오류 발생
         dateRangePicker.addOnPositiveButtonClickListener {
-            val direction =
-                HomeFragmentDirections.actionHomeFragmentToMakePlanFragment(it.first, it.second)
-            findNavController().navigate(direction)
+            if(findNavController().currentDestination?.id == R.id.homeFragment) {
+                val direction =
+                    HomeFragmentDirections.actionHomeFragmentToMakePlanFragment(it.first, it.second)
+                findNavController().navigate(direction)
+            }
         }
     }
 }
