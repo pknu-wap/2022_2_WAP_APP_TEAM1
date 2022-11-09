@@ -2,6 +2,7 @@ package com.example.witt
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -18,5 +19,16 @@ class MainActivity : AppCompatActivity() {
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.main_nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
 
+        getQueryParameter()
+    }
+
+    //androidExecutionParams으로 받은 값 확인
+    private fun getQueryParameter(){
+        val value = intent?.data
+        if(value != null){
+            intent.data?.getQueryParameter("key1")?.let {
+                Log.d("tag", it)
+            }
+        }
     }
 }
