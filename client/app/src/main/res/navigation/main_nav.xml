@@ -68,9 +68,17 @@
         <action
             android:id="@+id/action_drawUpPlanFragment_to_writeMemoFragment"
             app:destination="@id/writeMemoFragment" />
+        <action
+            android:id="@+id/action_drawUpPlanFragment_to_mapSearchFragment"
+            app:destination="@id/mapSearchFragment" />
     </fragment>
     <fragment
         android:id="@+id/writeMemoFragment"
         android:name="com.example.witt.presentation.ui.plan.drawup_plan.WriteMemoFragment"
         android:label="WriteMemoFragment" />
+    <fragment
+        android:id="@+id/mapSearchFragment"
+        android:name="com.example.witt.presentation.ui.plan.drawup_plan.MapSearchFragment"
+        android:label="fragment_map_search"
+        tools:layout="@layout/fragment_map_search" />
 </navigation>
