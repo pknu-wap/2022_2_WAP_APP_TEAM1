@@ -13,6 +13,11 @@ import com.example.witt.databinding.FragmentMapSearchBinding
 import com.example.witt.presentation.base.BaseFragment
 import com.example.witt.data.model.search.ResultSearchKeyword
 import com.example.witt.presentation.ui.plan.drawup_plan.adapter.MapSearchAdapter
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
+import org.apache.commons.lang3.ObjectUtils.Null
 import retrofit2.*
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -50,29 +55,32 @@ class MapSearchFragment: BaseFragment<FragmentMapSearchBinding>(R.layout.fragmen
             .build()
         val api = retrofit.create(KakaoAPI::class.java)
         val call = api.getSearchKeyword(API_KEY,keyword)
+        CoroutineScope(Dispatchers.IO).launch{
+            call.enqueue(object : Callback<ResultSearchKeyword> {
+                override fun onResponse(
+                    call: Call<ResultSearchKeyword>,
+                    response: Response<ResultSearchKeyword>
+                ) {
+                    val data: MutableList<Place> = loadData(response.body())
+                    var adapter = MapSearchAdapter()
+                    adapter.listData = data
+                    binding.searchMapRecyclerView.adapter = adapter
+                    binding.searchMapRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+                }
 
-        call.enqueue(object : Callback<ResultSearchKeyword>{
-            override fun onResponse(
-                call: Call<ResultSearchKeyword>,
-                response: Response<ResultSearchKeyword>
-            ) {
-                val data:MutableList<Place> = loadData(response)
-                var adapter = MapSearchAdapter()
-                adapter.listData = data
-                binding.searchMapRecyclerView.adapter = adapter
-                binding.searchMapRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-            }
-
-            override fun onFailure(call: Call<ResultSearchKeyword>, t: Throwable) {
-                Log.w("mapSearch","통신 실패 : ${t.message}")
-            }
-        })
+                override fun onFailure(call: Call<ResultSearchKeyword>, t: Throwable) {
+                    Log.w("mapSearch", "통신 실패 : ${t.message}")
+                }
+            })
+        }
     }
 
-    private fun loadData(response:Response<ResultSearchKeyword>):MutableList<Place>{
+    private fun loadData(searchResult: ResultSearchKeyword?):MutableList<Place>{
         val data:MutableList<Place> = mutableListOf()
-        for(index in 0 until (response.body()?.documents?.size!!)){
-            response.body()?.documents?.get(index)?.let { data.add(it) }
+        if (!searchResult?.documents.isNullOrEmpty()) {
+            for(index in 0 until (searchResult?.documents?.size!!)){
+                searchResult?.documents?.get(index)?.let { data.add(it) }
+            }
         }
         return data
     }

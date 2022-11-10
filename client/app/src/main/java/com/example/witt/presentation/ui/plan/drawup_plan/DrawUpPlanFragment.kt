@@ -94,8 +94,6 @@ class DrawUpPlanFragment  : BaseFragment<FragmentDrawUpPlanBinding>(R.layout.fra
         marker.selectedMarkerType =
             MapPOIItem.MarkerType.RedPin // 마커를 클릭했을때, 기본으로 제공하는 RedPin 마커 모양.
         mapView.addPOIItem(marker)
-
-
     }
 
     private fun showMemoDialog(memo: String?) {
