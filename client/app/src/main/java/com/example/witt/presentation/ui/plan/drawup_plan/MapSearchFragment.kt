@@ -5,11 +5,14 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.witt.R
 import com.example.witt.data.api.KakaoAPI
+import com.example.witt.data.model.search.Place
 import com.example.witt.databinding.FragmentMapSearchBinding
 import com.example.witt.presentation.base.BaseFragment
-import com.example.witt.presentation.ui.plan.drawup_plan.adapter.ResultSearchKeyword
+import com.example.witt.data.model.search.ResultSearchKeyword
+import com.example.witt.presentation.ui.plan.drawup_plan.adapter.MapSearchAdapter
 import retrofit2.*
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -53,8 +56,11 @@ class MapSearchFragment: BaseFragment<FragmentMapSearchBinding>(R.layout.fragmen
                 call: Call<ResultSearchKeyword>,
                 response: Response<ResultSearchKeyword>
             ) {
-                Log.d("Test","Raw:${response.raw()}")
-                Log.d("Test","body:${response.body()}")
+                val data:MutableList<Place> = loadData(response)
+                var adapter = MapSearchAdapter()
+                adapter.listData = data
+                binding.searchMapRecyclerView.adapter = adapter
+                binding.searchMapRecyclerView.layoutManager = LinearLayoutManager(requireContext())
             }
 
             override fun onFailure(call: Call<ResultSearchKeyword>, t: Throwable) {
@@ -62,5 +68,12 @@ class MapSearchFragment: BaseFragment<FragmentMapSearchBinding>(R.layout.fragmen
             }
         })
     }
-}
 
+    private fun loadData(response:Response<ResultSearchKeyword>):MutableList<Place>{
+        val data:MutableList<Place> = mutableListOf()
+        for(index in 0 until (response.body()?.documents?.size!!)){
+            response.body()?.documents?.get(index)?.let { data.add(it) }
+        }
+        return data
+    }
+}
