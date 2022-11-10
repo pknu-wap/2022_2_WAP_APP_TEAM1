@@ -48,7 +48,7 @@ object ApiModule {
     ): Retrofit {
         return Retrofit.Builder()
             .client(client)
-            .baseUrl(BuildConfig.apiUrl)
+            .baseUrl(BuildConfig.host_domain)
             .addConverterFactory(MoshiConverterFactory.create())
             .build()
     }
@@ -97,5 +97,11 @@ object ApiModule {
     fun provideSocialSignInService(
         retrofit: Retrofit
     ): SocialSignInService = retrofit.create(SocialSignInService::class.java)
+
+    @Provides
+    @Singleton
+    fun provideMakePlanService(
+        retrofit: Retrofit
+    ): MakePlanService = retrofit.create(MakePlanService::class.java)
 
 }

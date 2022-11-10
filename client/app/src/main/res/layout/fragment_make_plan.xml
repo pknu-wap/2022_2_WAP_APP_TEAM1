@@ -21,8 +21,9 @@
             android:text="어디로 여행 가실 예정인가요?"
             android:textSize="18sp"
             android:textStyle="bold"
+            android:layout_marginTop="32dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/plan_id_textField" />
 
         <Button
             android:id="@+id/destination_seoul_button"
@@ -31,7 +32,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:text="서울/경기"
-            android:onClick="@{() -> viewModel.onButtonEvent(1)}"
+            android:onClick="@{() -> viewModel.onButtonEvent(destinationSeoulButton.getText().toString())}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/make_plan_textView" />
 
@@ -42,19 +43,19 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:layout_marginTop="16dp"
-            android:onClick="@{() -> viewModel.onButtonEvent(2)}"
+            android:onClick="@{() -> viewModel.onButtonEvent(destinationBusanButton.getText().toString())}"
             android:text="부산/경상"
             app:layout_constraintStart_toEndOf="@+id/destination_seoul_button"
             app:layout_constraintTop_toBottomOf="@+id/make_plan_textView" />
 
         <Button
-            android:id="@+id/destination_gyeongju_button"
+            android:id="@+id/destination_daejeon_button"
             style="@style/Widget.Material3.Button.ElevatedButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:layout_marginTop="16dp"
-            android:onClick="@{() -> viewModel.onButtonEvent(6)}"
+            android:onClick="@{() -> viewModel.onButtonEvent(destinationDaejeonButton.getText().toString())}"
             android:text="대전/충청"
             app:layout_constraintStart_toEndOf="@+id/destination_busan_button"
             app:layout_constraintTop_toBottomOf="@+id/make_plan_textView" />
@@ -68,7 +69,7 @@
             android:layout_marginLeft="16dp"
             android:layout_marginTop="16dp"
             android:text="전주/전라"
-            android:onClick="@{() -> viewModel.onButtonEvent(4)}"
+            android:onClick="@{() -> viewModel.onButtonEvent(destinationJeonjuButton.getText().toString())}"
             app:layout_constraintStart_toEndOf="@+id/destination_gangreung_button"
             app:layout_constraintTop_toBottomOf="@+id/destination_busan_button" />
 
@@ -78,7 +79,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:onClick="@{() -> viewModel.onButtonEvent(5)}"
+            android:onClick="@{() -> viewModel.onButtonEvent(destinationGangreungButton.getText().toString())}"
             android:text="강릉/강원"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/destination_seoul_button" />
@@ -90,10 +91,10 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:layout_marginTop="16dp"
-            android:onClick="@{()->viewModel.onButtonEvent(3)}"
+            android:onClick="@{() -> viewModel.onButtonEvent(destinationJejuButton.getText().toString())}"
             android:text="제주/우도"
             app:layout_constraintStart_toEndOf="@+id/destination_jeonju_button"
-            app:layout_constraintTop_toBottomOf="@+id/destination_gyeongju_button" />
+            app:layout_constraintTop_toBottomOf="@+id/destination_daejeon_button" />
 
         <Button
             android:id="@+id/destination_etc_button"
@@ -101,7 +102,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:onClick="@{() -> viewModel.onButtonEvent(7)}"
+            android:onClick="@{() -> viewModel.onButtonEvent(destinationEtcButton.getText().toString())}"
             android:text="그 외 여행지"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/destination_gangreung_button" />
@@ -124,17 +125,25 @@
             android:text="여행 이름을 붙여주세요."
             android:textSize="18sp"
             android:textStyle="bold"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="16dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/destination_etc_button" />
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <EditText
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/plan_id_textField"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint= "Witt와 함께하는 여행"
+            app:counterMaxLength="20"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/name_plan_textView"
-            />
-
+            app:layout_constraintTop_toBottomOf="@+id/name_plan_textView">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/plan_id_editTextView"
+                android:text="@={viewModel.inputPlanId}"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                />
+        </com.google.android.material.textfield.TextInputLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

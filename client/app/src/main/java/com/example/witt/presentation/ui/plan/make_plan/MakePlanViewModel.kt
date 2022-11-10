@@ -2,57 +2,54 @@ package com.example.witt.presentation.ui.plan.make_plan
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.witt.domain.model.plan.MakePlanModel
+import com.example.witt.domain.use_case.remote.MakePlanUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class MakePlanViewModel: ViewModel() {
+@HiltViewModel
+class MakePlanViewModel @Inject constructor(
+    private val makePlanUseCase: MakePlanUseCase
+): ViewModel() {
 
-    companion object{
-        const val SEOUL = 1
-        const val BUSAN = 2
-        const val JEJU = 3
-        const val JEONJU = 4
-        const val GANGREUNG = 5
-        const val DAEJEON = 6
-        const val ETC = 7
+    private val _planDestination: MutableStateFlow<String> = MutableStateFlow("완료")
+    val planDestination : StateFlow<String> get() = _planDestination
+
+    private val _makePlanEvent = MutableSharedFlow<UiEvent<Unit>>()
+    val makePlanEvent: SharedFlow<UiEvent<Unit>> get() = _makePlanEvent
+
+    val inputPlanId: MutableLiveData<String> = MutableLiveData("")
+
+    fun onButtonEvent(destination: String) {
+        _planDestination.value = destination
     }
 
-    private val planStartDate : MutableLiveData<String> = MutableLiveData()
-
-    private val planEndDate : MutableLiveData<String> = MutableLiveData()
-
-    val planDestination : MutableLiveData<String> = MutableLiveData()
-
-    fun onButtonEvent(destination: Int){
-        when(destination){
-            SEOUL ->{
-                planDestination.value = "서울/경기로 목적지 설정"
-            }
-            BUSAN ->{
-                planDestination.value = "부산/경상으로 목적지 설정"
-            }
-            JEJU ->{
-                planDestination.value = "제주/우도로 목적지 설정"
-            }
-            JEONJU ->{
-                planDestination.value = "전주/전라로 목적지 설정"
-            }
-            GANGREUNG ->{
-                planDestination.value = "강릉/강원으로 목적지 설정"
-            }
-            DAEJEON ->{
-                planDestination.value = "대전/충청으로 목적지 설정"
-            }
-            ETC ->{
-                planDestination.value = "기타 목적지 설정"
+    fun submitPlan(startDate: String, endDate: String){
+        viewModelScope.launch {
+            makePlanUseCase(
+                MakePlanModel(
+                    StartDate = startDate,
+                    EndDate = endDate,
+                    Name = requireNotNull(inputPlanId.value),
+                    Region = requireNotNull(planDestination.value)
+                )
+            ).mapCatching { response ->
+                if(response.status){
+                    _makePlanEvent.emit(UiEvent.Success(Unit))
+                }else{
+                    _makePlanEvent.emit(UiEvent.Failure(response.reason))
+                }
             }
         }
     }
-
-    fun onEvent(event: MakePlanEvent){
-        when(event){
-            is MakePlanEvent.SubmitPlanDate ->{
-                planStartDate.value = event.startDate
-                planEndDate.value = event.endDate
-            }
-        }
+    sealed class UiEvent<out T> {
+        data class Success<T>(val data: T) : UiEvent<T>()
+        data class Failure(val message: String?) : UiEvent<Nothing>()
     }
 }
