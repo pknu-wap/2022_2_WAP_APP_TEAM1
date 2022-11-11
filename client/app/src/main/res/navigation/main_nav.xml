@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/login_nav"
-    app:startDestination="@id/drawUpPlanFragment">
+    app:startDestination="@id/homeFragment">
 
     <fragment
         android:id="@+id/signInFragment"
@@ -46,6 +46,9 @@
         <action
             android:id="@+id/action_homeFragment_to_makePlanFragment"
             app:destination="@id/makePlanFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_drawUpPlanFragment"
+            app:destination="@id/drawUpPlanFragment" />
     </fragment>
     <fragment
         android:id="@+id/makePlanFragment"
@@ -68,9 +71,17 @@
         <action
             android:id="@+id/action_drawUpPlanFragment_to_writeMemoFragment"
             app:destination="@id/writeMemoFragment" />
+        <action
+            android:id="@+id/action_drawUpPlanFragment_to_mapSearchFragment"
+            app:destination="@id/mapSearchFragment" />
     </fragment>
     <fragment
         android:id="@+id/writeMemoFragment"
         android:name="com.example.witt.presentation.ui.plan.drawup_plan.memo_dialog.WriteMemoFragment"
         android:label="WriteMemoFragment" />
+    <fragment
+        android:id="@+id/mapSearchFragment"
+        android:name="com.example.witt.presentation.ui.plan.drawup_plan.MapSearchFragment"
+        android:label="fragment_map_search"
+        tools:layout="@layout/fragment_map_search" />
 </navigation>
