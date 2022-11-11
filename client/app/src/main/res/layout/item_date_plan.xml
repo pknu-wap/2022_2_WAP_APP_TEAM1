@@ -55,22 +55,32 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/plan_date_dayTextView" />
 
-                <Button
+                <com.google.android.material.chip.Chip
+                    style="@style/Widget.Material3.Chip.Filter.Elevated"
                     android:id="@+id/plan_date_add_place_button"
-                    style="@style/Widget.Material3.Button.ElevatedButton"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/skyBlue"
+                    android:layout_margin="16dp"
+                    app:chipBackgroundColor="@color/white"
                     android:text="장소 추가"
+                    android:textAlignment="center"
+                    app:checkedIconEnabled="false"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/plan_date_add_memo_button"
                     app:layout_constraintStart_toStartOf="parent" />
 
-                <Button
+                <com.google.android.material.chip.Chip
+                    style="@style/Widget.Material3.Chip.Filter.Elevated"
                     android:id="@+id/plan_date_add_memo_button"
-                    style="@style/Widget.Material3.Button.ElevatedButton"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="메모 추가"
+                    android:layout_margin="16dp"
+                    android:textAlignment="center"
+                    android:textColor="@color/skyBlue"
+                    app:chipBackgroundColor="@color/white"
+                    app:checkedIconEnabled="false"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/plan_date_add_place_button" />
