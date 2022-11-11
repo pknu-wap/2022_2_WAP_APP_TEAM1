@@ -104,4 +104,10 @@ object ApiModule {
         retrofit: Retrofit
     ): MakePlanService = retrofit.create(MakePlanService::class.java)
 
+    @Provides
+    @Singleton
+    fun provideGetPlanListService(
+        retrofit: Retrofit
+    ): GetPlanListService = retrofit.create(GetPlanListService::class.java)
+
 }
