@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/login_nav"
-    app:startDestination="@id/drawUpPlanFragment">
+    app:startDestination="@id/homeFragment">
 
     <fragment
         android:id="@+id/signInFragment"
@@ -46,6 +46,9 @@
         <action
             android:id="@+id/action_homeFragment_to_makePlanFragment"
             app:destination="@id/makePlanFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_drawUpPlanFragment"
+            app:destination="@id/drawUpPlanFragment" />
     </fragment>
     <fragment
         android:id="@+id/makePlanFragment"
