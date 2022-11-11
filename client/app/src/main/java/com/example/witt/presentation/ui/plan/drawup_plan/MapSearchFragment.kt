@@ -6,6 +6,7 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.witt.BuildConfig
 import com.example.witt.R
 import com.example.witt.data.api.KakaoAPI
 import com.example.witt.data.model.search.Place
@@ -24,7 +25,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 class MapSearchFragment: BaseFragment<FragmentMapSearchBinding>(R.layout.fragment_map_search){
     companion object{
         const val BASE_URL = "https://dapi.kakao.com"
-        const val API_KEY = "KakaoAK f31eb4b51b8e5890b0a4915324a9b19e"
+        const val API_KEY = BuildConfig.KAKAO_REST_API_KEY
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -61,6 +62,7 @@ class MapSearchFragment: BaseFragment<FragmentMapSearchBinding>(R.layout.fragmen
                     call: Call<ResultSearchKeyword>,
                     response: Response<ResultSearchKeyword>
                 ) {
+                    Log.d("map","${response.body()}")
                     val data: MutableList<Place> = loadData(response.body())
                     var adapter = MapSearchAdapter()
                     adapter.listData = data

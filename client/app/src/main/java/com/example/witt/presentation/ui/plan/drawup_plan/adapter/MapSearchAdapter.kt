@@ -1,6 +1,8 @@
 package com.example.witt.presentation.ui.plan.drawup_plan.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.witt.data.model.search.Place
@@ -22,10 +24,16 @@ class MapSearchAdapter : RecyclerView.Adapter<MapSearchAdapter.Holder>(){
         holder.setPlace(place)
     }
 
+
     inner class Holder(val binding : ItemMapSearchRecyclerBinding) : RecyclerView.ViewHolder(binding.root){
+
         fun setPlace(place: Place){
+            binding.timePlanCardView.setOnClickListener{
+                Log.d("test","하이")
+
+            }
             binding.textPlace.text = place.place_name
-            binding.textCategory.text = place.category_name
+            binding.textCategory.text = if (place.category_group_name.isNullOrBlank()) "기타" else place.category_group_name
             binding.textAddress.text = place.address_name
         }
     }
