@@ -73,7 +73,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
     private fun initAdapter(){
         homePlanAdapter = HomePlanAdapter(
             onPlanCardClick = {
-                //todo drawUpPlanFragment navigate
+                val direction =
+                HomeFragmentDirections.actionHomeFragmentToDrawUpPlanFragment()
+                findNavController().navigate(direction)
             }
         )
         homePlanAdapter.submitList(emptyList())
