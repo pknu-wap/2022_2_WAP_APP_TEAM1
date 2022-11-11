@@ -14,4 +14,7 @@ planRouter.get("/", token.authenticateAccessToken, planService.getPlanList);
 // Plan Member
 planRouter.put("/:PlanId/participants", token.authenticateAccessToken, planInviteService.joinPlan);
 planRouter.delete("/:PlanId/participants", token.authenticateAccessToken, planInviteService.leavePlan);
+
+// Plan Memo
+planRouter.put("/:PlanId/memo", token.authenticateAccessToken, planService.addMemo);
 module.exports = planRouter;

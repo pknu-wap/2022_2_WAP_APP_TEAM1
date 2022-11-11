@@ -25,5 +25,8 @@ module.exports = function (sequelize, DataTypes) {
         freezeTableName: true,
         tableName: 'DB_FILE_INFO'
     });
+    FileInfo.associate = function (models) {
+        FileInfo.hasMany(models.User, { foreignKey: 'ProfileImage', sourceKey: 'FileName' });
+    };
     return FileInfo;
 };

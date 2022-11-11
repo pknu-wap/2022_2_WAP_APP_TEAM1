@@ -4,28 +4,46 @@ const token = require("../../util/jwt")
 const { raw2str } = require("../../util/rawtostr")
 
 module.exports = {
+    //Add Memo(PUT)
+    addMemo(req, res) {
+        const { PlanId } = req.params;
+        const { Content } = req.body;
+        const { userId } = req.token;
+        models.Plan.findByPk(PlanId).then(plan => {
+            models.PlanDetail.create({
+                PlanId: PlanId
+            }).then(planDetail => {
+                models.PlanMemo.create({
+                    PlanDetailId: planDetail.PlanDetailId,
+                    Content: Content
+                }).then(planMemo => {
+                    res.status(200).json({
+                        planMemo
+                    })
+                })
+            })
+        })
+    },
     //Create Plan(PUT)
-    createPlan(req, res) {
+    async createPlan(req, res) {
         if (req.body.StartDate === undefined || req.body.EndDate === undefined || req.body.Name === undefined || req.body.Region === undefined) {
-            return res.status(400).send({
-                message: "Bad Request"
+            return res.status(200).send({
+                status: false, reason: "Bad Request"
             });
         }
-        models.Plan.create({
+        let plan = raw2str(await models.Plan.create({
             OwnerId: req.token.userId,
             StartDate: req.body.StartDate,
             EndDate: req.body.EndDate,
             Name: req.body.Name,
             Region: req.body.Region
-        }).then(plan => {
+        }));
+        if (plan === null) {
             return res.status(200).send({
-                message: { status: true, reason: "일정 생성 성공", PlanId: plan.PlanId },
+                status: false, reason: "계획 생성 도중 오류가 발생했습니다."
             });
-        }).catch(err => {
-            return res.status(500).send({
-                message: err.message
-            });
-        });
+        }
+        return res.status(200).send({ status: true, reason: "일정 생성 성공", PlanId: plan.PlanId });
     },
     //Delete Plan(DELETE)
     deletePlan(req, res) {
@@ -60,64 +78,51 @@ module.exports = {
         });
     },
     //Get Plan(GET)
-    getPlan(req, res) {
+    async getPlan(req, res) {
         if (req.params.PlanId === undefined) {
             return res.status(400).send({
                 message: "Bad Request"
             });
         }
-        models.Plan.isMemberOf(models, req.params.PlanId, req.token.userId).then(isMember => {
-            if (isMember === false) {
-                return res.status(403).send({
-                    message: "Forbidden"
-                });
-            }
-            models.Plan.findOne({
-                where: {
-                    PlanId: req.params.PlanId
-                },
-                include: [{
-                    model: models.PlanParticipant,
-                    attributes: ["UserId"],
-                    include: [{
-                        model: models.User,
-                        attributes: ["UserId", "Nickname", "PhoneNum", "ProfileImage"]
-                    }]
-                }]
-            }).then(plan => {
-                plan = raw2str(plan);
-                models.PlanDetail.findOne({
-                    where: {
-                        PlanId: plan.PlanId
-                    },
-                    include: [{
-                        model: models.PlanMemo,
-                        attributes: ["PlaceId", "Content"]
-                    }, {
-                        model: models.PlanPlace,
-                        attributes: ["PlaceId"]
-                    }]
-                }).then(planDetail => {
-                    planDetail = raw2str(planDetail);
-                    return res.status(200).send(planDetail);
-                }).catch(err => {
-                    return res.status(500).send({
-                        message: err.message
-                    });
-                });
-                //plan = JSON.parse(JSON.stringify(raw2str(plan).dataValues));
-                //plan.Participants = plan.PlanParticipants.map(participant => participant.User);
-                //delete plan.PlanParticipants;
-                //return res.status(200).send(plan);
-            }).catch(err => {
-                return res.status(500).send({
-                    message: err.message
-                });
+        console.log('getPlan: userId = ', req.token.userId);
+        let isMember = await models.Plan.isMemberOf(models, req.params.PlanId, req.token.userId);
+        if (!isMember) {
+            return res.status(403).send({
+                message: "해당 계획으로부터 참여자가 아닙니다."
             });
-        }).catch(err => {
-            return res.status(500).send({
-                message: err.message
-            });
+        }
+        let plan = raw2str(await models.Plan.findByPk(req.params.PlanId));
+        let planParticipants = raw2str(await models.PlanParticipant.findAll({
+            where: {
+                PlanId: plan.PlanId
+            },
+            include: [{
+                model: models.User,
+                attributes: ['UserId', 'Nickname', 'ProfileImage']
+            }]
+        }));
+        planParticipants = planParticipants.map(participant => participant.User);
+        let planDetails = raw2str(await models.PlanDetail.findAll({
+            where: {
+                PlanId: req.params.PlanId
+            },
+            attributes: ["PlanDetailId", "OrderIndex"],
+            include: [{
+                model: models.PlanMemo,
+                attributes: ["Content"]
+            }]
+        }));
+        planDetails = planDetails.sort((a, b) => {
+            return a.OrderIndex - b.OrderIndex;
+        });
+        
+        var result = new Object();
+        result.Plan = plan;
+        result.PlanParticipants = planParticipants;
+        result.PlanDetails = planDetails;
+
+        return res.status(200).send({
+            message: { status: true, reason: "일정 조회 성공", result },
         });
     },
     //Get Plan List(GET)
