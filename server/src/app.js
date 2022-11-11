@@ -16,7 +16,7 @@ app.listen(port, async () => {
     console.log(process.env.DB_HOST);
     console.log(process.env.AMADEUS_API_KEY);
     try {
-       await models.sequelize.sync()
+       await models.sequelize.sync({force: false, alter: false})
     }
     catch (err) {
         console.log('DB 연결 중 오류 발생: ', err);

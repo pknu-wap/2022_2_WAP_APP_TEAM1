@@ -20,7 +20,8 @@ module.exports = function (sequelize, DataTypes) {
         {
             field: 'ORDER_INDEX',
             type: DataTypes.INTEGER,
-            allowNull: false
+            allowNull: false,
+            defaultValue: 0
         }
     }, {
         underscored: true,
@@ -43,7 +44,6 @@ module.exports = function (sequelize, DataTypes) {
 
     PlanDetail.associate = function (models) {
         PlanDetail.belongsTo(models.Plan, { foreignKey: 'PlanId', targetKey: 'PlanId' });
-        PlanDetail.hasMany(models.PlanPlace, { foreignKey: 'PlanDetailId', sourceKey: 'PlanDetailId' });
         PlanDetail.hasMany(models.PlanMemo, { foreignKey: 'PlanDetailId', sourceKey: 'PlanDetailId' });
     }; 
     return PlanDetail;
