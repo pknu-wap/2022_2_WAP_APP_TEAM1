@@ -1,5 +1,9 @@
 package com.example.witt.data.model.plan.get_plan
 
+import com.example.witt.domain.model.plan.DetailPlanModel
+import com.example.witt.domain.model.plan.GetPlanModel
+import com.example.witt.domain.model.plan.PlanMemoModel
+
 data class GetPlanResponse (
     val message: String,
     val reason: String,
@@ -8,8 +12,24 @@ data class GetPlanResponse (
 data class DetailPlanResponse(
     val PlanDetailId : String,
     val OrderIndex: String,
-    val PlanMemos: List<PlanMemo>
+    val PlanMemos: List<PlanMemoResponse>
 )
-data class PlanMemo(
+data class PlanMemoResponse(
     val Content : String
+)
+
+fun GetPlanResponse.toGetPlanModel() = GetPlanModel(
+    message = message,
+    reason = reason,
+    planDetail = planDetail.map{ it.toDetailPlanModel() }
+)
+
+fun DetailPlanResponse.toDetailPlanModel() = DetailPlanModel(
+    PlanDetailId = PlanDetailId,
+    OrderIndex = OrderIndex,
+    PlanMemos = PlanMemos.map { it.toPlanMemoModel() }
+)
+
+fun PlanMemoResponse.toPlanMemoModel() = PlanMemoModel(
+    Content = Content
 )
