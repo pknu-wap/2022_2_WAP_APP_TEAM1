@@ -1,27 +1,26 @@
 package com.example.witt.presentation.ui.home.adapter
 
-import android.icu.util.LocaleData
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.witt.databinding.ItemHomePlanBinding
-import com.example.witt.domain.model.plan.GetPlanModel
+import com.example.witt.domain.model.plan.GetPlanListModel
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 class HomePlanAdapter(
-    val onPlanCardClick : (GetPlanModel) -> Unit
-) : ListAdapter<GetPlanModel, HomePlanAdapter.HomePlanAdapter>(diffutil){
+    val onPlanCardClick : (GetPlanListModel) -> Unit
+) : ListAdapter<GetPlanListModel, HomePlanAdapter.HomePlanAdapter>(diffutil){
 
     companion object{
-        val diffutil = object : DiffUtil.ItemCallback<GetPlanModel>(){
-            override fun areItemsTheSame(oldItem: GetPlanModel, newItem: GetPlanModel): Boolean {
+        val diffutil = object : DiffUtil.ItemCallback<GetPlanListModel>(){
+            override fun areItemsTheSame(oldItem: GetPlanListModel, newItem: GetPlanListModel): Boolean {
                 return oldItem == newItem
             }
 
-            override fun areContentsTheSame(oldItem: GetPlanModel, newItem: GetPlanModel): Boolean {
+            override fun areContentsTheSame(oldItem: GetPlanListModel, newItem: GetPlanListModel): Boolean {
                 return oldItem == newItem
             }
         }
@@ -37,7 +36,7 @@ class HomePlanAdapter(
 
     inner class HomePlanAdapter(private val binding: ItemHomePlanBinding)
         : RecyclerView.ViewHolder(binding.root){
-        fun bind(item: GetPlanModel){
+        fun bind(item: GetPlanListModel){
             binding.homePlanDestinationTextView.text = item.Region
             binding.homePlanNameTextView.text = item.Name
             binding.homePlanDateTextView.text = localDateToString(item.StartDate, item.EndDate)

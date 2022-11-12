@@ -2,6 +2,7 @@ package com.example.witt.presentation.ui.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.witt.domain.model.plan.GetPlanListModel
 import com.example.witt.domain.model.plan.GetPlanModel
 import com.example.witt.domain.repository.PlanRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,8 +18,8 @@ class HomeViewModel @Inject constructor(
     private val planRepository: PlanRepository
 ): ViewModel() {
 
-    private val _planList = MutableStateFlow<List<GetPlanModel>>(listOf())
-    val planList: StateFlow<List<GetPlanModel>> get() = _planList
+    private val _planList = MutableStateFlow<List<GetPlanListModel>>(listOf())
+    val planList: StateFlow<List<GetPlanListModel>> get() = _planList
 
     private val _homeEvent = MutableSharedFlow<UiEvent<Unit>>()
     val homeEvent: SharedFlow<UiEvent<Unit>> get() = _homeEvent
