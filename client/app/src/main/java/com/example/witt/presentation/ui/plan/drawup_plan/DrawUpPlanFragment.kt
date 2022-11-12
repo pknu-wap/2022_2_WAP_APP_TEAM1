@@ -83,7 +83,7 @@ class DrawUpPlanFragment  : BaseFragment<FragmentDrawUpPlanBinding>(R.layout.fra
     private fun initMap() {
         val mapView by lazy { MapView(requireActivity()) }
         binding.mapView.addView(mapView)
-        mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(37.53737528, 127.00557633), true);
+        mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(37.53737528, 127.00557633), true)
         mapView.setZoomLevel(5, true)
         val marker = MapPOIItem()
         marker.itemName = "Default Marker"
