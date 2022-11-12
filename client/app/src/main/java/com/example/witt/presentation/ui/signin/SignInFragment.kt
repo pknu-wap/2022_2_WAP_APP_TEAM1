@@ -100,7 +100,7 @@ class SignInFragment : BaseFragment<FragmentSignInBinding>(R.layout.fragment_sig
         }
 
         binding.goToSignUpButton.setOnClickListener{
-            val direction = SignInFragmentDirections.actionSignInFragmentToSignUpFragment()
+            val direction = SignInFragmentDirections.actionSignInFragmentToPlanNav()
             findNavController().navigate(direction)
         }
     }
