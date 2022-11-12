@@ -163,7 +163,7 @@ class ProfileEditFragment : BaseFragment<FragmentProfileEditBinding>(R.layout.fr
                         }
                         is ProfileEditViewModel.ProfileEditUiEvent.Success -> {
                             val direction =
-                                ProfileEditFragmentDirections.actionProfileEditFragmentToHomeFragment()
+                                ProfileEditFragmentDirections.actionProfileEditFragmentToPlanNav()
                             findNavController().navigate(direction)
                         }
                     }
