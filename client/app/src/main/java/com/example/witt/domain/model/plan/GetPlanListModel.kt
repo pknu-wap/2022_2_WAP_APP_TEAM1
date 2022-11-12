@@ -2,7 +2,7 @@ package com.example.witt.domain.model.plan
 
 import java.time.LocalDateTime
 
-data class GetPlanModel (
+data class GetPlanListModel (
     val PlanId: String,
     val StartDate: LocalDateTime,
     val EndDate: LocalDateTime,
