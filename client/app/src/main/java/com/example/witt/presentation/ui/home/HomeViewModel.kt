@@ -29,7 +29,7 @@ class HomeViewModel @Inject constructor(
 
     fun getPlanList(){
         viewModelScope.launch {
-            planRepository.getPlan().mapCatching {
+            planRepository.getPlanList().mapCatching {
                 _planList.value = it
             }.onFailure {
                 _homeEvent.emit(UiEvent.Failure("일정을 불러오는데 실패하였습니다."))

@@ -28,7 +28,7 @@ class PlanRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getPlan(): Result<List<GetPlanModel>> {
+    override suspend fun getPlanList(): Result<List<GetPlanModel>> {
         return getPlanListDataSource.getPlanList().mapCatching{ response ->
             response.map{
                 it.toGetPlanModel()
