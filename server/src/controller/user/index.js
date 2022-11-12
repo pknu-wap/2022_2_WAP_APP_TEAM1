@@ -52,38 +52,31 @@ module.exports = {
         return res.status(200).send({ status: true, reason: "로그인 성공", AccessToken: AccessToken, RefreshToken: RefreshToken, isProfileExists: isProfileExists });
     },
     //Register(POST)
-    register(req, res) {
-    if (req.body.Username === undefined || req.body.Password === undefined) {
-        return res.status(400).send({
-            message: "Bad Request"
-        });
-    }
-    models.User.create({
-        AccountType: 0,
-        Username: req.body.Username,
-        Password: req.body.Password
-    }).then(user => {
-        user = raw2str(user);
+    async register(req, res) {
+        if (req.body.Username === undefined || req.body.Password === undefined) {
+            return res.status(400).send({
+                message: "Bad Request"
+            });
+        }
+        let user = raw2str(await models.User.create({
+            AccountType: 0,
+            Username: req.body.Username,
+            Password: req.body.Password
+        }));
         let AccessToken = token.generateAccessToken(user.UserId);
         let RefreshToken = token.generateRefreshToken(user.UserId);
         return res.status(200).send({
             message: { status: true, reason: "회원가입 성공", AccessToken: AccessToken, RefreshToken: RefreshToken },
         });
-    }).catch(err => {
-        return res.status(500).send({
-            message: err.message
-        });
-    }
-    );
-},
-//Duplicate Check(GET)
-duplicateCheck(req, res) {
-    if (req.query.Username === undefined) {
-        return res.status(400).send({
-            message: "Bad Request"
-        });
-    }
-    models.User.findByPk(req.query.Username).then(user => {
+    },
+    //Duplicate Check(GET)
+    async duplicateCheck(req, res) {
+        if (req.query.Username === undefined) {
+            return res.status(400).send({
+                message: "Bad Request"
+            });
+        }
+        let user = await models.User.findByPk(req.query.Username);
         if (user === null) {
             return res.status(200).send({
                 message: { status: true, reason: "사용 가능한 아이디입니다." }
@@ -92,16 +85,10 @@ duplicateCheck(req, res) {
         return res.status(200).send({
             message: { status: false, reason: "이미 사용 중인 아이디입니다." }
         });
-    }).catch(err => {
-        return res.status(500).send({
-            message: err.message
-        });
-    });
-},
-//Get Info(GET)
-getInfo(req, res) {
-    models.User.findByPk(req.token.userId).then(user => {
-        user = raw2str(user);
+    },
+    //Get Info(GET)
+    async getInfo(req, res) {
+        let user = raw2str(await models.User.findByPk(req.token.userId))
         if (user === null) {
             return res.status(401).send({
                 message: "Unauthorized"
@@ -110,15 +97,10 @@ getInfo(req, res) {
         return res.status(200).send({
             message: { status: true, reason: "정보 조회 성공", user: user }
         });
-    }).catch(err => {
-        return res.status(500).send({
-            message: err.message
-        });
-    });
-},
-//Update Info(PUT)
-updateInfo(req, res) {
-    models.User.findByPk(req.token.userId).then(user => {
+    },
+    //Update Info(PUT)
+    async updateInfo(req, res) {
+        let user = raw2str(await models.User.findByPk(req.token.userId));
         if (req.body.Nickname !== undefined && req.body.Nickname !== "") {
             user.Nickname = req.body.Nickname;
         }
@@ -126,33 +108,22 @@ updateInfo(req, res) {
             user.PhoneNum = req.body.PhoneNum;
         }
         if (req.file !== undefined) {
-            require("../../util/file")(image.buffer, image.originalname)
-                .then(image_result => {
-                    if (image_result.result == false) {
-                        return res.status(500).send({
-                            message: { status: false, reason: "이미지 업로드 실패" }
-                        });
-                    }
-                }).catch(err => {
-                    return res.status(500).send({
-                        message: err.message
-                    });
+            let image_result = await require("../../util/file")(image.buffer, image.originalname);
+            if (image_result.result == false) {
+                return res.status(500).send({
+                    message: { status: false, reason: "이미지 업로드 실패" }
                 });
+            }
             user.ProfileImage = image_result.fileName;
         }
-        user.save();
-    }).catch(err => {
-        return res.status(500).send({
-            message: err.message
-        });
-    });
-},
-//Update Token(HEAD)
-updateToken(req, res) {
-    let AccessToken = token.generateAccessToken(req.token.userId);
-    let RefreshToken = token.generateRefreshToken(req.token.userId);
-    res.set('x-access-token', AccessToken);
-    res.set('x-refresh-token', RefreshToken);
-    return res.sendStatus(200);
-}
+        await user.save();
+    },
+    //Update Token(HEAD)
+    updateToken(req, res) {
+        let AccessToken = token.generateAccessToken(req.token.userId);
+        let RefreshToken = token.generateRefreshToken(req.token.userId);
+        res.set('x-access-token', AccessToken);
+        res.set('x-refresh-token', RefreshToken);
+        return res.sendStatus(200);
+    }
 }

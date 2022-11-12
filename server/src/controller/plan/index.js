@@ -5,24 +5,28 @@ const { raw2str } = require("../../util/rawtostr")
 
 module.exports = {
     //Add Memo(PUT)
-    addMemo(req, res) {
+    async addMemo(req, res) {
         const { PlanId } = req.params;
         const { Content } = req.body;
         const { userId } = req.token;
-        models.Plan.findByPk(PlanId).then(plan => {
-            models.PlanDetail.create({
-                PlanId: PlanId
-            }).then(planDetail => {
-                models.PlanMemo.create({
-                    PlanDetailId: planDetail.PlanDetailId,
-                    Content: Content
-                }).then(planMemo => {
-                    res.status(200).json({
-                        planMemo
-                    })
-                })
-            })
+        let plan = await models.Plan.findByPk(PlanId);
+        if (plan === null) {
+            return res.status(404).send({
+                message: "Not Found"
+            });
+        }
+        let planDetail = await models.PlanDetail.create({
+            PlanId: PlanId
+        });
+
+        let planMemo = await models.PlanMemo.create({
+            PlanDetailId: planDetail.PlanDetailId,
+            Content: Content
         })
+
+        res.status(200).json({
+            planMemo
+        });
     },
     //Create Plan(PUT)
     async createPlan(req, res) {
@@ -46,35 +50,30 @@ module.exports = {
         return res.status(200).send({ status: true, reason: "일정 생성 성공", PlanId: plan.PlanId });
     },
     //Delete Plan(DELETE)
-    deletePlan(req, res) {
+    async deletePlan(req, res) {
         if (req.body.PlanId === undefined) {
             return res.status(400).send({
                 message: "Bad Request"
             });
         }
-        models.Plan.findOne({
+        let plan = await models.Plan.findOne({
             where: {
                 PlanId: req.body.PlanId
             }
-        }).then(plan => {
-            if (plan === null) {
-                return res.status(404).send({
-                    message: "Not Found"
-                });
-            }
-            if (plan.OwnerId !== req.token.userId) {
-                return res.status(403).send({
-                    message: "Forbidden"
-                });
-            }
-            plan.destroy();
-            return res.status(200).send({
-                message: { status: true, reason: "일정 삭제 성공" },
+        });
+        if (plan === null) {
+            return res.status(404).send({
+                message: "Not Found"
             });
-        }).catch(err => {
-            return res.status(500).send({
-                message: err.message
+        }
+        if (plan.OwnerId !== req.token.userId) {
+            return res.status(403).send({
+                message: "Forbidden"
             });
+        }
+        let result = await plan.destroy();
+        return res.status(200).send({
+            message: { status: true, reason: "일정 삭제 성공" },
         });
     },
     //Get Plan(GET)
@@ -115,7 +114,7 @@ module.exports = {
         planDetails = planDetails.sort((a, b) => {
             return a.OrderIndex - b.OrderIndex;
         });
-        
+
         var result = new Object();
         result.Plan = plan;
         result.PlanParticipants = planParticipants;
@@ -126,8 +125,8 @@ module.exports = {
         });
     },
     //Get Plan List(GET)
-    getPlanList(req, res) {
-        models.User.findAll({
+    async getPlanList(req, res) {
+        let plans = await models.User.findAll({
             attributes: ["UserId"],
             where: {
                 UserId: req.token.userId
@@ -136,14 +135,9 @@ module.exports = {
                 { model: models.Plan, attributes: ["PlanId", "StartDate", "EndDate", "Name", "Region"] },
                 { model: models.PlanParticipant, attributes: ["PlanId"], include: [{ model: models.Plan, attributes: ["PlanId", "StartDate", "EndDate", "Name", "Region"] }] }
             ]
-        }).then(plans => {
-            plans = raw2str(plans);
-            plans = plans.map(plan => plan.Plans).flat().concat(plans.map(plan => plan.PlanParticipants).flat().map(participant => participant.Plan));
-            return res.status(200).send(plans);
-        }).catch(err => {
-            return res.status(500).send({
-                message: err.message
-            });
         });
+        plans = raw2str(plans);
+        plans = plans.map(plan => plan.Plans).flat().concat(plans.map(plan => plan.PlanParticipants).flat().map(participant => participant.Plan));
+        return res.status(200).send(plans);
     }
 }
