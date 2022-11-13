@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.witt.domain.model.plan.GetPlanListModel
 import com.example.witt.domain.model.plan.GetPlanModel
 import com.example.witt.domain.repository.PlanRepository
+import com.example.witt.presentation.ui.UiEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -36,9 +37,5 @@ class HomeViewModel @Inject constructor(
                 _homeEvent.emit(UiEvent.Failure("일정을 불러오는데 실패하였습니다."))
             }
         }
-    }
-    sealed class UiEvent<out T> {
-        data class Success<T>(val data: T) : UiEvent<T>()
-        data class Failure(val message: String?) : UiEvent<Nothing>()
     }
 }
