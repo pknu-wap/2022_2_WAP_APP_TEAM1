@@ -31,7 +31,7 @@ module.exports = function (sequelize, DataTypes) {
 
     PlanMemo.associate = function (models) {
         PlanMemo.belongsTo(models.PlanDetail, { foreignKey: 'PlanDetailId', targetKey: 'PlanDetailId' });
-        PlanMemo.belongsTo(models.Place, { foreignKey: 'PlaceId', targetKey: 'PlaceId' });
+        PlanMemo.belongsTo(models.PlanPlace, { foreignKey: 'PlaceId', targetKey: 'PlaceId' });
     };
     return PlanMemo;
 };

@@ -47,26 +47,17 @@ module.exports = (sequelize, DataTypes) => {
         }
     });
     Plan.isMemberOf = async function(models, planId, userId) {
-        Plan.findOne({
+        let plan = raw2str(await Plan.findByPk(planId));
+        if (plan.OwnerId === userId) {
+            return true;
+        }
+        let planParticipant = raw2str(await models.PlanParticipant.findOne({
             where: {
-                PlanId: planId
-            },
-            include: [{
-                model: models.PlanParticipant
-            }]
-        }).then(plan => {
-            if (plan) {
-                let isMember = plan.OwnerId === userId;
-                plan.PlanParticipants.forEach(participant => {
-                    if (participant.UserId === userId) {
-                        isMember = true;
-                    }
-                });
-                return isMember;
-            } else {
-                return false;
+                PlanId: planId,
+                UserId: userId
             }
-        });
+        }));
+        return planParticipant !== null;   
     };
     Plan.associate = function (models) {
         Plan.hasMany(models.PlanParticipant, { foreignKey: 'PlanId', sourceKey: 'PlanId' });

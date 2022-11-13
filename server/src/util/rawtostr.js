@@ -25,14 +25,6 @@ const raw2str = (sql) => {
     if (sql instanceof Buffer) {
         return sql.toString('hex').toUpperCase();
     }
-    // SQL Query Check
-    for (var i = 0; i < sql.length; i++) {
-        for (var prop in sql[i]) {
-            if (sql[i][prop] instanceof Buffer) {
-                sql[i][prop] = sql[i][prop].toString('hex').toUpperCase();
-            }
-        }
-    }
     // ORM Check
     if (sql instanceof Model) {
         iterateModel(sql);
