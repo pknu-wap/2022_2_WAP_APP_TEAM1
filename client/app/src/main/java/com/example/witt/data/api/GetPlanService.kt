@@ -7,11 +7,11 @@ import retrofit2.http.Path
 
 interface GetPlanService {
 
-    @GET("/api/plan")
+    @GET("/api/trip")
     suspend fun getPlanList(
     ): List<GetPlanListResponse>
 
-    @GET("/api/plan/{planId}")
+    @GET("/api/trip/{planId}")
     suspend fun getPlan(
         @Path("planId") planId: String
     ): GetPlanResponse

@@ -7,7 +7,7 @@ import retrofit2.http.PUT
 
 interface MakePlanService {
 
-    @PUT("/api/plan")
+    @PUT("/api/trip")
     suspend fun makePlan(
         @Body request: MakePlanRequest
     ):MakePlanResponse
