@@ -26,7 +26,7 @@ module.exports = {
             if (user == null) {
                 return res.send({ status: false, reason: "아이디 또는 비밀번호가 틀렸습니다." });
             }
-            let isProfileExists = (user.Nickname == null || user.Nickname == "") ? false : true;
+            let isProfileExists = (!(user.Nickname == null || user.Nickname == ""));
             let AccessToken = token.generateAccessToken(user.UserId);
             let RefreshToken = token.generateRefreshToken(user.UserId);
             return res.send({ status: true, reason: "로그인 성공", AccessToken: AccessToken, RefreshToken: RefreshToken, isProfileExists: isProfileExists });
@@ -39,7 +39,7 @@ module.exports = {
                 Username: Username
             }
         }));
-        let isProfileExists = (user.Nickname == null || user.Nickname == "") ? false : true;
+        let isProfileExists = (!(user.Nickname == null || user.Nickname == ""));
         let AccessToken = token.generateAccessToken(user.UserId);
         let RefreshToken = token.generateRefreshToken(user.UserId);
         return res.send({ status: true, reason: "로그인 성공", AccessToken: AccessToken, RefreshToken: RefreshToken, isProfileExists: isProfileExists });
@@ -92,16 +92,21 @@ module.exports = {
         if (PhoneNum != undefined && PhoneNum != "") {
             user.PhoneNum = PhoneNum;
         }
-        if (file != undefined) {
-            let image_result = await require("../../util/file")(image.buffer, image.originalname);
-            if (image_result.result == false) {
-                return res.status(500).send({status: false, reason: "이미지 업로드 실패" });
+        let transaction = await models.sequelize.transaction();
+        try {
+            if (file != undefined) {
+                let image_result = await require("../../util/file")(file.buffer, file.originalname);
+                if (image_result.result == false) {
+                    return res.status(500).send({status: false, reason: "이미지 업로드 실패"});
+                }
+                user.ProfileImage = image_result.fileName;
             }
-            user.ProfileImage = image_result.fileName;
+            await user.save();
+            await transaction.commit();
+            return res.send({status: true, reason: "정보 수정 성공"});
+        } catch (err) {
+            await transaction.rollback();
         }
-        let result = await user.save();
-        console.log(result);
-        return res.send({ status: true, reason: "정보 수정 성공" });
     },
     //Update Token(HEAD)
     updateToken(req, res) {
