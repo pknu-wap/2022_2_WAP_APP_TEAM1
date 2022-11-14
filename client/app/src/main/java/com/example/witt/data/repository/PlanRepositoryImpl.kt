@@ -7,7 +7,7 @@ import com.example.witt.data.source.remote.plan.get_plan.GetPlanDataSource
 import com.example.witt.data.source.remote.plan.get_plan.GetPlanListDataSource
 import com.example.witt.data.source.remote.plan.make_plan.MakePlanDataSource
 import com.example.witt.domain.model.plan.get_plan.GetPlanListModel
-import com.example.witt.domain.model.plan.GetPlanModel
+import com.example.witt.domain.model.plan.get_plan.GetPlanModel
 import com.example.witt.domain.model.plan.make_plan.MakePlanModel
 import com.example.witt.domain.model.plan.make_plan.MakePlanResponseModel
 import com.example.witt.domain.repository.PlanRepository

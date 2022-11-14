@@ -1,8 +1,8 @@
 package com.example.witt.data.model.plan.get_plan
 
-import com.example.witt.domain.model.plan.DetailPlanModel
-import com.example.witt.domain.model.plan.GetPlanModel
-import com.example.witt.domain.model.plan.PlanMemoModel
+import com.example.witt.domain.model.plan.get_plan.DetailPlanModel
+import com.example.witt.domain.model.plan.get_plan.GetPlanModel
+import com.example.witt.domain.model.plan.get_plan.PlanMemoModel
 
 data class GetPlanResponse (
     val message: String,
