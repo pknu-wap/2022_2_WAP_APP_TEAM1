@@ -6,12 +6,14 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.witt.databinding.ItemHomePlanBinding
-import com.example.witt.domain.model.plan.GetPlanListModel
+import com.example.witt.domain.model.plan.PlanStateModel
+import com.example.witt.domain.model.plan.get_plan.GetPlanListModel
+import com.example.witt.domain.model.plan.get_plan.toPlanStateModel
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 class HomePlanAdapter(
-    val onPlanCardClick : (GetPlanListModel) -> Unit
+    val onPlanCardClick : (PlanStateModel) -> Unit
 ) : ListAdapter<GetPlanListModel, HomePlanAdapter.HomePlanAdapter>(diffutil){
 
     companion object{
@@ -37,20 +39,10 @@ class HomePlanAdapter(
     inner class HomePlanAdapter(private val binding: ItemHomePlanBinding)
         : RecyclerView.ViewHolder(binding.root){
         fun bind(item: GetPlanListModel){
-            binding.homePlanDestinationTextView.text = item.Region
-            binding.homePlanNameTextView.text = item.Name
-            binding.homePlanDateTextView.text = localDateToString(item.StartDate, item.EndDate)
+            binding.item = item.toPlanStateModel()
             binding.homePlanCardView.setOnClickListener{
-                onPlanCardClick(item)
+                onPlanCardClick(item.toPlanStateModel())
             }
         }
-    }
-
-    //LocalDateTime -> String
-    private fun localDateToString(startDate: LocalDateTime, endDate: LocalDateTime): String{
-        val startString = startDate.format(DateTimeFormatter.ofPattern("yyyy.MM.dd"))
-        val endString = endDate.format(DateTimeFormatter.ofPattern("MM.dd"))
-
-        return "$startString - $endString"
     }
 }
