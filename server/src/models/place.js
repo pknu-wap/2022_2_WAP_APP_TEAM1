@@ -55,8 +55,8 @@ module.exports = function (sequelize, DataTypes) {
     });
 
     Place.associate = function (models) {
-        Place.hasMany(models.PlanPlace, { foreignKey: 'PlaceId', sourceKey: 'PlaceId' });
-        Place.belongsTo(models.Region, { foreignKey: 'AdministrationCode', targetKey: 'AdministrationCode' });
+     //   Place.hasMany(models.PlanPlace, { foreignKey: 'PlaceId', sourceKey: 'PlaceId' });
+    //    Place.belongsTo(models.Region, { foreignKey: 'AdministrationCode', targetKey: 'AdministrationCode' });
     };
     return Place;
 };

@@ -3,7 +3,7 @@ const router = require('express').Router()
 const user = require('./user')
 router.use('/user', user)   
 
-const plan = require('./plan')
-router.use('/plan', plan)
+const trip = require('./trip')
+router.use('/trip', trip)
 
 module.exports = router

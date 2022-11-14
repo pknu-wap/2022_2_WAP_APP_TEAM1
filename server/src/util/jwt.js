@@ -2,10 +2,10 @@ const jwt = require("jsonwebtoken");
 
 
 function generateAccessToken(userId) {
-    return jwt.sign({ userId }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "3d" });
+    return jwt.sign({ UserId: userId }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "3d" });
 };
 function generateRefreshToken(userId) {
-    return jwt.sign({ userId }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: "7d" });
+    return jwt.sign({ UserId: userId }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: "7d" });
 }
 function authenticateAccessToken(req, res, next) {
     const authHeader = req.headers["authorization"];
@@ -13,6 +13,7 @@ function authenticateAccessToken(req, res, next) {
     if (token == null) return res.sendStatus(401);
     jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, data) => {
         if (err) return res.sendStatus(403);
+        console.log(data);
         req.token = data;
         next();
     });

@@ -1,37 +1,34 @@
-const {raw2str} = require('../util/rawtostr');
-module.exports = (sequelize, DataTypes) => {
+'use strict';
+const { raw2str } = require('../util/rawtostr');
+module.exports = function (sequelize, DataTypes) {
     const Plan = sequelize.define('Plan', {
-        PlanId: {
+        TripId:
+        {
+            field: 'TRIP_ID',
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            primaryKey: true
+        },
+        PlanId:
+        {
             field: 'PLAN_ID',
-            type: DataTypes.STRING(32),
+            type: DataTypes.INTEGER,
             primaryKey: true,
             allowNull: false,
-            defaultValue: '',
+            defaultValue: 0
         },
-        OwnerId: {
-            field: 'OWNER_ID',
-            type: DataTypes.STRING(32),
+        Day:
+        {
+            field: 'DAY',
+            type: DataTypes.INTEGER,
+            allowNull: false
+        },
+        OrderIndex:
+        {
+            field: 'ORDER_INDEX',
+            type: DataTypes.INTEGER,
             allowNull: false,
-        },
-        StartDate: {
-            field: 'START_DATE',
-            type: DataTypes.DATE,
-            allowNull: false
-        },
-        EndDate: {
-            field: 'END_DATE',
-            type: DataTypes.DATE,
-            allowNull: false
-        },
-        Name: {
-            field: 'NAME',
-            type: DataTypes.STRING(20),
-            allowNull: false
-        },
-        Region: {
-            field: 'REGION',
-            type: DataTypes.STRING(20),
-            allowNull: false
+            defaultValue: 0
         }
     }, {
         underscored: true,
@@ -39,30 +36,18 @@ module.exports = (sequelize, DataTypes) => {
         tableName: 'DB_PLAN',
         hooks: {
             beforeCreate: async (plan, options) => {
-                const result = await sequelize.query('SELECT SYS_GUID() AS PLAN_ID FROM DUAL', {
-                    type: sequelize.QueryTypes.SELECT
-                });
+                let [result, metadata] = await sequelize.query(`SELECT MAX(ORDER_INDEX) AS MAX_ORDER_INDEX FROM DB_PLAN WHERE TRIP_ID = ${plan.TripId}`);
+                plan.OrderIndex = result[0].MAX_ORDER_INDEX + 1;
+                [result, metadata] = await sequelize.query('SELECT SEQ_PLAN.NEXTVAL AS PLAN_ID FROM DUAL');
                 plan.PlanId = raw2str(result)[0].PLAN_ID;
             }
         }
     });
-    Plan.isMemberOf = async function(models, planId, userId) {
-        let plan = raw2str(await Plan.findByPk(planId));
-        if (plan.OwnerId === userId) {
-            return true;
-        }
-        let planParticipant = raw2str(await models.PlanParticipant.findOne({
-            where: {
-                PlanId: planId,
-                UserId: userId
-            }
-        }));
-        return planParticipant !== null;   
-    };
+
     Plan.associate = function (models) {
-        Plan.hasMany(models.PlanParticipant, { foreignKey: 'PlanId', sourceKey: 'PlanId' });
-        Plan.hasMany(models.PlanDetail, { foreignKey: 'PlanId', sourceKey: 'PlanId' });
-        Plan.belongsTo(models.User, { foreignKey: 'OwnerId', targetKey: 'UserId' });
-    };
+        Plan.belongsTo(models.Trip, { foreignKey: 'TripId', targetKey: 'TripId' });
+        Plan.hasMany(models.PlanMemo, { foreignKey: 'PlanId', sourceKey: 'PlanId' });
+        Plan.hasMany(models.PlanMemo, { foreignKey: 'TripId', sourceKey: 'TripId' });
+    }; 
     return Plan;
-}
+};
