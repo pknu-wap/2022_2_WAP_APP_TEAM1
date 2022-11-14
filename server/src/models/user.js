@@ -52,8 +52,8 @@ module.exports = function (sequelize, DataTypes) {
         }
     });
     User.associate = function (models) {
-        models.User.hasMany(models.PlanParticipant, { foreignKey: 'UserId', sourceKey: 'UserId' });
-        models.User.hasMany(models.Plan, { foreignKey: 'OwnerId', sourceKey: 'UserId' });
+        models.User.hasMany(models.TripParticipant, { foreignKey: 'UserId', sourceKey: 'UserId' });
+        models.User.hasMany(models.Trip, { foreignKey: 'OwnerId', sourceKey: 'UserId' });
         models.User.belongsTo(models.FileInfo, { foreignKey: 'ProfileImage', targetKey: 'FileName' });
     };
     return User;

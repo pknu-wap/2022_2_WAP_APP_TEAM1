@@ -24,8 +24,8 @@ module.exports = function (sequelize, DataTypes) {
     });
 
     PlanPlace.associate = function (models) {
-        PlanPlace.hasOne(models.PlanDetail, { foreignKey: 'PlanDetailId', targetKey: 'PlanDetailId' });
-        PlanPlace.belongsTo(models.Place, { foreignKey: 'PlaceId', targetKey: 'PlaceId' });
+        //PlanPlace.hasOne(models.PlanDetail, { foreignKey: 'PlanDetailId', targetKey: 'PlanDetailId' });
+        //PlanPlace.belongsTo(models.Place, { foreignKey: 'PlaceId', targetKey: 'PlaceId' });
     };
     return PlanPlace;
 }
