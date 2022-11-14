@@ -1,4 +1,4 @@
-package com.example.witt.domain.model.plan
+package com.example.witt.domain.model.plan.make_plan
 
 data class MakePlanModel (
     val StartDate: String,

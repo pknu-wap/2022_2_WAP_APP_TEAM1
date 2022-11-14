@@ -14,7 +14,7 @@ import com.example.witt.domain.model.auth.SocialSignInModel
 import com.example.witt.domain.model.profile.remote.ProfileUploadModel
 import com.example.witt.domain.model.user.DuplicateEmailModel
 import com.example.witt.domain.model.auth.TokenModel
-import com.example.witt.domain.model.plan.MakePlanResponseModel
+import com.example.witt.domain.model.plan.make_plan.MakePlanResponseModel
 import com.example.witt.domain.model.user.UserProfileModel
 
 fun SignUpResponse.toSignUpModel() =  SignUpModel(
