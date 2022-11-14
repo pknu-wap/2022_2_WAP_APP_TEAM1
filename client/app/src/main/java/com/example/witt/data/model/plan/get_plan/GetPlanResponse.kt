@@ -7,29 +7,37 @@ import com.example.witt.domain.model.plan.get_plan.PlanMemoModel
 data class GetPlanResponse (
     val message: String,
     val reason: String,
-    val planDetail: List<DetailPlanResponse>
+    val plans: List<DetailPlanResponse>
 )
+
 data class DetailPlanResponse(
-    val PlanDetailId : String,
-    val OrderIndex: String,
-    val PlanMemos: List<PlanMemoResponse>
+    val PlanId : Int,
+    val Day: Int,
+    val OrderIndex: Int,
+    val Memo: List<PlanMemoResponse>
 )
+
 data class PlanMemoResponse(
-    val Content : String
+    val Content : String,
+    val Created_At: String,
+    val Updated_At: String
 )
 
 fun GetPlanResponse.toGetPlanModel() = GetPlanModel(
     message = message,
     reason = reason,
-    planDetail = planDetail.map{ it.toDetailPlanModel() }
+    plans = plans.map{ it.toDetailPlanModel() }
 )
 
 fun DetailPlanResponse.toDetailPlanModel() = DetailPlanModel(
-    PlanDetailId = PlanDetailId,
+    PlanId = PlanId,
+    Day = Day,
     OrderIndex = OrderIndex,
-    PlanMemos = PlanMemos.map { it.toPlanMemoModel() }
+    Memo = Memo.map { it.toPlanMemoModel() }
 )
 
 fun PlanMemoResponse.toPlanMemoModel() = PlanMemoModel(
-    Content = Content
+    Content = Content,
+    Created_At = Created_At,
+    Updated_At = Updated_At
 )
