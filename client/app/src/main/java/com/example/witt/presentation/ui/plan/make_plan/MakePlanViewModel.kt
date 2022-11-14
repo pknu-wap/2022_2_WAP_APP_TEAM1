@@ -29,7 +29,7 @@ class MakePlanViewModel @Inject constructor(
     val inputPlanName: MutableLiveData<String> = MutableLiveData()
 
     fun onButtonEvent(destination: String) {
-        _planDestination.value = destination + "로 목적지 설정"
+        _planDestination.value = destination
     }
 
     fun submitPlan(startDate: String, endDate: String){
@@ -44,7 +44,7 @@ class MakePlanViewModel @Inject constructor(
             ).mapCatching { response ->
                 if(response.status){
                     _makePlanEvent.emit(UiEvent.Success(PlanStateModel(
-                        PlanId = response.PlanId,
+                        TripId = response.TripId,
                         StartDate = startDate,
                         EndDate = endDate,
                         Name = requireNotNull(inputPlanName.value),
