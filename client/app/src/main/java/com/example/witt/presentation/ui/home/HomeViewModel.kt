@@ -18,8 +18,8 @@ class HomeViewModel @Inject constructor(
     private val planRepository: PlanRepository
 ): ViewModel() {
 
-    private val _planList = MutableStateFlow<List<GetPlanListModel>>(listOf())
-    val planList: StateFlow<List<GetPlanListModel>> get() = _planList
+    private val _planList = MutableStateFlow(GetPlanListModel(false, "", listOf()))
+    val planList: StateFlow<GetPlanListModel> get() = _planList
 
     private val _homeEvent = MutableSharedFlow<UiEvent<Unit>>()
     val homeEvent: SharedFlow<UiEvent<Unit>> get() = _homeEvent

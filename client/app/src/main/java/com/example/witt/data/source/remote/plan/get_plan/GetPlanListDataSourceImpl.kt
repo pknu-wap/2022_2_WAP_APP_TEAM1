@@ -11,7 +11,7 @@ class GetPlanListDataSourceImpl @Inject constructor(
     private val getPlanService: GetPlanService,
     @IoDispatcher private val coroutineDispatcher: CoroutineDispatcher
 ): GetPlanListDataSource {
-    override suspend fun getPlanList(): Result<List<GetPlanListResponse>>
+    override suspend fun getPlanList(): Result<GetPlanListResponse>
     = withContext(coroutineDispatcher){
         runCatching {
             getPlanService.getPlanList()
