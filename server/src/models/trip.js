@@ -25,12 +25,12 @@ module.exports = (sequelize, DataTypes) => {
         },
         Name: {
             field: 'NAME',
-            type: DataTypes.STRING(20),
+            type: DataTypes.STRING(200),
             allowNull: false
         },
         Region: {
             field: 'REGION',
-            type: DataTypes.STRING(20),
+            type: DataTypes.STRING(200),
             allowNull: false
         }
     }, {

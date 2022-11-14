@@ -9,5 +9,11 @@ const token = require('../../../util/jwt')
 planRouter.use(token.authenticateAccessToken);
 planRouter.use(tripMiddleware);
 
-planRouter.put("/days/:Day/memo", planService.addMemo);
+function wrapAsync(fn) {
+    return function (req, res, next) {
+        fn(req, res, next).catch(next);
+    };
+}
+
+planRouter.put("/days/:Day/memo", wrapAsync(planService.addMemo));
 module.exports = planRouter;

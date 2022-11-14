@@ -7,7 +7,10 @@ const models = require('./models');
 
 app.use(express.json()); //application/json 타입 사용 등록
 app.use(express.urlencoded({ extended: true })); //application/x-www-form-urlencoded 타입 사용 등록
-
+app.use(function (error, req, res, next) {
+    console.error(error);
+    return res.status(500).send('Internal Server Error');
+    });
 app.use("/api", api);
 
 app.listen(port, async () => {
