@@ -11,8 +11,8 @@ module.exports = {
         if (StartDate === undefined || EndDate === undefined || Name === undefined || Region === undefined) {
             return res.send({ status: false, reason: "Bad Request" });
         }
+        let transaction = await models.sequelize.transaction();
         try {
-            let transaction = await models.sequelize.transaction();
             let trip = raw2str(await models.Trip.create({
                 OwnerId: UserId,
                 StartDate: StartDate,
