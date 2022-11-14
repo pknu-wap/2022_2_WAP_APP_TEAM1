@@ -8,7 +8,7 @@ module.exports = {
         const { UserId } = req.token;
         const { Name, StartDate, EndDate, Region } = req.body;
 
-        if (StartDate == undefined || EndDate == undefined || Name == undefined || Region == undefined) {
+        if (StartDate === undefined || EndDate === undefined || Name === undefined || Region === undefined) {
             return res.send({ status: false, reason: "Bad Request" });
         }
         try {
