@@ -1,6 +1,7 @@
 package com.example.witt.data.repository
 
 import com.example.witt.data.mapper.toMakePlanResponseModel
+import com.example.witt.data.model.plan.get_plan.toGetPlanListModel
 import com.example.witt.data.model.plan.get_plan.toGetPlanModel
 import com.example.witt.data.model.plan.make_plan.request.MakePlanRequest
 import com.example.witt.data.source.remote.plan.get_plan.GetPlanDataSource
@@ -31,15 +32,13 @@ class PlanRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getPlanList(): Result<List<GetPlanListModel>> {
+    override suspend fun getPlanList(): Result<GetPlanListModel> {
         return getPlanListDataSource.getPlanList().mapCatching{ response ->
-            response.map{
-                it.toGetPlanModel()
-            }
+            response.toGetPlanListModel()
         }
     }
 
-    override suspend fun getPlan(planId: String): Result<GetPlanModel> {
+    override suspend fun getPlan(planId: Int): Result<GetPlanModel> {
         return getPlanDataSource.getPlan(planId).mapCatching { response ->
             response.toGetPlanModel()
         }

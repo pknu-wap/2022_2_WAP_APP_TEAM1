@@ -9,8 +9,8 @@ interface PlanRepository {
 
     suspend fun makePlan(makePlanModel: MakePlanModel): Result<MakePlanResponseModel>
 
-    suspend fun getPlanList(): Result<List<GetPlanListModel>>
+    suspend fun getPlanList(): Result<GetPlanListModel>
 
-    suspend fun getPlan(planId: String): Result<GetPlanModel>
+    suspend fun getPlan(planId: Int): Result<GetPlanModel>
 
 }

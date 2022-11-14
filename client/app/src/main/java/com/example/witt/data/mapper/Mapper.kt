@@ -52,5 +52,5 @@ fun SocialSignInResponse.toSocialSignInModel() = SocialSignInModel(
 fun MakePlanResponse.toMakePlanResponseModel() = MakePlanResponseModel(
     status = status,
     reason = reason,
-    PlanId = PlanId
+    TripId = TripId
 )

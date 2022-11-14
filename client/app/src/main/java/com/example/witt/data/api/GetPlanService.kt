@@ -9,11 +9,11 @@ interface GetPlanService {
 
     @GET("/api/trip")
     suspend fun getPlanList(
-    ): List<GetPlanListResponse>
+    ): GetPlanListResponse
 
     @GET("/api/trip/{planId}")
     suspend fun getPlan(
-        @Path("planId") planId: String
+        @Path("planId") planId: Int
     ): GetPlanResponse
 
 }
