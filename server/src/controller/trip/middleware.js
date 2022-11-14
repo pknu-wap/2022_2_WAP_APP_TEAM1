@@ -1,4 +1,5 @@
 const models = require("../../models")
+const { raw2str } = require("../../util/rawtostr")
 
 async function tripMiddleware(req, res, next) {
     const { UserId } = req.token;
