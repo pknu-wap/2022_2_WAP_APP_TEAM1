@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.witt.R
@@ -23,20 +24,23 @@ import com.kakao.sdk.common.util.KakaoCustomTabsClient
 import com.kakao.sdk.share.ShareClient
 import com.kakao.sdk.share.WebSharerClient
 import com.kakao.sdk.template.model.*
+import dagger.hilt.android.AndroidEntryPoint
 import net.daum.mf.map.api.MapView
 
-
+@AndroidEntryPoint
 class DrawUpPlanFragment  : BaseFragment<FragmentDrawUpPlanBinding>(R.layout.fragment_draw_up_plan) {
 
     private lateinit var timePlanAdapter: TimePlanAdapter
     private lateinit var datePlanAdapter: DatePlanAdapter
-    private val viewModel by activityViewModels<PlanViewModel>()
+
+    private val planViewModel by activityViewModels<PlanViewModel>()
+    private val viewModel : DrawUpViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.viewModel = viewModel
 
         //initMap()
+        observeData()
         initAdapter()
         initButton()
     }
@@ -70,7 +74,6 @@ class DrawUpPlanFragment  : BaseFragment<FragmentDrawUpPlanBinding>(R.layout.fra
 
     }
 
-
     private fun initMap() {
         val mapView by lazy { MapView(requireActivity()) }
         binding.mapView.addView(mapView)
@@ -86,6 +89,15 @@ class DrawUpPlanFragment  : BaseFragment<FragmentDrawUpPlanBinding>(R.layout.fra
             MapPOIItem.MarkerType.RedPin // 마커를 클릭했을때, 기본으로 제공하는 RedPin 마커 모양.
         mapView.addPOIItem(marker)
 
+    }
+
+    private fun observeData(){
+        binding.viewModel = planViewModel
+
+        //resume, start, modify data
+        planViewModel.planState.observe(viewLifecycleOwner){
+            viewModel.getDetailPlan(it.TripId)
+        }
     }
 
     private fun showMemoDialog(memo: String?) {
