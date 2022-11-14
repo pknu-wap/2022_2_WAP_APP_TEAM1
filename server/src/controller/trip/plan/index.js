@@ -38,7 +38,7 @@ module.exports = {
                 PlanId: plan.PlanId,
                 Content: Content
             });
-
+            
             res.status(200).json({
                 planMemo
             });

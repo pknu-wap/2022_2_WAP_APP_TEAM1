@@ -7,20 +7,30 @@ module.exports = {
     async createTrip(req, res) {
         const { UserId } = req.token;
         const { Name, StartDate, EndDate, Region } = req.body;
+
         if (StartDate == undefined || EndDate == undefined || Name == undefined || Region == undefined) {
             return res.send({ status: false, reason: "Bad Request" });
         }
-        let trip = raw2str(await models.Trip.create({
-            OwnerId: UserId,
-            StartDate: StartDate,
-            EndDate: EndDate,
-            Name: Name,
-            Region: Region
-        }));
-        if (trip == null) {
-            return res.send({ status: false, reason: "계획 생성 도중 오류가 발생했습니다." });
+        try {
+            let transaction = await models.sequelize.transaction();
+            let trip = raw2str(await models.Trip.create({
+                OwnerId: UserId,
+                StartDate: StartDate,
+                EndDate: EndDate,
+                Name: Name,
+                Region: Region
+            }));
+            if (trip == null) {
+                await transaction.rollback();
+                return res.send({ status: false, reason: "계획 생성 도중 오류가 발생했습니다." });
+            }
+            await transaction.commit();
+            return res.send({ status: true, reason: "일정 생성 성공", TripId: trip.TripId });
+        } catch (err) {
+            await transaction.rollback();
+            console.log('createTrip error : ', err);
+            res.status(500).send({ status: false, reason: "Internal Server Error" });
         }
-        return res.send({ status: true, reason: "일정 생성 성공", TripId: trip.TripId });
     },
     //Delete Trip(DELETE)
     async deleteTrip(req, res) {
@@ -60,7 +70,7 @@ module.exports = {
             raw: true
         });
         for (let i = 0; i < plans.length; i++) {
-            plans[i].PlanMemo = await models.PlanMemo.findAll({
+            plans[i].Memo = await models.PlanMemo.findOne({
                 where: {
                     TripId: trip.TripId,
                     PlanId: plans[i].PlanId
@@ -102,6 +112,6 @@ module.exports = {
         for (let i = 0; i < participatedInTrips.length; i++) {
             result.push(participatedInTrips[i].Trip);
         }
-        return res.status(200).send({status: true, reason: "일정 목록 조회 성공", result});
+        return res.status(200).send({ status: true, reason: "일정 목록 조회 성공", result });
     }
 }
