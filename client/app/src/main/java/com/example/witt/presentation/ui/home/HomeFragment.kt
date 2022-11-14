@@ -69,7 +69,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
 
         viewModel.planList.flowWithLifecycle(viewLifecycleOwner.lifecycle)
             .onEach {
-                homePlanAdapter.submitList(it)
+                homePlanAdapter.submitList(it.result)
             }.launchIn(viewLifecycleOwner.lifecycleScope)
 
     }

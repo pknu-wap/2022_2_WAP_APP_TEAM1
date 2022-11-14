@@ -8,21 +8,20 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.witt.databinding.ItemHomePlanBinding
 import com.example.witt.domain.model.plan.PlanStateModel
 import com.example.witt.domain.model.plan.get_plan.GetPlanListModel
+import com.example.witt.domain.model.plan.get_plan.GetPlanListResultModel
 import com.example.witt.domain.model.plan.get_plan.toPlanStateModel
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 
 class HomePlanAdapter(
     val onPlanCardClick : (PlanStateModel) -> Unit
-) : ListAdapter<GetPlanListModel, HomePlanAdapter.HomePlanAdapter>(diffutil){
+) : ListAdapter<GetPlanListResultModel, HomePlanAdapter.HomePlanAdapter>(diffutil){
 
     companion object{
-        val diffutil = object : DiffUtil.ItemCallback<GetPlanListModel>(){
-            override fun areItemsTheSame(oldItem: GetPlanListModel, newItem: GetPlanListModel): Boolean {
+        val diffutil = object : DiffUtil.ItemCallback<GetPlanListResultModel>(){
+            override fun areItemsTheSame(oldItem: GetPlanListResultModel, newItem: GetPlanListResultModel): Boolean {
                 return oldItem == newItem
             }
 
-            override fun areContentsTheSame(oldItem: GetPlanListModel, newItem: GetPlanListModel): Boolean {
+            override fun areContentsTheSame(oldItem: GetPlanListResultModel, newItem: GetPlanListResultModel): Boolean {
                 return oldItem == newItem
             }
         }
@@ -38,10 +37,13 @@ class HomePlanAdapter(
 
     inner class HomePlanAdapter(private val binding: ItemHomePlanBinding)
         : RecyclerView.ViewHolder(binding.root){
-        fun bind(item: GetPlanListModel){
+        fun bind(item: GetPlanListResultModel){
             binding.item = item.toPlanStateModel()
+
             binding.homePlanCardView.setOnClickListener{
-                onPlanCardClick(item.toPlanStateModel())
+                onPlanCardClick(
+                    item.toPlanStateModel()
+                )
             }
         }
     }
