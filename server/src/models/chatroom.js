@@ -3,9 +3,9 @@
 const {raw2str}=require('../util/rawtostr');
 module.exports=function(sequelize,DataTypes){
     const ChatRoom=sequelize.define('ChatRoom',{
-        PlanId:
+        TripId:
         {
-            field:'PLAN_ID',
+            field:'TRIP_ID',
             type:DataTypes.STRING(32),
             primaryKey:true,
             allowNull:false,
@@ -38,9 +38,9 @@ module.exports=function(sequelize,DataTypes){
         }
     });
     ChatRoom.associate=function(models){
-        ChatRoom.belongsTo(models.Plan,{
-            foreignKey:'PlanId',
-            targetKey:'PlanId'
+        ChatRoom.belongsTo(models.Trip,{
+            foreignKey:'TripId',
+            targetKey:'TripId'
         });
         ChatRoom.belongsTo(models.User,{
             foreignKey:'UserId',
