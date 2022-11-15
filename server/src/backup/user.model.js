@@ -53,6 +53,7 @@ class User {
             }
             /* 카카오,네이버 로그인 */
             else if (this.AccountType == 1 || this.AccountType == 2) {
+                //db.transaction
                 let query = raw2str(await db.query(`SELECT * FROM DB_USER WHERE USERNAME = '${this.Username}' and ACCOUNTTYPE BETWEEN 1 AND 2`, { type: QueryTypes.SELECT }));
                 if (query.length == 0) {
                     /* 계정이 없을 경우 회원가입 */
@@ -122,19 +123,17 @@ class User {
             }
             if (image != undefined) {
                 let image_result = await require("../../util/file")(image.buffer, image.originalname);
-                if (image_result.result)
-                {
+                if (image_result.result) {
                     this.ProfileImage = image_result.fileName;
                 }
-                else
-                {
+                else {
                     return { status: false, reason: "프로필 이미지를 업로드하는 도중 오류가 발생했습니다." };
                 }
             }
             const data = await db.query(`UPDATE DB_USER SET NICKNAME = '${this.Nickname}', PHONENUM = '${this.PhoneNum}', PROFILEIMAGE = '${this.ProfileImage}' WHERE USER_ID = '${this.UserId}'`, { type: QueryTypes.UPDATE });
             return (data.length == 0) ?
                 { status: false, reason: "프로필을 수정하는 도중 오류가 발생했습니다." } :
-                { status: true, reason: "프로필을 수정하는 데 성공하였습니다." };       
+                { status: true, reason: "프로필을 수정하는 데 성공하였습니다." };
         }
         catch (err) {
             console.log('user->editProfile 도중 오류 발생: ', err);

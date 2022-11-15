@@ -1,6 +1,6 @@
 "use strict";
 const User = require("./user.model")
-
+const token = require("../../util/jwt");
 const process = {
     /* NO NEED TOKEN */
     /*
@@ -51,6 +51,17 @@ const process = {
         req.body.UserId = req.token.userId;
         let user = new User(req.body);
         return res.send(await user.getInfo());
+    },
+    /*
+        Update Token(GET)
+            req.token.userId <= UserId
+    */
+    updateToken: async (req, res) => {
+        let AccessToken = token.generateAccessToken(req.token.userId);
+        let RefreshToken = token.generateRefreshToken(req.token.userId);
+        res.set('x-access-token', AccessToken);
+        res.set('x-refresh-token', RefreshToken);
+        return res.sendStatus(200);
     }
 }
 module.exports = process;
