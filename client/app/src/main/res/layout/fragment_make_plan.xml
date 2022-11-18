@@ -140,7 +140,7 @@
             app:layout_constraintTop_toBottomOf="@+id/name_plan_textView">
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/plan_id_editTextView"
-                android:text="@={viewModel.inputPlanId}"
+                android:text="@={viewModel.inputPlanName}"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 />

@@ -100,7 +100,7 @@ class SignInFragment : BaseFragment<FragmentSignInBinding>(R.layout.fragment_sig
         }
 
         binding.goToSignUpButton.setOnClickListener{
-            val direction = SignInFragmentDirections.actionSignInFragmentToSignUpFragment()
+            val direction = SignInFragmentDirections.actionSignInFragmentToPlanNav()
             findNavController().navigate(direction)
         }
     }
@@ -139,7 +139,7 @@ class SignInFragment : BaseFragment<FragmentSignInBinding>(R.layout.fragment_sig
             viewModel.signInEvents.collect { event ->
                 when(event){
                     is SignInViewModel.SignInUiEvent.Success ->{ //프로필 있는 상태에서 로그인 성공시 홈으로
-                        val direction = SignInFragmentDirections.actionSignInFragmentToHomeFragment()
+                        val direction = SignInFragmentDirections.actionSignInFragmentToPlanNav()
                         findNavController().navigate(direction)
                     }
                     is SignInViewModel.SignInUiEvent.Failure ->{ //실패시 Toast 메세지

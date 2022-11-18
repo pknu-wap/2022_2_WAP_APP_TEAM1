@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/plan_nav"
+    app:startDestination="@id/homeFragment">
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.witt.presentation.ui.home.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_makePlanFragment"
+            app:destination="@id/makePlanFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_drawUpPlanFragment"
+            app:destination="@id/drawUpPlanFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/makePlanFragment"
+        android:name="com.example.witt.presentation.ui.plan.make_plan.MakePlanFragment"
+        android:label="MakePlanFragment"
+        tools:layout="@layout/fragment_make_plan">
+        <argument
+            android:name="startDate"
+            app:argType="long" />
+        <argument
+            android:name="endDate"
+            app:argType="long" />
+        <action
+            android:id="@+id/action_makePlanFragment_to_drawUpPlanFragment"
+            app:destination="@id/drawUpPlanFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/drawUpPlanFragment"
+        android:name="com.example.witt.presentation.ui.plan.drawup_plan.DrawUpPlanFragment"
+        android:label="DrawUpPlanFragment"
+        tools:layout="@layout/fragment_draw_up_plan">
+        <action
+            android:id="@+id/action_drawUpPlanFragment_to_writeMemoFragment"
+            app:destination="@id/writeMemoFragment" />
+        <action
+            android:id="@+id/action_drawUpPlanFragment_to_mapSearchFragment"
+            app:destination="@id/mapSearchFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/writeMemoFragment"
+        android:name="com.example.witt.presentation.ui.plan.drawup_plan.memo_dialog.WriteMemoFragment"
+        android:label="WriteMemoFragment"
+        tools:layout="@layout/fragment_write_memo"
+        />
+    <fragment
+        android:id="@+id/mapSearchFragment"
+        android:name="com.example.witt.presentation.ui.plan.drawup_plan.MapSearchFragment"
+        android:label="fragment_map_search"
+        tools:layout="@layout/fragment_map_search" />
+
+</navigation>

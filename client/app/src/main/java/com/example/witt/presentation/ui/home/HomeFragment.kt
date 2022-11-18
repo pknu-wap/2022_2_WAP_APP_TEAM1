@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.core.util.Pair
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
@@ -12,7 +13,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.witt.R
 import com.example.witt.databinding.FragmentHomeBinding
 import com.example.witt.presentation.base.BaseFragment
+import com.example.witt.presentation.ui.UiEvent
 import com.example.witt.presentation.ui.home.adapter.HomePlanAdapter
+import com.example.witt.presentation.ui.plan.PlanViewModel
 import com.google.android.material.datepicker.MaterialDatePicker
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
@@ -35,6 +38,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
     }
 
     private val viewModel: HomeViewModel by viewModels()
+    private val planViewModel : PlanViewModel by activityViewModels()
 
     private lateinit var homePlanAdapter: HomePlanAdapter
 
@@ -56,8 +60,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
         viewModel.homeEvent.flowWithLifecycle(viewLifecycleOwner.lifecycle)
             .onEach {
                 when(it){
-                    is HomeViewModel.UiEvent.Success ->{}
-                    is HomeViewModel.UiEvent.Failure ->{
+                    is UiEvent.Success ->{}
+                    is UiEvent.Failure ->{
                         Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
                     }
                 }
@@ -65,7 +69,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
 
         viewModel.planList.flowWithLifecycle(viewLifecycleOwner.lifecycle)
             .onEach {
-                homePlanAdapter.submitList(it)
+                homePlanAdapter.submitList(it.result)
             }.launchIn(viewLifecycleOwner.lifecycleScope)
 
     }
@@ -73,6 +77,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
     private fun initAdapter(){
         homePlanAdapter = HomePlanAdapter(
             onPlanCardClick = {
+                planViewModel.setPlanState(it)
                 val direction =
                 HomeFragmentDirections.actionHomeFragmentToDrawUpPlanFragment()
                 findNavController().navigate(direction)
