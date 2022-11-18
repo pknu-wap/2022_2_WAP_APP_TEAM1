@@ -10,7 +10,7 @@ import kotlinx.coroutines.launch
 class PlanViewModel : ViewModel(){
 
     //dataBinding
-    private var _planState : MutableLiveData<PlanStateModel> = MutableLiveData()
+    private val _planState : MutableLiveData<PlanStateModel> = MutableLiveData()
     val planState : LiveData<PlanStateModel> get() = _planState
 
     fun setPlanState(planItem: PlanStateModel){
@@ -18,4 +18,5 @@ class PlanViewModel : ViewModel(){
             _planState.value = planItem
         }
     }
+
 }
