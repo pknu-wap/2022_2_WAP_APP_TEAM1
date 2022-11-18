@@ -124,6 +124,7 @@ class SignUpViewModel @Inject constructor(
     }
 
     //이메일 변경시 다시 체크해야됨
+    @Suppress("UNUSED_PARAMETER")
     fun onTextChanged(s: CharSequence, start :Int, before : Int, count: Int){
         duplicateCheckedState.value = false
     }

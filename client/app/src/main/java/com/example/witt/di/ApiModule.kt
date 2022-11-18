@@ -15,7 +15,6 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
-import retrofit2.create
 import javax.inject.Singleton
 
 @Module
@@ -48,7 +47,7 @@ object ApiModule {
     ): Retrofit {
         return Retrofit.Builder()
             .client(client)
-            .baseUrl(BuildConfig.apiUrl)
+            .baseUrl(BuildConfig.host_domain)
             .addConverterFactory(MoshiConverterFactory.create())
             .build()
     }
@@ -97,5 +96,17 @@ object ApiModule {
     fun provideSocialSignInService(
         retrofit: Retrofit
     ): SocialSignInService = retrofit.create(SocialSignInService::class.java)
+
+    @Provides
+    @Singleton
+    fun provideMakePlanService(
+        retrofit: Retrofit
+    ): MakePlanService = retrofit.create(MakePlanService::class.java)
+
+    @Provides
+    @Singleton
+    fun provideGetPlanListService(
+        retrofit: Retrofit
+    ): GetPlanService = retrofit.create(GetPlanService::class.java)
 
 }

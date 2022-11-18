@@ -4,6 +4,7 @@ import com.example.witt.data.model.auth.response.SignInResponse
 import com.example.witt.data.model.auth.response.SignUpResponse
 import com.example.witt.data.model.auth.response.SocialSignInResponse
 import com.example.witt.data.model.local.UserProfile
+import com.example.witt.data.model.plan.make_plan.response.MakePlanResponse
 import com.example.witt.data.model.profile.response.ProfileUploadResponse
 import com.example.witt.data.model.user.response.DuplicateEmailResponse
 import com.example.witt.data.model.user.response.TokenResponse
@@ -13,6 +14,7 @@ import com.example.witt.domain.model.auth.SocialSignInModel
 import com.example.witt.domain.model.profile.remote.ProfileUploadModel
 import com.example.witt.domain.model.user.DuplicateEmailModel
 import com.example.witt.domain.model.auth.TokenModel
+import com.example.witt.domain.model.plan.make_plan.MakePlanResponseModel
 import com.example.witt.domain.model.user.UserProfileModel
 
 fun SignUpResponse.toSignUpModel() =  SignUpModel(
@@ -45,4 +47,10 @@ fun SocialSignInResponse.toSocialSignInModel() = SocialSignInModel(
     status = status,
     reason = reason,
     isProfileExists = isProfileExists
+)
+
+fun MakePlanResponse.toMakePlanResponseModel() = MakePlanResponseModel(
+    status = status,
+    reason = reason,
+    TripId = TripId
 )

@@ -5,14 +5,21 @@ import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.witt.R
 import com.example.witt.databinding.FragmentDrawUpPlanBinding
 import com.example.witt.presentation.base.BaseFragment
-import com.example.witt.presentation.ui.plan.drawup_plan.adapter.DatePlanAdapter
-import com.example.witt.presentation.ui.plan.drawup_plan.adapter.TimePlanAdapter
-import com.example.witt.presentation.ui.plan.drawup_plan.example.PlanDummy
+import com.example.witt.presentation.ui.UiEvent
+import com.example.witt.presentation.ui.UiState
+import com.example.witt.presentation.ui.plan.PlanViewModel
+import com.example.witt.presentation.ui.plan.drawup_plan.adapter.PlanAdapter
+import com.example.witt.presentation.ui.plan.drawup_plan.adapter.DetailPlanAdapter
 import net.daum.mf.map.api.MapPOIItem
 import net.daum.mf.map.api.MapPoint
 import com.example.witt.presentation.ui.plan.drawup_plan.memo_dialog.WriteMemoFragment
@@ -21,27 +28,27 @@ import com.kakao.sdk.common.util.KakaoCustomTabsClient
 import com.kakao.sdk.share.ShareClient
 import com.kakao.sdk.share.WebSharerClient
 import com.kakao.sdk.template.model.*
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import net.daum.mf.map.api.MapView
 
+@AndroidEntryPoint
+class DrawUpPlanFragment : BaseFragment<FragmentDrawUpPlanBinding>(R.layout.fragment_draw_up_plan) {
 
-class DrawUpPlanFragment  : BaseFragment<FragmentDrawUpPlanBinding>(R.layout.fragment_draw_up_plan) {
+    private lateinit var detailPlanAdapter: DetailPlanAdapter
+    private lateinit var planAdapter: PlanAdapter
 
-    private lateinit var timePlanAdapter: TimePlanAdapter
-    private lateinit var datePlanAdapter: DatePlanAdapter
+    private val planViewModel by activityViewModels<PlanViewModel>()
+    private val viewModel : DrawUpViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        initMap()
-        initAdapter()
-        initView()
+        //initMap()
         initButton()
-    }
-
-    private fun initView() {
-        binding.dateTextView.text = "2022.11.21 ~ 2022.11.23"
-        binding.destinationTextView.text = "부산/경상"
-        binding.planNameTextView.text = "성훈쿤의 생일기념 여행"
+        initAdapter()
+        observeData()
     }
 
     private fun initButton() {
@@ -50,21 +57,41 @@ class DrawUpPlanFragment  : BaseFragment<FragmentDrawUpPlanBinding>(R.layout.fra
         }
     }
 
+    private fun observeData(){
+        binding.viewModel = planViewModel
+
+        //planViewModel에서 데이터 가져오기
+        planViewModel.planState.observe(viewLifecycleOwner){
+            viewModel.getDetailPlan(it)
+        }
+
+        viewModel.drawUpPlanEvent.flowWithLifecycle(viewLifecycleOwner.lifecycle)
+            .onEach {
+                when(it){
+                    is UiEvent.Success ->{}
+                    is UiEvent.Failure ->{ Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()}
+                }
+            }.launchIn(viewLifecycleOwner.lifecycleScope)
+
+
+        viewModel.drawUpPlanData.flowWithLifecycle(viewLifecycleOwner.lifecycle)
+            .onEach {
+                when(it){
+                    is UiState.Success ->{
+                        planAdapter.submitList(it.data)
+                    }
+                    is UiState.Failure ->{}
+                    is UiState.Init ->{}
+                }
+            }.launchIn(viewLifecycleOwner.lifecycleScope)
+    }
+
     private fun initAdapter() {
-        //시간순 어댑터
-        timePlanAdapter = TimePlanAdapter(
-            memoClick = {
-                showMemoDialog(it.memo)
-            }
-        )
+        detailPlanAdapter = DetailPlanAdapter(memoClick = {  showMemoDialog(it) })
 
-        timePlanAdapter.submitList(PlanDummy.getTimePlan())
-
-
-        //날짜 어댑터
-        datePlanAdapter = DatePlanAdapter(
+        planAdapter = PlanAdapter(
             context = requireContext(),
-            timePlanAdapter = timePlanAdapter,
+            detailPlanAdapter = detailPlanAdapter,
             memoButtonClick = {
                 showMemoDialog(null)
             },
@@ -73,12 +100,19 @@ class DrawUpPlanFragment  : BaseFragment<FragmentDrawUpPlanBinding>(R.layout.fra
                 findNavController().navigate(direction)
             }
         )
-        datePlanAdapter.submitList(PlanDummy.getDatePlan())
         binding.datePlanRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-        binding.datePlanRecyclerView.adapter = datePlanAdapter
-
+        binding.datePlanRecyclerView.adapter = planAdapter
     }
 
+    private fun showMemoDialog(memo: String?) {
+        val memoDialog = WriteMemoFragment()
+        memo?.let {
+            val args = Bundle()
+            args.putString("memo", it)
+            memoDialog.arguments = args
+        }
+        memoDialog.show(requireActivity().supportFragmentManager, "MEMO")
+    }
 
     private fun initMap() {
         val mapView by lazy { MapView(requireActivity()) }
@@ -94,45 +128,28 @@ class DrawUpPlanFragment  : BaseFragment<FragmentDrawUpPlanBinding>(R.layout.fra
         marker.selectedMarkerType =
             MapPOIItem.MarkerType.RedPin // 마커를 클릭했을때, 기본으로 제공하는 RedPin 마커 모양.
         mapView.addPOIItem(marker)
-    }
 
-    private fun showMemoDialog(memo: String?) {
-        val memoDialog = WriteMemoFragment()
-        memo?.let {
-            val args = Bundle()
-            args.putString("memo", it)
-            memoDialog.arguments = args
-        }
-        memoDialog.show(requireActivity().supportFragmentManager, "MEMO")
     }
 
     private fun sendKakaoLink(context: Context, defaultFeed: FeedTemplate) {
         if (ShareClient.instance.isKakaoTalkSharingAvailable(context)) {
-            // 카카오톡으로 카카오톡 공유 가능
-            ShareClient.instance.shareDefault(context, defaultFeed) { sharingResult, error ->
+            ShareClient.instance.shareDefault(context, defaultFeed) { sharingResult, _ ->
                 if (sharingResult != null) {
                     Log.d("tag", "카카오톡 공유 성공 ${sharingResult.intent}")
                     startActivity(sharingResult.intent)
-
-                    // 카카오톡 공유에 성공했지만 아래 경고 메시지가 존재할 경우 일부 컨텐츠가 정상 동작하지 않을 수 있습니다.
-                    Log.w("tag", "Warning Msg: ${sharingResult.warningMsg}")
-                    Log.w("tag", "Argument Msg: ${sharingResult.argumentMsg}")
                 }
             }
-        } else {
-            // 웹 공유 예시 코드
+        } else { // 웹 공유 예시 코드
             val sharerUrl = WebSharerClient.instance.makeDefaultUrl(defaultFeed)
-
             try {
                 KakaoCustomTabsClient.openWithDefault(context, sharerUrl)
             } catch (e: UnsupportedOperationException) {
-                //todo CustomTabsServiceConnection 지원 브라우저가 없을 때 예외처리
+                e.printStackTrace()
             }
-
             try {
                 KakaoCustomTabsClient.open(context, sharerUrl)
             } catch (e: ActivityNotFoundException) {
-                //todo 디바이스에 설치된 인터넷 브라우저가 없을 때 예외처리
+                e.printStackTrace()
             }
         }
     }

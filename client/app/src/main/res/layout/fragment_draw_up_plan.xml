@@ -3,20 +3,32 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.witt.presentation.ui.plan.PlanViewModel" />
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".presentation.ui.plan.make_plan.MakePlanFragment">
 
-        <Button
-            style="@style/Widget.Material3.Button.OutlinedButton"
+        <com.google.android.material.chip.Chip
+            style="@style/Widget.Material3.Chip.Filter.Elevated"
             android:id="@+id/share_plan_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:textSize="12sp"
+            app:chipBackgroundColor="@color/skyBlue"
+            app:chipIconVisible="true"
             android:text="일정 공유하기"
+            android:textColor="@color/white"
+            app:chipIconTint="@color/white"
+            app:checkedIconEnabled="false"
+            app:chipIcon="@drawable/ic_baseline_add_24"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/destination_textView" />
 
@@ -24,7 +36,8 @@
             android:id="@+id/planName_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="여행 이름"
+            android:text="@{viewModel.planState.name}"
+            tools:text="여행 이름"
             android:textSize="22sp"
             android:textStyle="bold"
             android:layout_marginTop="16dp"
@@ -37,7 +50,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
-            android:text="start date ~ end date"
+            android:text="@{viewModel.planState.startDate + '-' + viewModel.planState.endDate}"
+            tools:text ="2022.11.01 ~ 2022.11.11"
             android:textColor="@color/gray"
             app:layout_constraintBottom_toBottomOf="@+id/destination_textView"
             app:layout_constraintStart_toEndOf="@+id/destination_textView" />
@@ -48,7 +62,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:text="(목적지) 여행"
+            android:text="@{viewModel.planState.region}"
+            tools:text = "부산/경상"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/planName_text_view" />
@@ -58,8 +73,8 @@
             android:id="@+id/mapView"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:layout_marginTop="8dp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/share_plan_button">
 
@@ -76,7 +91,6 @@
             app:layout_constraintTop_toBottomOf="@+id/mapView">
 
         </androidx.recyclerview.widget.RecyclerView>
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

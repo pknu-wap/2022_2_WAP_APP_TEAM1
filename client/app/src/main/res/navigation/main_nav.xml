@@ -2,8 +2,8 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main_nav_host_fragment"
-    app:startDestination="@id/drawUpPlanFragment">
+    android:id="@+id/login_nav"
+    app:startDestination="@id/signInFragment">
 
     <fragment
         android:id="@+id/signInFragment"
@@ -14,11 +14,11 @@
             android:id="@+id/action_signInFragment_to_signUpFragment"
             app:destination="@id/signUpFragment" />
         <action
-            android:id="@+id/action_signInFragment_to_homeFragment"
-            app:destination="@id/homeFragment" />
-        <action
             android:id="@+id/action_signInFragment_to_profileEditFragment"
             app:destination="@id/profileEditFragment" />
+        <action
+            android:id="@+id/action_signInFragment_to_plan_nav"
+            app:destination="@id/plan_nav" />
     </fragment>
     <fragment
         android:id="@+id/signUpFragment"
@@ -35,47 +35,9 @@
         android:label="fragment_profile_edit"
         tools:layout="@layout/fragment_profile_edit" >
         <action
-            android:id="@+id/action_profileEditFragment_to_homeFragment"
-            app:destination="@id/homeFragment" />
+            android:id="@+id/action_profileEditFragment_to_plan_nav"
+            app:destination="@id/plan_nav" />
     </fragment>
-    <fragment
-        android:id="@+id/homeFragment"
-        android:name="com.example.witt.presentation.ui.home.HomeFragment"
-        android:label="fragment_home"
-        tools:layout="@layout/fragment_home" >
-        <action
-            android:id="@+id/action_homeFragment_to_makePlanFragment"
-            app:destination="@id/makePlanFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/makePlanFragment"
-        android:name="com.example.witt.presentation.ui.plan.make_plan.MakePlanFragment"
-        android:label="MakePlanFragment" >
-        <argument
-            android:name="startDate"
-            app:argType="long" />
-        <argument
-            android:name="endDate"
-            app:argType="long" />
-        <action
-            android:id="@+id/action_makePlanFragment_to_drawUpPlanFragment"
-            app:destination="@id/drawUpPlanFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/drawUpPlanFragment"
-        android:name="com.example.witt.presentation.ui.plan.drawup_plan.DrawUpPlanFragment"
-        android:label="DrawUpPlanFragment" >
-        <action
-            android:id="@+id/action_drawUpPlanFragment_to_writeMemoFragment"
-            app:destination="@id/writeMemoFragment" />
-        <action
-            android:id="@+id/action_drawUpPlanFragment_to_mapSearchFragment"
-            app:destination="@id/mapSearchFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/writeMemoFragment"
-        android:name="com.example.witt.presentation.ui.plan.drawup_plan.memo_dialog.WriteMemoFragment"
-        android:label="WriteMemoFragment" />
     <fragment
         android:id="@+id/mapSearchFragment"
         android:name="com.example.witt.presentation.ui.plan.drawup_plan.MapSearchFragment"
@@ -95,4 +57,5 @@
             app:argType="com.example.witt.data.model.search.Place"
             app:nullable="false"/>
     </fragment>
+    <include app:graph="@navigation/plan_nav" />
 </navigation>
