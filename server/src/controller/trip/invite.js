@@ -5,31 +5,31 @@ const { raw2str } = require("../../util/rawtostr")
 
 module.exports = {
     //Join Plan(PUT)
-    async joinPlan(req, res) {
-        if (req.body.PlanId === undefined) {
+    async joinTrip(req, res) {
+        if (req.body.TripId === undefined) {
             return res.status(400).send({
                 message: "Bad Request"
             });
         }
-        let isMember = await models.Plan.isMemberOf(models, req.body.PlanId, req.token.UserId)
+        let isMember = await models.Trip.isMemberOf(models, req.body.TripId, req.token.UserId)
 
         if (isMember) {
             return res.status(403).send({
                 message: "Forbidden"
             });
         }
-        let plan = await models.Plan.findOne({
+        let trip = await models.Trip.findOne({
             where: {
-                PlanId: req.body.PlanId
+                TripId: req.body.TripId
             }
         });
-        if (plan === null) {
+        if (trip === null) {
             return res.status(404).send({
                 message: "Not Found"
             });
         }
-        let planParticipant = await models.PlanParticipant.create({
-            PlanId: req.body.PlanId,
+        let tripParticipant = await models.TripParticipant.create({
+            TripId: req.body.TripId,
             UserId: req.token.UserId
         });
         return res.status(200).send({
@@ -37,31 +37,31 @@ module.exports = {
         });
     },
     //Leave Plan(DELETE)
-    async leavePlan(req, res) {
-        if (req.body.PlanId === undefined) {
+    async leaveTrip(req, res) {
+        if (req.body.TripId === undefined) {
             return res.status(400).send({
                 message: "Bad Request"
             });
         }
-        let isMember = await models.Plan.isMemberOf(models, req.body.PlanId, req.token.UserId)
+        let isMember = await models.Trip.isMemberOf(models, req.body.TripId, req.token.UserId)
         if (!isMember) {
             return res.status(403).send({
                 message: "Forbidden"
             });
         }
-        let plan = await models.Plan.findOne({
+        let trip = await models.Trip.findOne({
             where: {
-                PlanId: req.body.PlanId
+                TripId: req.body.TripId
             }
         });
-        if (plan === null) {
+        if (trip === null) {
             return res.status(404).send({
                 message: "Not Found"
             });
         }
-        let result = await models.PlanParticipant.destroy({
+        let result = await models.TripParticipant.destroy({
             where: {
-                PlanId: req.body.PlanId,
+                TripId: req.body.TripId,
                 UserId: req.token.UserId
             }
         })

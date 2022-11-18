@@ -21,17 +21,18 @@ app.listen(port, async () => {
         console.log('DB 연결 중 오류 발생: ', err);
         process.exit();
     }
-    /*try
+    try
     {
-        const kiwi_api = require('./kiwi-api');
-        let kiwi = new kiwi_api();
-        await kiwi.findFlight('PUS', 'GMP', '2022-11-03', '2022-11-03', '', '', 'oneway', 1, 0, 10);
+        const flightData = require('./flight');
+        let flight = new flightData();
+        await flight.getInfoByFlightNumber('2022-11-24', '7C', '211');
+        //await kiwi.findFlight('CJU', 'GMP', '2022-11-16', '2022-11-19', '', 1, 0, 1);
     }
     catch(err)
     {
-        console.log('DB 연결 중 오류 발생: ', err);
+        console.log('항공권 API 테스트 중 오류 발생: ', err);
         process.exit();
-    }*/
+    }
 
     console.log(`http://localhost:${port}`);
     console.log('[Server] Server is running...');

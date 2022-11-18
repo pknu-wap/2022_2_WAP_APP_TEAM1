@@ -19,8 +19,8 @@ tripRouter.put("/", wrapAsync(tripService.createTrip));
 tripRouter.get("/", wrapAsync(tripService.getTripList));
 
 // Trip Participants
-tripRouter.put("/:TripId/participants", wrapAsync(tripInviteService.joinPlan));
-tripRouter.delete("/:TripId/participants", wrapAsync(tripInviteService.leavePlan));
+tripRouter.put("/:TripId/participants", wrapAsync(tripInviteService.joinTrip));
+tripRouter.delete("/:TripId/participants", wrapAsync(tripInviteService.leaveTrip));
 
 // Trip Plan Settings
 const planRouter = require('./plan')

@@ -38,7 +38,7 @@ module.exports = {
         let transaction = await models.sequelize.transaction();
         try {
             const {trip} = req;
-            const {Latitude, Longitude, Category, AdministrationCode, Name} = req.body;
+            const {PlaceId, Latitude, Longitude, Category, AdministrationCode, Name} = req.body;
             const {Day} = req.params;
 
             let place = await models.Place.findOne({

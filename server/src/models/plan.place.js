@@ -2,13 +2,19 @@
 const { raw2str } = require('../util/rawtostr');
 module.exports = function (sequelize, DataTypes) {
     const PlanPlace = sequelize.define('PlanPlace', {
-        PlanDetailId:
+        TripId:
         {
-            field: 'PLAN_DETAIL_ID',
-            type: DataTypes.STRING(32),
+            field: 'TRIP_ID',
+            type: DataTypes.INTEGER,
             primaryKey: true,
             allowNull: false,
-            defaultValue: ''
+        },
+        PlanId:
+        {
+            field: 'PLAN_ID',
+            type: DataTypes.INTEGER,
+            primaryKey: true,
+            allowNull: false,
         },
         PlaceId:
         {
@@ -24,8 +30,9 @@ module.exports = function (sequelize, DataTypes) {
     });
 
     PlanPlace.associate = function (models) {
-        //PlanPlace.hasOne(models.PlanDetail, { foreignKey: 'PlanDetailId', targetKey: 'PlanDetailId' });
-        //PlanPlace.belongsTo(models.Place, { foreignKey: 'PlaceId', targetKey: 'PlaceId' });
+        PlanPlace.belongsTo(models.Plan, { foreignKey: 'TripId', targetKey: 'TripId' });
+        PlanPlace.belongsTo(models.Plan, { foreignKey: 'PlanId', targetKey: 'PlanId' });
+        PlanPlace.belongsTo(models.Place, { foreignKey: 'PlaceId', targetKey: 'PlaceId' });
     };
     return PlanPlace;
 }

@@ -48,6 +48,8 @@ module.exports = function (sequelize, DataTypes) {
         Plan.belongsTo(models.Trip, { foreignKey: 'TripId', targetKey: 'TripId' });
         Plan.hasMany(models.PlanMemo, { foreignKey: 'PlanId', sourceKey: 'PlanId' });
         Plan.hasMany(models.PlanMemo, { foreignKey: 'TripId', sourceKey: 'TripId' });
+        Plan.hasMany(models.PlanPlace, { foreignKey: 'PlanId', sourceKey: 'PlanId' });
+        Plan.hasMany(models.PlanPlace, { foreignKey: 'TripId', sourceKey: 'TripId' });
     }; 
     return Plan;
 };
