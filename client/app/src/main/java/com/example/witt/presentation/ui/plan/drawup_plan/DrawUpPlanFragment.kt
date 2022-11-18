@@ -5,17 +5,21 @@ import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.witt.R
 import com.example.witt.databinding.FragmentDrawUpPlanBinding
 import com.example.witt.presentation.base.BaseFragment
+import com.example.witt.presentation.ui.UiEvent
+import com.example.witt.presentation.ui.UiState
 import com.example.witt.presentation.ui.plan.PlanViewModel
-import com.example.witt.presentation.ui.plan.drawup_plan.adapter.DatePlanAdapter
-import com.example.witt.presentation.ui.plan.drawup_plan.adapter.TimePlanAdapter
-import com.example.witt.presentation.ui.plan.drawup_plan.example.PlanDummy
+import com.example.witt.presentation.ui.plan.drawup_plan.adapter.PlanAdapter
+import com.example.witt.presentation.ui.plan.drawup_plan.adapter.DetailPlanAdapter
 import net.daum.mf.map.api.MapPOIItem
 import net.daum.mf.map.api.MapPoint
 import com.example.witt.presentation.ui.plan.drawup_plan.memo_dialog.WriteMemoFragment
@@ -25,13 +29,15 @@ import com.kakao.sdk.share.ShareClient
 import com.kakao.sdk.share.WebSharerClient
 import com.kakao.sdk.template.model.*
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import net.daum.mf.map.api.MapView
 
 @AndroidEntryPoint
-class DrawUpPlanFragment  : BaseFragment<FragmentDrawUpPlanBinding>(R.layout.fragment_draw_up_plan) {
+class DrawUpPlanFragment : BaseFragment<FragmentDrawUpPlanBinding>(R.layout.fragment_draw_up_plan) {
 
-    private lateinit var timePlanAdapter: TimePlanAdapter
-    private lateinit var datePlanAdapter: DatePlanAdapter
+    private lateinit var detailPlanAdapter: DetailPlanAdapter
+    private lateinit var planAdapter: PlanAdapter
 
     private val planViewModel by activityViewModels<PlanViewModel>()
     private val viewModel : DrawUpViewModel by viewModels()
@@ -40,9 +46,9 @@ class DrawUpPlanFragment  : BaseFragment<FragmentDrawUpPlanBinding>(R.layout.fra
         super.onViewCreated(view, savedInstanceState)
 
         //initMap()
-        observeData()
-        initAdapter()
         initButton()
+        initAdapter()
+        observeData()
     }
 
     private fun initButton() {
@@ -51,15 +57,41 @@ class DrawUpPlanFragment  : BaseFragment<FragmentDrawUpPlanBinding>(R.layout.fra
         }
     }
 
-    private fun initAdapter() {
-        //시간순 어댑터
-        timePlanAdapter = TimePlanAdapter(memoClick = { showMemoDialog(it.memo) })
-        timePlanAdapter.submitList(PlanDummy.getTimePlan())
+    private fun observeData(){
+        binding.viewModel = planViewModel
 
-        //날짜 어댑터
-        datePlanAdapter = DatePlanAdapter(
+        //planViewModel에서 데이터 가져오기
+        planViewModel.planState.observe(viewLifecycleOwner){
+            viewModel.getDetailPlan(it)
+        }
+
+        viewModel.drawUpPlanEvent.flowWithLifecycle(viewLifecycleOwner.lifecycle)
+            .onEach {
+                when(it){
+                    is UiEvent.Success ->{}
+                    is UiEvent.Failure ->{ Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()}
+                }
+            }.launchIn(viewLifecycleOwner.lifecycleScope)
+
+
+        viewModel.drawUpPlanData.flowWithLifecycle(viewLifecycleOwner.lifecycle)
+            .onEach {
+                when(it){
+                    is UiState.Success ->{
+                        planAdapter.submitList(it.data)
+                    }
+                    is UiState.Failure ->{}
+                    is UiState.Init ->{}
+                }
+            }.launchIn(viewLifecycleOwner.lifecycleScope)
+    }
+
+    private fun initAdapter() {
+        detailPlanAdapter = DetailPlanAdapter(memoClick = {  showMemoDialog(it) })
+
+        planAdapter = PlanAdapter(
             context = requireContext(),
-            timePlanAdapter = timePlanAdapter,
+            detailPlanAdapter = detailPlanAdapter,
             memoButtonClick = {
                 showMemoDialog(null)
             },
@@ -68,10 +100,18 @@ class DrawUpPlanFragment  : BaseFragment<FragmentDrawUpPlanBinding>(R.layout.fra
                 findNavController().navigate(direction)
             }
         )
-        datePlanAdapter.submitList(PlanDummy.getDatePlan())
         binding.datePlanRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-        binding.datePlanRecyclerView.adapter = datePlanAdapter
+        binding.datePlanRecyclerView.adapter = planAdapter
+    }
 
+    private fun showMemoDialog(memo: String?) {
+        val memoDialog = WriteMemoFragment()
+        memo?.let {
+            val args = Bundle()
+            args.putString("memo", it)
+            memoDialog.arguments = args
+        }
+        memoDialog.show(requireActivity().supportFragmentManager, "MEMO")
     }
 
     private fun initMap() {
@@ -88,31 +128,11 @@ class DrawUpPlanFragment  : BaseFragment<FragmentDrawUpPlanBinding>(R.layout.fra
         marker.selectedMarkerType =
             MapPOIItem.MarkerType.RedPin // 마커를 클릭했을때, 기본으로 제공하는 RedPin 마커 모양.
         mapView.addPOIItem(marker)
-
-    }
-
-    private fun observeData(){
-        binding.viewModel = planViewModel
-
-        //resume, start, modify data
-        planViewModel.planState.observe(viewLifecycleOwner){
-            viewModel.getDetailPlan(it.TripId)
-        }
-    }
-
-    private fun showMemoDialog(memo: String?) {
-        val memoDialog = WriteMemoFragment()
-        memo?.let {
-            val args = Bundle()
-            args.putString("memo", it)
-            memoDialog.arguments = args
-        }
-        memoDialog.show(requireActivity().supportFragmentManager, "MEMO")
     }
 
     private fun sendKakaoLink(context: Context, defaultFeed: FeedTemplate) {
         if (ShareClient.instance.isKakaoTalkSharingAvailable(context)) {
-            ShareClient.instance.shareDefault(context, defaultFeed) { sharingResult, error ->
+            ShareClient.instance.shareDefault(context, defaultFeed) { sharingResult, _ ->
                 if (sharingResult != null) {
                     Log.d("tag", "카카오톡 공유 성공 ${sharingResult.intent}")
                     startActivity(sharingResult.intent)
