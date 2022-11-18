@@ -2,6 +2,11 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="item"
+            type="com.example.witt.domain.model.plan.adapter.PlanModel" />
+    </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -28,9 +33,10 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="16dp"
                     android:layout_marginTop="16dp"
-                    android:text="X 일차"
+                    android:text="@{item.day}"
                     android:textSize="16sp"
                     android:textStyle="bold"
+                    tools:text="1 DAY"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -39,7 +45,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="12dp"
-                    android:text="current_date"
+                    android:text="@{item.date}"
+                    tools:text="date 날짜"
                     android:textSize="12sp"
                     app:layout_constraintBottom_toBottomOf="@+id/plan_date_dayTextView"
                     app:layout_constraintStart_toEndOf="@+id/plan_date_dayTextView" />
