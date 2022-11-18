@@ -18,7 +18,7 @@
             android:layout_marginHorizontal="32dp"
             android:layout_marginBottom="16dp"
             app:cardBackgroundColor="@color/background_gray"
-            app:cardCornerRadius="20dp"
+            app:cardCornerRadius="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -35,11 +35,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@{item.name}"
-                    tools:text="planName"
                     android:textSize="18sp"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="planName" />
 
                 <TextView
                     android:id="@+id/home_plan_destination_textView"
@@ -47,20 +47,20 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:text="@{item.region}"
-                    tools:text="region"
                     android:textSize="16sp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/home_plan_name_textView" />
+                    app:layout_constraintTop_toBottomOf="@+id/home_plan_name_textView"
+                    tools:text="region" />
 
                 <TextView
                     android:id="@+id/home_plan_date_textView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@{item.startDate + '-' + item.endDate}"
-                    tools:text="startDate - endDate"
                     android:textSize="14sp"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent" />
+                    app:layout_constraintEnd_toEndOf="parent"
+                    tools:text="startDate - endDate" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.cardview.widget.CardView>
     </androidx.constraintlayout.widget.ConstraintLayout>
