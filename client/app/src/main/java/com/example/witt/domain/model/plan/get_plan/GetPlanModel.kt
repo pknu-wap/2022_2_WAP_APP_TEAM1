@@ -1,7 +1,7 @@
 package com.example.witt.domain.model.plan.get_plan
 
 data class GetPlanModel (
-    val message: String,
+    val status: Boolean,
     val reason: String,
     val plans: List<DetailPlanModel>
 )
@@ -9,7 +9,7 @@ data class DetailPlanModel (
     val PlanId : Int,
     val Day: Int,
     val OrderIndex: Int,
-    val Memo: List<PlanMemoModel>
+    val Memo: PlanMemoModel
     )
 
 data class PlanMemoModel (
