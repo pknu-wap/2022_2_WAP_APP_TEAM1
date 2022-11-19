@@ -19,7 +19,7 @@ class MakePlanDataSourceImpl @Inject constructor(
                     request = makePlanRequest
                 )
             }.onFailure { e ->
-                e.message
+                e.printStackTrace()
             }
         }
 }
