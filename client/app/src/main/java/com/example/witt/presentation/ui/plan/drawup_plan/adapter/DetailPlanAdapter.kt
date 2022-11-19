@@ -7,7 +7,7 @@ import com.example.witt.databinding.ItemDetailPlanBinding
 import com.example.witt.domain.model.plan.get_plan.DetailPlanModel
 
 class DetailPlanAdapter(
-    val memoClick : (String) -> Unit
+    val memoClick : (DetailPlanModel) -> Unit
 ) : RecyclerView.Adapter<DetailPlanAdapter.PlanDateViewHolder>(){
 
     val planContentData = mutableListOf<DetailPlanModel>()
@@ -29,7 +29,7 @@ class DetailPlanAdapter(
         fun bind(item: DetailPlanModel){
             binding.item = item.Memo
             binding.timePlanCardView.setOnClickListener{
-                memoClick(item.Memo.Content)
+                memoClick(item)
             }
         }
     }
