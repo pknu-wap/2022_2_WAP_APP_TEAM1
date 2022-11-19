@@ -13,8 +13,8 @@ import com.example.witt.domain.model.plan.adapter.PlanModel
 class PlanAdapter(
     val context: Context,
     val detailPlanAdapter: DetailPlanAdapter,
-    val memoButtonClick: () -> Unit,
-    val placeButtonClick: () -> Unit,
+    val memoButtonClick: (Int) -> Unit,
+    val placeButtonClick: (Int) -> Unit,
 ) : ListAdapter<PlanModel, PlanAdapter.PlanDateViewHolder>(diffutil){
 
     companion object{
@@ -43,17 +43,17 @@ class PlanAdapter(
         fun bind(dayPlanItem: PlanModel){
 
             detailPlanAdapter.planContentData.clear()
-            detailPlanAdapter.planContentData.addAll(dayPlanItem.memo)
+            detailPlanAdapter.planContentData.addAll(dayPlanItem.detailPlan)
 
             with(binding){
                 item = dayPlanItem
                 timePlanRecyclerVIew.layoutManager = LinearLayoutManager(context)
                 timePlanRecyclerVIew.adapter = detailPlanAdapter
                 planDateAddMemoButton.setOnClickListener {
-                    memoButtonClick()
+                    memoButtonClick(adapterPosition)
                 }
                 planDateAddPlaceButton.setOnClickListener{
-                    placeButtonClick()
+                    placeButtonClick(adapterPosition)
                 }
             }
         }
