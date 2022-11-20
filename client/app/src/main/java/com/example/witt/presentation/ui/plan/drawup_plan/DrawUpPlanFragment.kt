@@ -92,8 +92,8 @@ class DrawUpPlanFragment : BaseFragment<FragmentDrawUpPlanBinding>(R.layout.frag
         planAdapter = PlanAdapter(
             context = requireContext(),
             detailPlanAdapter = detailPlanAdapter,
-            memoButtonClick = { dayCount ->
-                showMemoDialog(dayCount, null)
+            memoButtonClick = { day ->
+                showMemoDialog(day, null)
             },
             placeButtonClick = {
                 val direction = DrawUpPlanFragmentDirections.actionDrawUpPlanFragmentToMapSearchFragment()
@@ -105,10 +105,10 @@ class DrawUpPlanFragment : BaseFragment<FragmentDrawUpPlanBinding>(R.layout.frag
         binding.datePlanRecyclerView.adapter = planAdapter
     }
 
-    private fun showMemoDialog(planId: Int, memo: String?) {
+    private fun showMemoDialog(day: Int, memo: String?) {
         val memoDialog = WriteMemoFragment()
         val args = Bundle()
-        args.putInt("planId", planId)
+        args.putInt("day", day)
         memo?.let { args.putString("memo", it) }
         memoDialog.arguments = args
         memoDialog.show(requireActivity().supportFragmentManager, "MEMO")
