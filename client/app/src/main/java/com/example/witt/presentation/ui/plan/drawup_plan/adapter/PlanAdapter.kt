@@ -35,12 +35,12 @@ class PlanAdapter(
     }
 
     override fun onBindViewHolder(holder: PlanDateViewHolder, position: Int) {
-        holder.bind(currentList[position])
+        holder.bind(currentList[position], holder.adapterPosition + 1)
     }
 
     inner class PlanDateViewHolder(private val binding: ItemPlanBinding)
         : RecyclerView.ViewHolder(binding.root) {
-        fun bind(dayPlanItem: PlanModel){
+        fun bind(dayPlanItem: PlanModel, pos: Int){
 
             detailPlanAdapter.planContentData.clear()
             detailPlanAdapter.planContentData.addAll(dayPlanItem.detailPlan)
@@ -50,10 +50,10 @@ class PlanAdapter(
                 timePlanRecyclerVIew.layoutManager = LinearLayoutManager(context)
                 timePlanRecyclerVIew.adapter = detailPlanAdapter
                 planDateAddMemoButton.setOnClickListener {
-                    memoButtonClick(adapterPosition)
+                    memoButtonClick(pos)
                 }
                 planDateAddPlaceButton.setOnClickListener{
-                    placeButtonClick(adapterPosition)
+                    placeButtonClick(pos)
                 }
             }
         }
