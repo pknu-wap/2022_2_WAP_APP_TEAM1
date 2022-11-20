@@ -4,6 +4,8 @@ import com.example.witt.data.source.local.user_profile.ProfileDataSource
 import com.example.witt.data.source.local.user_profile.ProfileDataSourceImpl
 import com.example.witt.data.source.remote.duplicate_check.DuplicateEmailDataSource
 import com.example.witt.data.source.remote.duplicate_check.DuplicateEmailDataSourceImpl
+import com.example.witt.data.source.remote.memo.MakeMemoDataSource
+import com.example.witt.data.source.remote.memo.MakeMemoDataSourceImpl
 import com.example.witt.data.source.remote.plan.get_plan.GetPlanDataSource
 import com.example.witt.data.source.remote.plan.get_plan.GetPlanDataSourceImpl
 import com.example.witt.data.source.remote.plan.get_plan.GetPlanListDataSource
@@ -90,5 +92,11 @@ abstract class DataSourceModule {
     abstract fun providesGetPlanDataSource(
         getPlanDataSourceImpl: GetPlanDataSourceImpl
     ): GetPlanDataSource
+
+    @Binds
+    @Singleton
+    abstract fun provideMakeMemoDataSource(
+        makeMemoDataSourceImpl: MakeMemoDataSourceImpl
+    ): MakeMemoDataSource
 
 }
