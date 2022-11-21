@@ -36,7 +36,6 @@ import net.daum.mf.map.api.MapView
 @AndroidEntryPoint
 class DrawUpPlanFragment : BaseFragment<FragmentDrawUpPlanBinding>(R.layout.fragment_draw_up_plan) {
 
-    private lateinit var detailPlanAdapter: DetailPlanAdapter
     private lateinit var planAdapter: PlanAdapter
 
     private val planViewModel by activityViewModels<PlanViewModel>()
@@ -87,11 +86,10 @@ class DrawUpPlanFragment : BaseFragment<FragmentDrawUpPlanBinding>(R.layout.frag
     }
 
     private fun initAdapter() {
-        detailPlanAdapter = DetailPlanAdapter(memoClick = {  showMemoDialog(it.Day, it.Memo.Content) })
 
         planAdapter = PlanAdapter(
             context = requireContext(),
-            detailPlanAdapter = detailPlanAdapter,
+            memoClick = {  showMemoDialog(it.Day, it.Memo.Content) },
             memoButtonClick = { day ->
                 showMemoDialog(day, null)
             },
