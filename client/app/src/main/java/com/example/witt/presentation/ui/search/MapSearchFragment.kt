@@ -1,4 +1,4 @@
-package com.example.witt.presentation.ui.plan.drawup_plan
+package com.example.witt.presentation.ui.search
 
 import android.os.Bundle
 import android.text.Editable
@@ -13,20 +13,20 @@ import com.example.witt.data.model.search.Place
 import com.example.witt.databinding.FragmentMapSearchBinding
 import com.example.witt.presentation.base.BaseFragment
 import com.example.witt.data.model.search.ResultSearchKeyword
-import com.example.witt.presentation.ui.plan.drawup_plan.adapter.MapSearchAdapter
+import com.example.witt.presentation.ui.search.adapter.MapSearchAdapter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
-import org.apache.commons.lang3.ObjectUtils.Null
 import retrofit2.*
 import retrofit2.converter.gson.GsonConverterFactory
 
 class MapSearchFragment: BaseFragment<FragmentMapSearchBinding>(R.layout.fragment_map_search){
+
     companion object{
         const val BASE_URL = "https://dapi.kakao.com"
         const val API_KEY = BuildConfig.KAKAO_REST_API_KEY
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         searchKeywordInit()
@@ -35,17 +35,11 @@ class MapSearchFragment: BaseFragment<FragmentMapSearchBinding>(R.layout.fragmen
 
     private fun searchKeywordInit(){
         binding.editText.addTextChangedListener(object :TextWatcher{
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-
-            }
-
             override fun afterTextChanged(s: Editable?) {
                 searchKeyword(binding.editText.text.toString())
             }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         })
     }
 
@@ -62,9 +56,8 @@ class MapSearchFragment: BaseFragment<FragmentMapSearchBinding>(R.layout.fragmen
                     call: Call<ResultSearchKeyword>,
                     response: Response<ResultSearchKeyword>
                 ) {
-                    Log.d("map","${response.body()}")
                     val data: MutableList<Place> = loadData(response.body())
-                    var adapter = MapSearchAdapter()
+                    val adapter = MapSearchAdapter()
                     adapter.listData = data
                     binding.searchMapRecyclerView.adapter = adapter
                     binding.searchMapRecyclerView.layoutManager = LinearLayoutManager(requireContext())
@@ -81,7 +74,7 @@ class MapSearchFragment: BaseFragment<FragmentMapSearchBinding>(R.layout.fragmen
         val data:MutableList<Place> = mutableListOf()
         if (!searchResult?.documents.isNullOrEmpty()) {
             for(index in 0 until (searchResult?.documents?.size!!)){
-                searchResult?.documents?.get(index)?.let { data.add(it) }
+                searchResult.documents.get(index).let { data.add(it) }
             }
         }
         return data
