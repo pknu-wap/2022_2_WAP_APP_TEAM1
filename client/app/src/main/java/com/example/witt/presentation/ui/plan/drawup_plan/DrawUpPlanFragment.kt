@@ -115,7 +115,7 @@ class DrawUpPlanFragment : BaseFragment<FragmentDrawUpPlanBinding>(R.layout.frag
     private fun initMap() {
         val mapView by lazy { MapView(requireActivity()) }
         binding.mapView.addView(mapView)
-        mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(37.53737528, 127.00557633), true);
+        mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(37.53737528, 127.00557633), true)
         mapView.setZoomLevel(5, true)
         val marker = MapPOIItem()
         marker.itemName = "Default Marker"
@@ -126,6 +126,7 @@ class DrawUpPlanFragment : BaseFragment<FragmentDrawUpPlanBinding>(R.layout.frag
         marker.selectedMarkerType =
             MapPOIItem.MarkerType.RedPin // 마커를 클릭했을때, 기본으로 제공하는 RedPin 마커 모양.
         mapView.addPOIItem(marker)
+
     }
 
     private fun sendKakaoLink(context: Context, defaultFeed: FeedTemplate) {

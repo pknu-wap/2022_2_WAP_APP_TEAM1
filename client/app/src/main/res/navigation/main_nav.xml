@@ -38,5 +38,24 @@
             android:id="@+id/action_profileEditFragment_to_plan_nav"
             app:destination="@id/plan_nav" />
     </fragment>
+    <fragment
+        android:id="@+id/mapSearchFragment"
+        android:name="com.example.witt.presentation.ui.plan.drawup_plan.MapSearchFragment"
+        android:label="fragment_map_search"
+        tools:layout="@layout/fragment_map_search" >
+        <action
+            android:id="@+id/action_mapSearchFragment_to_placeInsertFragment"
+            app:destination="@id/placeInsertFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/placeInsertFragment"
+        android:name="com.example.witt.presentation.ui.plan.drawup_plan.PlaceInsertFragment"
+        android:label="PlaceInsertFragment"
+        android:layout="@layout/fragment_place_insert">
+        <argument
+            android:name="place"
+            app:argType="com.example.witt.data.model.search.Place"
+            app:nullable="false"/>
+    </fragment>
     <include app:graph="@navigation/plan_nav" />
 </navigation>
