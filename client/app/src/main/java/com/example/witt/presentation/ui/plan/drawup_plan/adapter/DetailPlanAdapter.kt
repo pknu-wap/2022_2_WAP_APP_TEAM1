@@ -5,10 +5,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.witt.databinding.ItemDetailPlanBinding
 import com.example.witt.domain.model.plan.get_plan.DetailPlanModel
+import com.example.witt.presentation.listener.ItemTouchHelperListener
 
 class DetailPlanAdapter(
     val memoClick : (DetailPlanModel) -> Unit
-) : RecyclerView.Adapter<DetailPlanAdapter.PlanDateViewHolder>(){
+) : RecyclerView.Adapter<DetailPlanAdapter.PlanDateViewHolder>(), ItemTouchHelperListener{
 
     val planContentData = mutableListOf<DetailPlanModel>()
 
@@ -22,6 +23,19 @@ class DetailPlanAdapter(
 
     override fun getItemCount(): Int {
         return planContentData.size
+    }
+
+    //todo refactor code
+    //ItemTouchHelperListener
+    override fun onItemMove(from: Int, to: Int) : Boolean{
+        if(planContentData.size <= from){
+            return false
+        }
+        val item = planContentData[from]
+        planContentData.removeAt(from)
+        planContentData.add(to, item)
+        notifyItemMoved(from, to)
+        return true
     }
 
     inner class PlanDateViewHolder(private val binding: ItemDetailPlanBinding)
