@@ -3,16 +3,15 @@ package com.example.witt.presentation.ui.plan.drawup_plan.adapter
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.ListAdapter
-import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.*
 import com.example.witt.databinding.ItemPlanBinding
 import com.example.witt.domain.model.plan.adapter.PlanModel
+import com.example.witt.domain.model.plan.get_plan.DetailPlanModel
+import com.example.witt.presentation.listener.ItemTouchCallback
 
 class PlanAdapter(
     val context: Context,
-    val detailPlanAdapter: DetailPlanAdapter,
+    val memoClick : (DetailPlanModel) -> Unit,
     val memoButtonClick: (Int) -> Unit,
     val placeButtonClick: (Int) -> Unit,
 ) : ListAdapter<PlanModel, PlanAdapter.PlanDateViewHolder>(diffutil){
@@ -20,7 +19,7 @@ class PlanAdapter(
     companion object{
         val diffutil = object : DiffUtil.ItemCallback<PlanModel>(){
             override fun areItemsTheSame(oldItem: PlanModel, newItem: PlanModel): Boolean {
-                return oldItem == newItem
+                return oldItem.detailPlan == newItem.detailPlan
             }
 
             override fun areContentsTheSame(oldItem: PlanModel, newItem: PlanModel): Boolean {
@@ -31,29 +30,39 @@ class PlanAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlanDateViewHolder {
         return PlanDateViewHolder(ItemPlanBinding.inflate(LayoutInflater.from(parent.context),
-            parent, false))
+            parent, false), memoClick)
     }
 
     override fun onBindViewHolder(holder: PlanDateViewHolder, position: Int) {
         holder.bind(currentList[position], holder.adapterPosition + 1)
     }
 
-    inner class PlanDateViewHolder(private val binding: ItemPlanBinding)
-        : RecyclerView.ViewHolder(binding.root) {
+    inner class PlanDateViewHolder(
+        private val binding: ItemPlanBinding,
+        private val memoClick : (DetailPlanModel) -> Unit
+    ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(dayPlanItem: PlanModel, pos: Int){
 
-            detailPlanAdapter.planContentData.clear()
-            detailPlanAdapter.planContentData.addAll(dayPlanItem.detailPlan)
+            val adapter = DetailPlanAdapter(memoClick)
+
+            val itemTouchHelperCallback = ItemTouchCallback(adapter)
+            val helper = ItemTouchHelper(itemTouchHelperCallback)
+
+            adapter.planContentData.clear()
+            adapter.planContentData.addAll(dayPlanItem.detailPlan)
 
             with(binding){
                 item = dayPlanItem
-                timePlanRecyclerVIew.layoutManager = LinearLayoutManager(context)
-                timePlanRecyclerVIew.adapter = detailPlanAdapter
                 planDateAddMemoButton.setOnClickListener {
                     memoButtonClick(pos)
                 }
                 planDateAddPlaceButton.setOnClickListener{
                     placeButtonClick(pos)
+                }
+                with(timePlanRecyclerVIew){
+                    layoutManager = LinearLayoutManager(context)
+                    this.adapter = adapter
+                    helper.attachToRecyclerView(this) //ItemTouchHelper
                 }
             }
         }
