@@ -16,6 +16,7 @@ import com.example.witt.presentation.base.BaseFragment
 import com.example.witt.presentation.ui.UiEvent
 import com.example.witt.presentation.ui.home.adapter.HomePlanAdapter
 import com.example.witt.presentation.ui.plan.PlanViewModel
+import com.example.witt.presentation.widget.RemoveConfirmDialog
 import com.google.android.material.datepicker.MaterialDatePicker
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
@@ -81,6 +82,15 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
                 val direction =
                 HomeFragmentDirections.actionHomeFragmentToDrawUpPlanFragment()
                 findNavController().navigate(direction)
+            },
+            // confirm dialog 확인 후 삭제
+            onRemoveButtonClick = {
+                RemoveConfirmDialog(
+                    requireContext(),
+                    onClickRemove = {
+                        viewModel.removePlan(it)
+                    },
+                ).show()
             }
         )
         homePlanAdapter.submitList(emptyList())

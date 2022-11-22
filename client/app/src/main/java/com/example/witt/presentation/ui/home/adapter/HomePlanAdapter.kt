@@ -7,12 +7,12 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.witt.databinding.ItemHomePlanBinding
 import com.example.witt.domain.model.plan.PlanStateModel
-import com.example.witt.domain.model.plan.get_plan.GetPlanListModel
 import com.example.witt.domain.model.plan.get_plan.GetPlanListResultModel
 import com.example.witt.domain.model.plan.get_plan.toPlanStateModel
 
 class HomePlanAdapter(
-    val onPlanCardClick : (PlanStateModel) -> Unit
+    val onPlanCardClick : (PlanStateModel) -> Unit,
+    val onRemoveButtonClick : (Int) -> Unit
 ) : ListAdapter<GetPlanListResultModel, HomePlanAdapter.HomePlanAdapter>(diffutil){
 
     companion object{
@@ -43,6 +43,12 @@ class HomePlanAdapter(
             binding.homePlanCardView.setOnClickListener{
                 onPlanCardClick(
                     item.toPlanStateModel()
+                )
+            }
+
+            binding.removePlanButton.setOnClickListener{
+                onRemoveButtonClick(
+                    item.TripId
                 )
             }
         }
