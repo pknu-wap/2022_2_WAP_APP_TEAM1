@@ -5,6 +5,7 @@ import com.example.witt.domain.model.plan.get_plan.GetPlanListModel
 import com.example.witt.domain.model.plan.get_plan.GetPlanModel
 import com.example.witt.domain.model.plan.make_plan.MakePlanModel
 import com.example.witt.domain.model.plan.make_plan.MakePlanResponseModel
+import com.example.witt.domain.model.plan.memo.EditMemoModel
 
 interface PlanRepository {
 
@@ -15,5 +16,7 @@ interface PlanRepository {
     suspend fun getPlan(planId: Int): Result<GetPlanModel>
 
     suspend fun makeMemo(tripId : Int, day: Int, content: String) : Result<MakeMemoModel>
+
+    suspend fun editMemo(tripId : Int, Content: String, planId: Int): Result<EditMemoModel>
 
 }
