@@ -1,12 +1,19 @@
-'use strict';
+'use stricts';
 
-const {raw2str}=require('../util/rawtostr');
-module.exports=function(sequelize,DataTypes){
+module.exports=function(sequelize, DataTypes){
     const Chat=sequelize.define('Chat',{
-        RoomId:
+        TripId:
         {
-            field:'ROOM_ID',
-            type:DataTypes.STRING(32),
+            field:'TRIP_ID',
+            type:DataTypes.NUMBER,
+            primaryKey:true,
+            allowNull:false,
+            defaultValue:''
+        },
+        ChatId:
+        {
+            field:'CHAT_ID',
+            type:DataTypes.NUMBER,
             primaryKey:true,
             allowNull:false,
             defaultValue:''
@@ -15,36 +22,30 @@ module.exports=function(sequelize,DataTypes){
         {
             field:'USER_ID',
             type:DataTypes.STRING(32),
-            primaryKey:true,
+            primaryKey:false,
             allowNull:false,
             defaultValue:''
         },
-        Message:
+        Content:
         {
             field:'CONTENT',
-            type:DataTypes.STRING(100),
+            type:DataTypes.STRING(2000),
+            primaryKey:false,
             allowNull:false,
             defaultValue:''
         }
-    },{
-        underscored:true,
-        freezeTableName:true,
-        tableName:'DB_CHAT',
-        hooks:{
-            afterQuery:(result,options)=>{
-                return raw2str(result);
-            }
-        }
+    }, {
+        underscored: true,
+        freezeTableName: true,
+        tableName: 'DB_CHAT',
+        timestamps: true
+
     });
     Chat.associate=function(models){
-        Chat.belongsTo(models.ChatRoom,{
-            foreignKey:'RoomId',
-            targetKey:'RoomId'
-        });
-        Chat.belongsTo(models.User,{
-            foreignKey:'UserId',
-            targetKey:'UserId'
-        });
+        models.Chat.belongsTo(models.Trip,{foreignKey:'TripId',targetKey:'TripId'});
+        models.Chat.belongsTo(models.User,{foreignKey:'UserId',targetKey:'UserId'});
+        models.Chat.hasMany(models.ChatRead,{foreignKey:'TripId',sourceKey:'TripId'});
+        models.Chat.hasMany(models.ChatRead,{foreignKey:'ChatId',sourceKey:'ChatId'});
     };
     return Chat;
-};
+}

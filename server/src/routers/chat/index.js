@@ -2,7 +2,8 @@ const chatRouter=require('express').Router();
 const chatService=require('../../controller/chat');
 const token=require('../../util/jwt');
 const { chatMiddleware } = require('../../controller/chat/middleware')
-const chatting=require("../../controller/chat/chatting");
+const socketIO=require('socket.io')
+const io=socketIO(server);
 chatRouter.use(token.authenticateAccessToken);
 
 function wrapAsync(fn) {
@@ -15,16 +16,16 @@ function wrapAsync(fn) {
 /*
 get:채팅내역 불러오기
 */
-chatRouter.get("/:TripId/chat/:Tripid",wrapAsync(chatService.getChat));
+chatRouter.put('/trips/:TripId/chat',io,chatMiddleware,wrapAsync(chatting.createChat));
+chatRouter.get("/trips/:TripId/chat",io,wrapAsync(chatService.getChat));
+
 
 //Chatting Participants
 /*
-put:채팅방 참여
-get:채팅방 불러오기
-delete:채팅방 나가기...가 필요해? 
+put:채팅방 만들기
+delete:채팅방 tkrwpgkr;
 */
-chatRouter.put("/:TripId/chatroom",chatMiddleware,wrapAsync(chatService.createChatRoom));
-chatRouter.get("/:TripId/chatroom",chatMiddleware,wrapAsync(chatService.getChatRoom));
-chatRouter.delete("/:TripId/chatroom",wrapAsync(chatService.deleteChatRoom));
+chatRouter.put("/trips/:TripId/chat",chatMiddleware,wrapAsync(chatService.createRoom));
+chatRouter.delete("/trips/:TripId/chat/:ChatId",wrapAsync(chatService.deleteRoom));
 
 module.exports = chatRouter;

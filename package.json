@@ -1,0 +1,18 @@
+{
+  "dependencies": {
+    "dateutil": "^0.1.0",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "instantclient": "^1.0.2",
+    "jsonwebtoken": "^8.5.1",
+    "node-fetch": "^3.3.0",
+    "oracledb": "^5.5.0",
+    "orm": "^7.1.0",
+    "sequelize": "^6.25.6",
+    "sequelize-auto": "^0.8.8",
+    "sequelize-oracle": "^3.3.2-0.0",
+    "socket.io": "^4.5.3",
+    "socketio-jwt-auth": "^0.2.1",
+    "superagent": "^8.0.3"
+  }
+}
