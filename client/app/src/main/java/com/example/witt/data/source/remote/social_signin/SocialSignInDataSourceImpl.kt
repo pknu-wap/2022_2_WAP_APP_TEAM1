@@ -19,6 +19,6 @@ class SocialSignInDataSourceImpl @Inject constructor(
                 response
             }
         }.onFailure { exception ->
-            exception.cause
+            exception.printStackTrace()
         }
 }

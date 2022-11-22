@@ -1,10 +1,8 @@
-package com.example.witt.presentation.ui.plan.drawup_plan
+package com.example.witt.presentation.ui.search
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.navigation.fragment.navArgs
-import com.example.witt.BuildConfig
 import com.example.witt.R
 import com.example.witt.data.model.search.Place
 import com.example.witt.presentation.base.BaseFragment
@@ -25,19 +23,25 @@ class PlaceInsertFragment: BaseFragment<FragmentPlaceInsertBinding>(R.layout.fra
     private fun initMap() {
         val mapView by lazy { MapView(requireContext()) }
         val place: Place = args.place
-        binding.mapView.addView(mapView)
         val xPosition = place.x.toDouble()
         val yPosition = place.y.toDouble()
-        mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(yPosition, xPosition), true)
-        mapView.setZoomLevel(1, true)
-        val marker = MapPOIItem()
-        marker.itemName = place.place_name
-        marker.tag = 0
-        marker.mapPoint = MapPoint.mapPointWithGeoCoord(yPosition, xPosition)
-        marker.markerType = MapPOIItem.MarkerType.BluePin // 기본으로 제공하는 BluePin 마커 모양.
 
-        marker.selectedMarkerType =
-            MapPOIItem.MarkerType.RedPin // 마커를 클릭했을때, 기본으로 제공하는 RedPin 마커 모양.
+        //initMapView
+        binding.mapView.addView(mapView)
+        with(mapView){
+            setMapCenterPoint(MapPoint.mapPointWithGeoCoord(yPosition, xPosition), true)
+            setZoomLevel(1, true)
+        }
+
+        //init Marker
+        val marker = MapPOIItem()
+        with(marker){
+            itemName = place.place_name
+            tag = 0
+            mapPoint = MapPoint.mapPointWithGeoCoord(yPosition, xPosition)
+            markerType = MapPOIItem.MarkerType.BluePin // 기본으로 제공하는 BluePin 마커 모양.
+            selectedMarkerType = MapPOIItem.MarkerType.RedPin // 마커를 클릭했을때 RedPin 마커 모양.
+        }
         mapView.addPOIItem(marker)
     }
 }

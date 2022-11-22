@@ -19,7 +19,6 @@ import com.example.witt.presentation.ui.UiEvent
 import com.example.witt.presentation.ui.UiState
 import com.example.witt.presentation.ui.plan.PlanViewModel
 import com.example.witt.presentation.ui.plan.drawup_plan.adapter.PlanAdapter
-import com.example.witt.presentation.ui.plan.drawup_plan.adapter.DetailPlanAdapter
 import net.daum.mf.map.api.MapPOIItem
 import net.daum.mf.map.api.MapPoint
 import com.example.witt.presentation.ui.plan.drawup_plan.memo_dialog.WriteMemoFragment
@@ -36,7 +35,6 @@ import net.daum.mf.map.api.MapView
 @AndroidEntryPoint
 class DrawUpPlanFragment : BaseFragment<FragmentDrawUpPlanBinding>(R.layout.fragment_draw_up_plan) {
 
-    private lateinit var detailPlanAdapter: DetailPlanAdapter
     private lateinit var planAdapter: PlanAdapter
 
     private val planViewModel by activityViewModels<PlanViewModel>()
@@ -87,42 +85,42 @@ class DrawUpPlanFragment : BaseFragment<FragmentDrawUpPlanBinding>(R.layout.frag
     }
 
     private fun initAdapter() {
-        detailPlanAdapter = DetailPlanAdapter(memoClick = {  showMemoDialog(it) })
 
         planAdapter = PlanAdapter(
             context = requireContext(),
-            detailPlanAdapter = detailPlanAdapter,
-            memoButtonClick = {
-                showMemoDialog(null)
+            memoClick = {  showMemoDialog(it.Day, it.Memo.Content) },
+            memoButtonClick = { day ->
+                showMemoDialog(day, null)
             },
             placeButtonClick = {
                 val direction = DrawUpPlanFragmentDirections.actionDrawUpPlanFragmentToMapSearchFragment()
                 findNavController().navigate(direction)
             }
         )
+
         binding.datePlanRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.datePlanRecyclerView.adapter = planAdapter
     }
 
-    private fun showMemoDialog(memo: String?) {
+    private fun showMemoDialog(day: Int, memo: String?) {
         val memoDialog = WriteMemoFragment()
-        memo?.let {
-            val args = Bundle()
-            args.putString("memo", it)
-            memoDialog.arguments = args
-        }
+        val args = Bundle()
+        args.putInt("day", day)
+        memo?.let { args.putString("memo", it) }
+        memoDialog.arguments = args
         memoDialog.show(requireActivity().supportFragmentManager, "MEMO")
     }
 
+    //todo with() kotlin 내장함수로 코드 클린하게! 주석 처리도 부탁드립니다~
     private fun initMap() {
         val mapView by lazy { MapView(requireActivity()) }
         binding.mapView.addView(mapView)
-        mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(37.53737528, 127.00557633), true)
+        mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(defaultSeoulx, defaultSeouly), true)
         mapView.setZoomLevel(5, true)
         val marker = MapPOIItem()
         marker.itemName = "Default Marker"
         marker.tag = 0
-        marker.mapPoint = MapPoint.mapPointWithGeoCoord(37.53737528, 127.00557633)
+        marker.mapPoint = MapPoint.mapPointWithGeoCoord(defaultSeoulx, defaultSeouly)
         marker.markerType = MapPOIItem.MarkerType.BluePin // 기본으로 제공하는 BluePin 마커 모양.
 
         marker.selectedMarkerType =
@@ -152,5 +150,9 @@ class DrawUpPlanFragment : BaseFragment<FragmentDrawUpPlanBinding>(R.layout.frag
                 e.printStackTrace()
             }
         }
+    }
+    companion object{
+        private val defaultSeoulx = 37.53737528
+        private val defaultSeouly = 127.00557633
     }
 }

@@ -1,4 +1,4 @@
-package com.example.witt.presentation.ui.plan.drawup_plan.adapter
+package com.example.witt.presentation.ui.search.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.witt.R
 import com.example.witt.data.model.search.Place
 import com.example.witt.databinding.ItemMapSearchRecyclerBinding
-
 
 class MapSearchAdapter : RecyclerView.Adapter<MapSearchAdapter.Holder>(){
 
@@ -24,7 +23,10 @@ class MapSearchAdapter : RecyclerView.Adapter<MapSearchAdapter.Holder>(){
         val place = listData[position]
         holder.setPlace(place)
         val bundle = bundleOf("place" to place)
-        holder.itemView.setOnClickListener{ view -> view.findNavController().navigate(R.id.action_mapSearchFragment_to_placeInsertFragment,bundle)
+        holder.itemView.setOnClickListener{ view ->
+            if(view.findNavController().currentDestination?.id == R.id.mapSearchFragment) {
+                view.findNavController().navigate(R.id.action_mapSearchFragment_to_placeInsertFragment, bundle)
+            }
         }
     }
 

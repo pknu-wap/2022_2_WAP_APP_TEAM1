@@ -16,7 +16,7 @@ class GetPlanDataSourceImpl @Inject constructor(
         runCatching {
             getPlanService.getPlan(planId)
         }.onFailure { e->
-            e.message
+            e.printStackTrace()
         }
     }
 }

@@ -109,4 +109,10 @@ object ApiModule {
         retrofit: Retrofit
     ): GetPlanService = retrofit.create(GetPlanService::class.java)
 
+    @Provides
+    @Singleton
+    fun provideMakeMemoService(
+        retrofit: Retrofit
+    ): PlanMemoService = retrofit.create(PlanMemoService::class.java)
+
 }
