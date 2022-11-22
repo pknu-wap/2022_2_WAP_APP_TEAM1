@@ -53,6 +53,22 @@
         android:id="@+id/mapSearchFragment"
         android:name="com.example.witt.presentation.ui.search.MapSearchFragment"
         android:label="fragment_map_search"
-        tools:layout="@layout/fragment_map_search" />
+        tools:layout="@layout/fragment_map_search" >
+        <action
+            android:id="@+id/action_mapSearchFragment_to_placeInsertFragment"
+            app:destination="@id/placeInsertFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/placeInsertFragment"
+        android:name="com.example.witt.presentation.ui.search.PlaceInsertFragment"
+        android:label="PlaceInsertFragment"
+        android:layout="@layout/fragment_place_insert"
+        tools:layout="@layout/fragment_place_insert">
+        <argument
+            android:name="place"
+            app:argType="com.example.witt.data.model.search.PlaceModel"
+            app:nullable="false"/>
+    </fragment>
 
 </navigation>
