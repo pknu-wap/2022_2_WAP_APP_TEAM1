@@ -101,7 +101,7 @@ object ApiModule {
     @Singleton
     fun provideMakePlanService(
         retrofit: Retrofit
-    ): MakePlanService = retrofit.create(MakePlanService::class.java)
+    ): PlanService = retrofit.create(PlanService::class.java)
 
     @Provides
     @Singleton
