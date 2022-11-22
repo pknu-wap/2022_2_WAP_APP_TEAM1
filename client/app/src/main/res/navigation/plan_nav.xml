@@ -51,7 +51,7 @@
         />
     <fragment
         android:id="@+id/mapSearchFragment"
-        android:name="com.example.witt.presentation.ui.plan.drawup_plan.MapSearchFragment"
+        android:name="com.example.witt.presentation.ui.search.MapSearchFragment"
         android:label="fragment_map_search"
         tools:layout="@layout/fragment_map_search" />
 
