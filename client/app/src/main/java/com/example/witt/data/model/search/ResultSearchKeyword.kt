@@ -6,11 +6,11 @@ import kotlinx.parcelize.Parcelize
 
 // 검색 결과를 담는 클래스
 data class ResultSearchKeyword(
-    var documents: List<Place>          // 검색 결과
+    var documents: List<PlaceModel>          // 검색 결과
 )
 
 @Parcelize
-data class Place(
+data class PlaceModel(
     var id: String,                     // 장소 ID
     var place_name: String,             // 장소명, 업체명
 //  var category_name: String,          // 카테고리 이름
