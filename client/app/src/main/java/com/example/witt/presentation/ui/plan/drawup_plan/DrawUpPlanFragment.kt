@@ -19,7 +19,6 @@ import com.example.witt.presentation.ui.UiEvent
 import com.example.witt.presentation.ui.UiState
 import com.example.witt.presentation.ui.plan.PlanViewModel
 import com.example.witt.presentation.ui.plan.drawup_plan.adapter.PlanAdapter
-import com.example.witt.presentation.ui.plan.drawup_plan.adapter.DetailPlanAdapter
 import net.daum.mf.map.api.MapPOIItem
 import net.daum.mf.map.api.MapPoint
 import com.example.witt.presentation.ui.plan.drawup_plan.memo_dialog.WriteMemoFragment
@@ -112,15 +111,16 @@ class DrawUpPlanFragment : BaseFragment<FragmentDrawUpPlanBinding>(R.layout.frag
         memoDialog.show(requireActivity().supportFragmentManager, "MEMO")
     }
 
+    //todo with() kotlin 내장함수로 코드 클린하게! 주석 처리도 부탁드립니다~
     private fun initMap() {
         val mapView by lazy { MapView(requireActivity()) }
         binding.mapView.addView(mapView)
-        mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(37.53737528, 127.00557633), true)
+        mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(defaultSeoulx, defaultSeouly), true)
         mapView.setZoomLevel(5, true)
         val marker = MapPOIItem()
         marker.itemName = "Default Marker"
         marker.tag = 0
-        marker.mapPoint = MapPoint.mapPointWithGeoCoord(37.53737528, 127.00557633)
+        marker.mapPoint = MapPoint.mapPointWithGeoCoord(defaultSeoulx, defaultSeouly)
         marker.markerType = MapPOIItem.MarkerType.BluePin // 기본으로 제공하는 BluePin 마커 모양.
 
         marker.selectedMarkerType =
@@ -150,5 +150,9 @@ class DrawUpPlanFragment : BaseFragment<FragmentDrawUpPlanBinding>(R.layout.frag
                 e.printStackTrace()
             }
         }
+    }
+    companion object{
+        private val defaultSeoulx = 37.53737528
+        private val defaultSeouly = 127.00557633
     }
 }
