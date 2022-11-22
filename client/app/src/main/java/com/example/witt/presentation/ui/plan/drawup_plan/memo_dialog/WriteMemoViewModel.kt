@@ -3,7 +3,7 @@ package com.example.witt.presentation.ui.plan.drawup_plan.memo_dialog
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.witt.domain.repository.PlanRepository
+import com.example.witt.domain.repository.DetailPlanRepository
 import com.example.witt.presentation.ui.UiEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -13,7 +13,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class WriteMemoViewModel @Inject constructor(
-    private val planRepository: PlanRepository
+    private val repository: DetailPlanRepository
 ): ViewModel() {
 
     //dataBinding
@@ -50,7 +50,7 @@ class WriteMemoViewModel @Inject constructor(
     private fun addMemo(){
         viewModelScope.launch {
             if(!inputMemo.value.isNullOrEmpty()){
-                planRepository.makeMemo(
+                repository.makeMemo(
                     tripId = requireNotNull(tripId.value),
                     day = requireNotNull(dayId.value),
                     content = requireNotNull(inputMemo.value)
@@ -72,7 +72,7 @@ class WriteMemoViewModel @Inject constructor(
     private fun editMemo(){
         viewModelScope.launch {
             if(!inputMemo.value.isNullOrEmpty()){
-                planRepository.editMemo(
+                repository.editMemo(
                     tripId = requireNotNull(tripId.value),
                     Content = requireNotNull(inputMemo.value),
                     planId = requireNotNull(planId.value)
