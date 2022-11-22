@@ -37,4 +37,18 @@ class HomeViewModel @Inject constructor(
             }
         }
     }
+
+    fun removePlan(tripId: Int){
+        viewModelScope.launch {
+            planRepository.removePlan(tripId).mapCatching { response ->
+                if(response.status){
+                    getPlanList()
+                }else{
+                    _homeEvent.emit(UiEvent.Failure(response.reason))
+                }
+            }.onFailure {
+                _homeEvent.emit(UiEvent.Failure("일정을 불러오는데 실패하였습니다."))
+            }
+        }
+    }
 }
