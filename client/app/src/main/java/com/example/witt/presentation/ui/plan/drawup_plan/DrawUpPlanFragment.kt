@@ -51,7 +51,11 @@ class DrawUpPlanFragment : BaseFragment<FragmentDrawUpPlanBinding>(R.layout.frag
 
     private fun initButton() {
         binding.sharePlanButton.setOnClickListener {
-            sendKakaoLink(requireContext(), DefaultTemplate.kakaoTemplate)
+            //todo refactor
+            planViewModel.planState.value?.let{
+                sendKakaoLink(requireContext(), DefaultTemplate.createTemplate(it))
+            } ?: Toast.makeText(requireContext(), "카카오톡 링크를 생성하는데 실패하였습니다.",
+                Toast.LENGTH_SHORT).show()
         }
     }
 
