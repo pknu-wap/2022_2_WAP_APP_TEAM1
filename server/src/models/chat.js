@@ -44,8 +44,6 @@ module.exports=function(sequelize, DataTypes){
     Chat.associate=function(models){
         models.Chat.belongsTo(models.Trip,{foreignKey:'TripId',targetKey:'TripId'});
         models.Chat.belongsTo(models.User,{foreignKey:'UserId',targetKey:'UserId'});
-        models.Chat.hasMany(models.ChatRead,{foreignKey:'TripId',sourceKey:'TripId'});
-        models.Chat.hasMany(models.ChatRead,{foreignKey:'ChatId',sourceKey:'ChatId'});
     };
     return Chat;
 }
