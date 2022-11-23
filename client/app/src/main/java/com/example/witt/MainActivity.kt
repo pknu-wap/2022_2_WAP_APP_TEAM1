@@ -2,7 +2,6 @@ package com.example.witt
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -20,15 +19,23 @@ class MainActivity : AppCompatActivity() {
         navController = navHostFragment.navController
 
         getQueryParameter()
+
     }
 
     //androidExecutionParams으로 받은 값 확인
+    //todo 초대에서 나를 확인하는 방법
     private fun getQueryParameter(){
-        val value = intent?.data
-        if(value != null){
-            intent.data?.getQueryParameter("key1")?.let {
-                Log.d("tag", it)
-            }
-        }
+        //todo refactor
+        val prefs = getSharedPreferences("prefs", MODE_PRIVATE)
+        val tripId = intent.data?.getQueryParameter("tripId") ?: return
+        val tripName = intent.data?.getQueryParameter("tripName") ?: return
+        val tripDate = intent.data?.getQueryParameter("tripDate") ?: return
+
+        prefs.edit()
+            .putString("tripId", tripId)
+            .putString("tripName", tripName)
+            .putString("tripDate", tripDate)
+            .apply()
+
     }
 }
