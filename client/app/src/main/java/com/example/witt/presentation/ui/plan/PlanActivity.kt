@@ -28,21 +28,20 @@ class PlanActivity : AppCompatActivity() {
 
     private fun checkJoinPlan(){
         val prefs = getSharedPreferences("prefs", MODE_PRIVATE)
-        if(!prefs.getString("tripId", null).isNullOrBlank()){
-            val tripName = prefs.getString("tripName", null) ?: return
-            val tripDate = prefs.getString("tripDate", null) ?: return
-            showJoinPlanDialog(tripName, tripDate)
-        }
+        val tripId = prefs.getString("tripId", null) ?: return
+        val tripName = prefs.getString("tripName", null) ?: return
+        val tripDate = prefs.getString("tripDate", null) ?: return
+        showJoinPlanDialog(tripId, tripName, tripDate)
     }
 
-    private fun showJoinPlanDialog(tripName: String, tripDate: String){
+    private fun showJoinPlanDialog(tripId: String, tripName: String, tripDate: String){
         JoinPlanDialog(
             this, tripName, tripDate,
             onClickCancel = {
                 rejectPlan()
             },
             onClickJoin = {
-                viewModel.joinPlan()
+                viewModel.joinPlan(tripId.toInt())
             }
         ).show()
     }
