@@ -50,6 +50,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
         initAdapter()
         initButton()
         initDateRangePicker()
+
     }
 
     override fun onResume() {
@@ -58,6 +59,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
     }
 
     private fun observeData(){
+
         viewModel.homeEvent.flowWithLifecycle(viewLifecycleOwner.lifecycle)
             .onEach {
                 when(it){
@@ -73,6 +75,16 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
                 homePlanAdapter.submitList(it.result)
             }.launchIn(viewLifecycleOwner.lifecycleScope)
 
+        //joinPlan
+        planViewModel.joinPlanUiEvent.flowWithLifecycle(viewLifecycleOwner.lifecycle)
+            .onEach {
+                when(it){
+                    is UiEvent.Success ->{ viewModel.getPlanList() }
+                    is UiEvent.Failure ->{
+                        Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
     }
 
     private fun initAdapter(){
