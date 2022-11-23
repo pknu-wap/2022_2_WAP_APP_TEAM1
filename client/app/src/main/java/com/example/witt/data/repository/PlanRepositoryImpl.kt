@@ -4,15 +4,18 @@ import com.example.witt.data.mapper.toMakePlanResponseModel
 import com.example.witt.data.model.plan.get_plan.toGetPlanListModel
 import com.example.witt.data.model.plan.get_plan.toGetPlanModel
 import com.example.witt.data.model.plan.make_plan.request.MakePlanRequest
+import com.example.witt.data.model.plan.remove_plan.toJoinPlanModel
 import com.example.witt.data.model.plan.remove_plan.toRemovePlanModel
 import com.example.witt.data.source.remote.plan.get_plan.GetPlanDataSource
 import com.example.witt.data.source.remote.plan.get_plan.GetPlanListDataSource
 import com.example.witt.data.source.remote.plan.make_plan.MakePlanDataSource
+import com.example.witt.data.source.remote.plan.remove_plan.JoinPlanDataSource
 import com.example.witt.data.source.remote.plan.remove_plan.RemovePlanDataSource
 import com.example.witt.domain.model.plan.get_plan.GetPlanListModel
 import com.example.witt.domain.model.plan.get_plan.GetPlanModel
 import com.example.witt.domain.model.plan.make_plan.MakePlanModel
 import com.example.witt.domain.model.plan.make_plan.MakePlanResponseModel
+import com.example.witt.domain.model.plan.remove_plan.JoinPlanModel
 import com.example.witt.domain.model.plan.remove_plan.RemovePlanModel
 import com.example.witt.domain.repository.PlanRepository
 import javax.inject.Inject
@@ -22,6 +25,7 @@ class PlanRepositoryImpl @Inject constructor(
     private val getPlanListDataSource: GetPlanListDataSource,
     private val getPlanDataSource: GetPlanDataSource,
     private val removePlanDataSource: RemovePlanDataSource,
+    private val joinPlanDataSource: JoinPlanDataSource
 ): PlanRepository{
     override suspend fun makePlan(makePlanModel: MakePlanModel): Result<MakePlanResponseModel> {
         return makePlanDataSource.makePlan(
@@ -54,4 +58,9 @@ class PlanRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun joinPlan(tripId: Int): Result<JoinPlanModel> {
+        return joinPlanDataSource.joinPlan(tripId).mapCatching { response ->
+            response.toJoinPlanModel()
+        }
+    }
 }
