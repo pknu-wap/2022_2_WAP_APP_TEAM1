@@ -2,6 +2,7 @@ package com.example.witt.data.api
 
 import com.example.witt.data.model.plan.make_plan.request.MakePlanRequest
 import com.example.witt.data.model.plan.make_plan.response.MakePlanResponse
+import com.example.witt.data.model.plan.remove_plan.JoinPlanResponse
 import com.example.witt.data.model.plan.remove_plan.RemovePlanResponse
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -18,5 +19,10 @@ interface PlanService {
     suspend fun removePlan(
         @Body tripId: Int
     ): RemovePlanResponse
+
+    @PUT("/api/trip")
+    suspend fun joinPlan(
+        @Body tripId: Int
+    ): JoinPlanResponse
 
 }
