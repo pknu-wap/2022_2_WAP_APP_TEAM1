@@ -1,6 +1,6 @@
-package com.example.witt.data.model.plan.remove_plan
+package com.example.witt.data.model.plan.join_plan
 
-import com.example.witt.domain.model.plan.remove_plan.JoinPlanModel
+import com.example.witt.domain.model.plan.join_plan.JoinPlanModel
 
 data class JoinPlanResponse (
     val status: Boolean,

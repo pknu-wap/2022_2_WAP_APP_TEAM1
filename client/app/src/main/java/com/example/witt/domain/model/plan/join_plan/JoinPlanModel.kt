@@ -1,4 +1,4 @@
-package com.example.witt.domain.model.plan.remove_plan
+package com.example.witt.domain.model.plan.join_plan
 
 data class JoinPlanModel(
     val status: Boolean,
