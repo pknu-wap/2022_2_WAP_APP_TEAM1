@@ -14,8 +14,10 @@ import com.example.witt.data.source.remote.plan.get_plan.GetPlanListDataSource
 import com.example.witt.data.source.remote.plan.get_plan.GetPlanListDataSourceImpl
 import com.example.witt.data.source.remote.plan.make_plan.MakePlanDataSource
 import com.example.witt.data.source.remote.plan.make_plan.MakePlanDataSourceImpl
-import com.example.witt.data.source.remote.plan.remove_plan.JoinPlanDataSource
-import com.example.witt.data.source.remote.plan.remove_plan.JoinPlanDataSourceImpl
+import com.example.witt.data.source.remote.plan.join_plan.JoinPlanDataSource
+import com.example.witt.data.source.remote.plan.join_plan.JoinPlanDataSourceImpl
+import com.example.witt.data.source.remote.plan.join_plan.OutPlanDataSource
+import com.example.witt.data.source.remote.plan.join_plan.OutPlanDataSourceImpl
 import com.example.witt.data.source.remote.plan.remove_plan.RemovePlanDataSource
 import com.example.witt.data.source.remote.plan.remove_plan.RemovePlanDataSourceImpl
 import com.example.witt.data.source.remote.profile.ProfileUploadDataSource
@@ -122,5 +124,11 @@ abstract class DataSourceModule {
     abstract fun provideJoinPlanDataSource(
         joinPlanDataSourceImpl: JoinPlanDataSourceImpl
     ): JoinPlanDataSource
+
+    @Binds
+    @Singleton
+    abstract fun provideOutPlanDataSource(
+        outPlanDataSourceImpl: OutPlanDataSourceImpl
+    ): OutPlanDataSource
 
 }

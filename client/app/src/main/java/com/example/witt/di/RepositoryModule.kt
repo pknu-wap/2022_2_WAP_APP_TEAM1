@@ -12,7 +12,8 @@ import com.example.witt.data.source.remote.memo.MakeMemoDataSource
 import com.example.witt.data.source.remote.plan.get_plan.GetPlanDataSource
 import com.example.witt.data.source.remote.plan.get_plan.GetPlanListDataSource
 import com.example.witt.data.source.remote.plan.make_plan.MakePlanDataSource
-import com.example.witt.data.source.remote.plan.remove_plan.JoinPlanDataSource
+import com.example.witt.data.source.remote.plan.join_plan.JoinPlanDataSource
+import com.example.witt.data.source.remote.plan.join_plan.OutPlanDataSource
 import com.example.witt.data.source.remote.plan.remove_plan.RemovePlanDataSource
 import com.example.witt.data.source.remote.profile.ProfileUploadDataSource
 import com.example.witt.data.source.remote.signin.SignInDataSource
@@ -59,10 +60,11 @@ object RepositoryModule {
                               getPlanListDataSource: GetPlanListDataSource,
                               getPlanDataSource: GetPlanDataSource,
                               removePlanDataSource: RemovePlanDataSource,
-                              joinPlanDataSource: JoinPlanDataSource
+                              joinPlanDataSource: JoinPlanDataSource,
+                              outPlanDataSource: OutPlanDataSource
     ): PlanRepository{
         return PlanRepositoryImpl(makePlanDataSource, getPlanListDataSource,
-            getPlanDataSource, removePlanDataSource, joinPlanDataSource)
+            getPlanDataSource, removePlanDataSource, joinPlanDataSource, outPlanDataSource)
     }
 
     @Provides
