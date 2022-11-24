@@ -43,7 +43,7 @@ class DrawUpPlanFragment : BaseFragment<FragmentDrawUpPlanBinding>(R.layout.frag
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //initMap()
+        initMap()
         initButton()
         initAdapter()
         observeData()
@@ -152,7 +152,7 @@ class DrawUpPlanFragment : BaseFragment<FragmentDrawUpPlanBinding>(R.layout.frag
         }
     }
     companion object{
-        private val defaultSeoulx = 37.53737528
-        private val defaultSeouly = 127.00557633
+        private const val defaultSeoulx = 37.53737528
+        private const val defaultSeouly = 127.00557633
     }
 }
