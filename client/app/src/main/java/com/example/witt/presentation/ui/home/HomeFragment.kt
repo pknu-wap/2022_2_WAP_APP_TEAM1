@@ -1,5 +1,6 @@
 package com.example.witt.presentation.ui.home
 
+import android.content.Context.MODE_PRIVATE
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -16,6 +17,7 @@ import com.example.witt.presentation.base.BaseFragment
 import com.example.witt.presentation.ui.UiEvent
 import com.example.witt.presentation.ui.home.adapter.HomePlanAdapter
 import com.example.witt.presentation.ui.plan.PlanViewModel
+import com.example.witt.presentation.widget.JoinPlanDialog
 import com.example.witt.presentation.widget.RemoveConfirmDialog
 import com.google.android.material.datepicker.MaterialDatePicker
 import dagger.hilt.android.AndroidEntryPoint
@@ -50,7 +52,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
         initAdapter()
         initButton()
         initDateRangePicker()
-
+        checkJoinPlan()
     }
 
     override fun onResume() {
@@ -60,31 +62,38 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
 
     private fun observeData(){
 
-        viewModel.homeEvent.flowWithLifecycle(viewLifecycleOwner.lifecycle)
-            .onEach {
-                when(it){
-                    is UiEvent.Success ->{}
-                    is UiEvent.Failure ->{
-                        Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
-                    }
-                }
-            }.launchIn(viewLifecycleOwner.lifecycleScope)
-
         viewModel.planList.flowWithLifecycle(viewLifecycleOwner.lifecycle)
             .onEach {
                 homePlanAdapter.submitList(it.result)
             }.launchIn(viewLifecycleOwner.lifecycleScope)
 
-        //joinPlan
-        planViewModel.joinPlanUiEvent.flowWithLifecycle(viewLifecycleOwner.lifecycle)
+        viewModel.homeEvent.flowWithLifecycle(viewLifecycleOwner.lifecycle)
             .onEach {
                 when(it){
-                    is UiEvent.Success ->{ viewModel.getPlanList() }
+                    is UiEvent.Success ->{ }
                     is UiEvent.Failure ->{
                         Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
                     }
                 }
             }
+
+        //joinPlan
+        viewModel.joinPlanUiEvent.flowWithLifecycle(viewLifecycleOwner.lifecycle)
+            .onEach {
+                when(it){
+                    //joinPlanResult
+                    is UiEvent.Success ->{
+                        planViewModel.setPlanState(it.data)
+                        val direction =
+                            HomeFragmentDirections.actionHomeFragmentToDrawUpPlanFragment()
+                        findNavController().navigate(direction)
+                    }
+                    is UiEvent.Failure ->{
+                        Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }.launchIn(viewLifecycleOwner.lifecycleScope)
+
     }
 
     private fun initAdapter(){
@@ -126,4 +135,25 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
             }
         }
     }
+
+    private fun checkJoinPlan(){
+        val prefs = requireActivity().getSharedPreferences("prefs", MODE_PRIVATE)
+        val tripId = prefs.getString("tripId", null) ?: return
+        val tripName = prefs.getString("tripName", null) ?: return
+        val tripDate = prefs.getString("tripDate", null) ?: return
+        showJoinPlanDialog(tripId, tripName, tripDate)
+    }
+
+    private fun showJoinPlanDialog(tripId: String, tripName: String, tripDate: String){
+        JoinPlanDialog(
+            requireActivity(), tripName, tripDate,
+            onClickCancel = {
+                viewModel.rejectPlan()
+            },
+            onClickJoin = {
+                viewModel.joinPlan(tripId.toInt())
+            }
+        ).show()
+    }
+
 }
