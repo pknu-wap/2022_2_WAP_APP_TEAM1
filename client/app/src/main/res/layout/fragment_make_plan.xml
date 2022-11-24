@@ -61,8 +61,7 @@
                 android:id="@+id/plan_id_editTextView"
                 android:text="@={viewModel.inputPlanName}"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                />
+                android:layout_height="wrap_content" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.chip.ChipGroup
@@ -134,7 +133,8 @@
                 android:onClick="@{() -> viewModel.onButtonEvent(destinationGangreungChip.getText().toString())}"
                 android:text="강릉/강원"
                 app:layout_constraintStart_toStartOf="@+id/destination_gangreung_chip"
-                app:layout_constraintTop_toBottomOf="@id/destination_jeonju_chip" />
+                app:layout_constraintTop_toBottomOf="@id/destination_jeonju_chip"
+                />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/destination_jeju_chip"
