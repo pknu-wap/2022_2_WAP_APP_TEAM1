@@ -32,6 +32,24 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/destination_textView" />
 
+        <com.google.android.material.chip.Chip
+            android:id="@+id/out_plan_button"
+            style="@style/Widget.Material3.Chip.Filter.Elevated"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="일정 나가기"
+            android:textColor="@color/skyBlue"
+            android:textSize="12sp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            app:checkedIconEnabled="false"
+            app:chipBackgroundColor="@color/white"
+            app:chipIcon="@drawable/ic_baseline_delete_24"
+            app:chipIconTint="@color/skyBlue"
+            app:chipIconVisible="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <TextView
             android:id="@+id/planName_text_view"
             android:layout_width="wrap_content"
