@@ -22,6 +22,7 @@ import com.example.witt.presentation.ui.plan.drawup_plan.adapter.PlanAdapter
 import net.daum.mf.map.api.MapPOIItem
 import net.daum.mf.map.api.MapPoint
 import com.example.witt.presentation.ui.plan.drawup_plan.memo_dialog.WriteMemoFragment
+import com.example.witt.presentation.widget.RemoveConfirmDialog
 import com.example.witt.utils.DefaultTemplate
 import com.kakao.sdk.common.util.KakaoCustomTabsClient
 import com.kakao.sdk.share.ShareClient
@@ -57,6 +58,16 @@ class DrawUpPlanFragment : BaseFragment<FragmentDrawUpPlanBinding>(R.layout.frag
             } ?: Toast.makeText(requireContext(), "카카오톡 링크를 생성하는데 실패하였습니다.",
                 Toast.LENGTH_SHORT).show()
         }
+
+        binding.outPlanButton.setOnClickListener {
+            RemoveConfirmDialog(
+                onClickRemove ={
+                    viewModel.outPlan()
+                },
+                onClickCancel = {},
+                context = requireContext()
+            ).show()
+        }
     }
 
     private fun observeData(){
@@ -70,7 +81,10 @@ class DrawUpPlanFragment : BaseFragment<FragmentDrawUpPlanBinding>(R.layout.frag
         viewModel.drawUpPlanEvent.flowWithLifecycle(viewLifecycleOwner.lifecycle)
             .onEach {
                 when(it){
-                    is UiEvent.Success ->{}
+                    is UiEvent.Success ->{
+                        val direction = DrawUpPlanFragmentDirections.actionDrawUpPlanFragmentToHomeFragment()
+                        findNavController().navigate(direction)
+                    }
                     is UiEvent.Failure ->{ Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()}
                 }
             }.launchIn(viewLifecycleOwner.lifecycleScope)
@@ -158,6 +172,7 @@ class DrawUpPlanFragment : BaseFragment<FragmentDrawUpPlanBinding>(R.layout.frag
             }
         }
     }
+
     companion object{
         private val defaultSeoulx = 37.53737528
         private val defaultSeouly = 127.00557633
