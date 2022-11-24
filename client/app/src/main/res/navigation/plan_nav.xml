@@ -42,6 +42,9 @@
         <action
             android:id="@+id/action_drawUpPlanFragment_to_mapSearchFragment"
             app:destination="@id/mapSearchFragment" />
+        <action
+            android:id="@+id/action_drawUpPlanFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
     </fragment>
     <fragment
         android:id="@+id/writeMemoFragment"
