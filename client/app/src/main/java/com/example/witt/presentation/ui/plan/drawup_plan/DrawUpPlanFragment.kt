@@ -22,6 +22,7 @@ import com.example.witt.presentation.ui.plan.drawup_plan.adapter.PlanAdapter
 import net.daum.mf.map.api.MapPOIItem
 import net.daum.mf.map.api.MapPoint
 import com.example.witt.presentation.ui.plan.drawup_plan.memo_dialog.WriteMemoFragment
+import com.example.witt.presentation.widget.RemoveConfirmDialog
 import com.example.witt.utils.DefaultTemplate
 import com.kakao.sdk.common.util.KakaoCustomTabsClient
 import com.kakao.sdk.share.ShareClient
@@ -51,7 +52,21 @@ class DrawUpPlanFragment : BaseFragment<FragmentDrawUpPlanBinding>(R.layout.frag
 
     private fun initButton() {
         binding.sharePlanButton.setOnClickListener {
-            sendKakaoLink(requireContext(), DefaultTemplate.kakaoTemplate)
+            //todo refactor
+            planViewModel.planState.value?.let{
+                sendKakaoLink(requireContext(), DefaultTemplate.createTemplate(it))
+            } ?: Toast.makeText(requireContext(), "카카오톡 링크를 생성하는데 실패하였습니다.",
+                Toast.LENGTH_SHORT).show()
+        }
+
+        binding.outPlanButton.setOnClickListener {
+            RemoveConfirmDialog(
+                onClickRemove ={
+                    viewModel.outPlan()
+                },
+                onClickCancel = {},
+                context = requireContext()
+            ).show()
         }
     }
 
@@ -66,7 +81,10 @@ class DrawUpPlanFragment : BaseFragment<FragmentDrawUpPlanBinding>(R.layout.frag
         viewModel.drawUpPlanEvent.flowWithLifecycle(viewLifecycleOwner.lifecycle)
             .onEach {
                 when(it){
-                    is UiEvent.Success ->{}
+                    is UiEvent.Success ->{
+                        val direction = DrawUpPlanFragmentDirections.actionDrawUpPlanFragmentToHomeFragment()
+                        findNavController().navigate(direction)
+                    }
                     is UiEvent.Failure ->{ Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()}
                 }
             }.launchIn(viewLifecycleOwner.lifecycleScope)
@@ -88,9 +106,9 @@ class DrawUpPlanFragment : BaseFragment<FragmentDrawUpPlanBinding>(R.layout.frag
 
         planAdapter = PlanAdapter(
             context = requireContext(),
-            memoClick = {  showMemoDialog(it.Day, it.Memo.Content) },
+            memoClick = {  showMemoDialog(it.Day, it.PlanId, it.Memo.Content) },
             memoButtonClick = { day ->
-                showMemoDialog(day, null)
+                showMemoDialog(day, null, null)
             },
             placeButtonClick = {
                 val direction = DrawUpPlanFragmentDirections.actionDrawUpPlanFragmentToMapSearchFragment()
@@ -102,11 +120,14 @@ class DrawUpPlanFragment : BaseFragment<FragmentDrawUpPlanBinding>(R.layout.frag
         binding.datePlanRecyclerView.adapter = planAdapter
     }
 
-    private fun showMemoDialog(day: Int, memo: String?) {
+    private fun showMemoDialog(day: Int, planId: Int?, memo: String?) {
         val memoDialog = WriteMemoFragment()
         val args = Bundle()
+
         args.putInt("day", day)
         memo?.let { args.putString("memo", it) }
+        planId?.let { args.putInt("planId", it) }
+
         memoDialog.arguments = args
         memoDialog.show(requireActivity().supportFragmentManager, "MEMO")
     }
@@ -151,6 +172,7 @@ class DrawUpPlanFragment : BaseFragment<FragmentDrawUpPlanBinding>(R.layout.frag
             }
         }
     }
+
     companion object{
         private const val defaultSeoulx = 37.53737528
         private const val defaultSeouly = 127.00557633

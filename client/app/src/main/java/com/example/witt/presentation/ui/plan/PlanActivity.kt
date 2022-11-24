@@ -19,8 +19,10 @@ class PlanActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_plan)
 
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.plan_nav_host_fragment) as NavHostFragment
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.plan_nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
 
     }
+
 }

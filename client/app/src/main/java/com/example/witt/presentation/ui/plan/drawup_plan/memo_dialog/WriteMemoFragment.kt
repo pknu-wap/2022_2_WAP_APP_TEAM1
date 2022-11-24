@@ -53,9 +53,10 @@ class WriteMemoFragment: DialogFragment() {
     private fun initViews(){
 
         val memoText = arguments?.getString("memo") ?: ""
-        arguments?.getInt("day")?.let{
-            viewModel.setMemoInfo(memoText, it)
-        } ?: dismiss() //날짜 없이 왔으면 dialog 종료
+        val dayId = arguments?.getInt("day", -1)
+        val planId = arguments?.getInt("planId", -1)
+
+        viewModel.setMemoInfo(memoText, dayId, planId)
 
         binding.WriteMemoButton.setOnClickListener{
             viewModel.submitMemo()

@@ -38,7 +38,10 @@
                     android:scheme="@string/kakao_oauth_host" />
             </intent-filter>
         </activity>
-
+        <activity
+            android:name=".presentation.ui.plan.PlanActivity"
+            android:exported="true">
+        </activity>
         <activity
             android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"
             android:exported="true">

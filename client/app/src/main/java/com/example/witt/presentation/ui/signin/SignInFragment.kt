@@ -1,6 +1,7 @@
 package com.example.witt.presentation.ui.signin
 
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.View
@@ -11,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.witt.R
 import com.example.witt.databinding.FragmentSignInBinding
 import com.example.witt.presentation.base.BaseFragment
+import com.example.witt.presentation.ui.plan.PlanActivity
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.user.UserApiClient
 import com.navercorp.nid.NaverIdLoginSDK
@@ -100,6 +102,7 @@ class SignInFragment : BaseFragment<FragmentSignInBinding>(R.layout.fragment_sig
         }
 
         binding.goToSignUpButton.setOnClickListener{
+            startActivity(Intent(requireActivity(), PlanActivity::class.java))
             val direction = SignInFragmentDirections.actionSignInFragmentToPlanNav()
             findNavController().navigate(direction)
         }

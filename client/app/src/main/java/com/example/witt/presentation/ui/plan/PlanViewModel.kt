@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.witt.domain.model.plan.PlanStateModel
 import kotlinx.coroutines.launch
 
-class PlanViewModel : ViewModel(){
+class PlanViewModel: ViewModel(){
 
     //dataBinding
     private val _planState : MutableLiveData<PlanStateModel> = MutableLiveData()
@@ -18,5 +18,4 @@ class PlanViewModel : ViewModel(){
             _planState.value = planItem
         }
     }
-
 }

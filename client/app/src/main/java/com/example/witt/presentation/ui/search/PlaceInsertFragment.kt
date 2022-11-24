@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.navigation.fragment.navArgs
 import com.example.witt.R
-import com.example.witt.data.model.search.Place
+import com.example.witt.data.model.search.PlaceModel
 import com.example.witt.presentation.base.BaseFragment
 import com.example.witt.databinding.FragmentPlaceInsertBinding
 import net.daum.mf.map.api.MapPOIItem
@@ -22,7 +22,7 @@ class PlaceInsertFragment: BaseFragment<FragmentPlaceInsertBinding>(R.layout.fra
 
     private fun initMap() {
         val mapView by lazy { MapView(requireContext()) }
-        val place: Place = args.place
+        val place: PlaceModel = args.place
         val xPosition = place.x.toDouble()
         val yPosition = place.y.toDouble()
 

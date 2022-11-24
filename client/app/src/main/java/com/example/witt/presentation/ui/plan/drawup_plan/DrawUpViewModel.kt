@@ -1,5 +1,6 @@
 package com.example.witt.presentation.ui.plan.drawup_plan
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.witt.domain.model.plan.adapter.PlanModel
@@ -22,6 +23,8 @@ class DrawUpViewModel @Inject constructor(
     private val convertDetailPlanUseCase: ConvertDetailPlanUseCase
 ) : ViewModel() {
 
+    private val planStateData : MutableLiveData<PlanStateModel> = MutableLiveData()
+
     private val _drawUpPlanEvent = MutableSharedFlow<UiEvent<Unit>>()
     val drawUpPlanEvent : SharedFlow<UiEvent<Unit>> get() = _drawUpPlanEvent
 
@@ -41,4 +44,19 @@ class DrawUpViewModel @Inject constructor(
             }
         }
     }
+
+    fun outPlan(){
+        viewModelScope.launch {
+            planRepository.outPlan(requireNotNull(planStateData.value?.TripId)).mapCatching {
+                if(it.status){
+                    _drawUpPlanEvent.emit(UiEvent.Success(Unit))
+                }else{
+                    _drawUpPlanEvent.emit(UiEvent.Failure("일정에 참가하지 못하였습니다."))
+                }
+            }.onFailure {
+                _drawUpPlanEvent.emit(UiEvent.Failure("네트워크를 확인해 주세요."))
+            }
+        }
+    }
+
 }
