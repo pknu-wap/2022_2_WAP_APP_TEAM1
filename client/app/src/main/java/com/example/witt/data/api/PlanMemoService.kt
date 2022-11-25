@@ -1,6 +1,5 @@
 package com.example.witt.data.api
 
-import com.example.witt.data.model.plan.memo.EditMemoRequest
 import com.example.witt.data.model.plan.memo.EditMemoResponse
 import com.example.witt.data.model.plan.memo.MakeMemoResponse
 import retrofit2.http.Body
@@ -17,10 +16,11 @@ interface PlanMemoService {
         @Body Content: String
     ) : MakeMemoResponse
 
-    @PATCH("/api/trip/{tripId}")
+    @PATCH("/api/trip/{tripId}/plan/{planId}/memo")
     suspend fun editMemo(
         @Path("tripId") tripId: Int,
-        @Body request: EditMemoRequest
+        @Path("planId") planId: Int,
+        @Body Content: String
     ): EditMemoResponse
 
 }
