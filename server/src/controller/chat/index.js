@@ -1,41 +1,10 @@
 'use strict';
-const models=require("../../models")
-const {raw2str}=require("../../util/rawtostr")
+const models = require("../../../models")
+const {raw2str} = require("../../../util/rawtostr")
 
-module.exports={
-
-   
-    /*
-    //get(GET)
-    async getChat(req,res){
-        if (req.body.TripId===undefined){
-            return res.send({status:false, reason: "Bad Request"});
-        }
-        let isMember=await models.Trip.isMemberOf(models,trip.TripId,UserId)//여행에 참여중인지 확인
-        if (!isMember){
-            return res.status(403).send({
-                message: "Forbidden"
-            });
-        }
-
-        let chats=await models.chat.findAll({
-            where:{
-                TripId:trip.TripId
-            },
-            attributes:['UserId','Message','OrderId','Time','read']
-        })
-
-        let Unread=await models.chat.Unread(models,trip.TripId,UserId)//읽지 않은 메세지 수?
-        if (Unread>0){
-            await models.chat.readAll(models,trip.TripId,UserId)//읽음 처리?
-        }
-        return res.status(200).send({
-            message: {status:true, reason: "방 조회 성공", chats}
-        })
-    },
-    */
-     //Get Unread chat(GET)
-     async getUnreadChat(req, res) {
+module.exports = {
+    //Get Unread chat(GET)
+    async getUnreadChat(req, res) {
         const {TripId} = req.params;
         const {UserId} = req.token;
         let result = {};
@@ -67,7 +36,8 @@ module.exports={
             }
         }
 
-    },
+    }
+    ,
     //Send Chat(POST)
     async sendChat(req, res) {
         const {TripId} = req.params;
@@ -105,5 +75,4 @@ module.exports={
         let result = await chat.destroy();
         return res.status(200).send({status: true, reason: "채팅 삭제 성공"});
     }
-    
 }

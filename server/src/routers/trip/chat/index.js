@@ -8,8 +8,10 @@ function wrapAsync(fn) {
 }
 // localhost:3000/api/trip/:TripId/chat/trip/:TripId/chat
 
-chatRouter.put('/',wrapAsync(chatService.sendChat));
+
+chatRouter.put('/',wrapAsync(chatService.sendMessage));
 chatRouter.get("/",wrapAsync(chatService.getUnreadChat));
-chatRouter.delete('/',wrapAsync(chatService.deleteChat));
+//chatRouter.delete('/',wrapAsync(chatService.deleteChat));
+
 
 module.exports = chatRouter;
