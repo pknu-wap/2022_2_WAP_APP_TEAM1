@@ -73,13 +73,16 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <Spinner
-                    android:id="@+id/airport_spinner_start"
-                    android:layout_width="100dp"
+                <TextView
+                    android:id="@+id/airport_start"
+                    android:layout_width="wrap_content"
                     android:layout_height="0dp"
                     android:layout_marginStart="16dp"
                     app:layout_constraintStart_toEndOf="@+id/start_text"
-                    app:layout_constraintTop_toTopOf="@+id/start_text" />
+                    app:layout_constraintTop_toTopOf="@+id/start_text"
+                    android:text="공항 선택"
+                    android:textColor="@color/skyBlue"
+                    android:textSize="20sp"/>
 
                 <TextView
                     android:id="@+id/arive_text"
@@ -107,32 +110,23 @@
                     android:id="@+id/date_period"
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
-                    android:layout_marginStart="26dp"
-                    android:text="2022-11-25"
+                    android:layout_marginStart="16dp"
+                    android:text="날짜 선택"
                     android:textSize="20sp"
+                    android:textColor="@color/skyBlue"
                     app:layout_constraintStart_toEndOf="@+id/date_text"
                     app:layout_constraintTop_toTopOf="@+id/date_text" />
 
-                <Spinner
-                    android:id="@+id/airport_spinner_arive"
-                    android:layout_width="100dp"
+                <TextView
+                    android:id="@+id/airport_arive"
+                    android:textColor="@color/skyBlue"
+                    android:layout_width="wrap_content"
                     android:layout_height="0dp"
                     android:layout_marginStart="16dp"
                     app:layout_constraintStart_toEndOf="@+id/arive_text"
-                    app:layout_constraintTop_toTopOf="@+id/arive_text" />
-
-                <Button
-                    android:id="@+id/date_btn"
-                    style="@style/Widget.Material3.Button.ElevatedButton"
-                    android:textColor="@color/white"
-                    android:backgroundTint="@color/skyBlue"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="7dp"
-                    android:text="선택"
-                    android:textSize="15sp"
-                    app:layout_constraintStart_toStartOf="@+id/date_period"
-                    app:layout_constraintTop_toBottomOf="@+id/date_period" />
+                    app:layout_constraintTop_toTopOf="@+id/arive_text"
+                    android:text="공항 선택"
+                    android:textSize="20sp"/>
 
                 <TextView
                     android:id="@+id/adult"
@@ -148,13 +142,13 @@
                     android:id="@+id/child"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="30dp"
                     android:text="유아"
                     android:textSize="20sp"
-                    app:layout_constraintEnd_toEndOf="parent"
 
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/date_btn" />
+                    app:layout_constraintTop_toBottomOf="@+id/date_period" />
 
                 <TextView
                     android:id="@+id/baby"
@@ -209,6 +203,8 @@
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/planeInfo" />'
+            app:layout_constraintTop_toBottomOf="@id/planeInfo" />
+
+        '
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

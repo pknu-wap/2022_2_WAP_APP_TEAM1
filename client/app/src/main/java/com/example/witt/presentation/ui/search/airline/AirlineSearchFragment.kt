@@ -7,8 +7,11 @@ import com.example.witt.R
 import com.example.witt.databinding.FragmentAirlineSearchBinding
 import com.example.witt.presentation.base.BaseFragment
 import com.google.android.material.datepicker.MaterialDatePicker
+import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 
 class AirlineSearchFragment: BaseFragment<FragmentAirlineSearchBinding>(R.layout.fragment_airline_search){
+
 
     private val dateRangePicker by lazy {
         MaterialDatePicker.Builder.dateRangePicker()
@@ -29,8 +32,27 @@ class AirlineSearchFragment: BaseFragment<FragmentAirlineSearchBinding>(R.layout
     }
 
     private fun initButton(){
-        binding.dateBtn.setOnClickListener {
+        binding.datePeriod.setOnClickListener {
             dateRangePicker.show(requireActivity().supportFragmentManager, "datePicker")
         }
+        binding.airportStart.setOnClickListener{
+            showDialog(it as TextView)
+        }
+        binding.airportArive.setOnClickListener{
+            showDialog(it as TextView)
+        }
     }
+    private fun showDialog(it: TextView){
+        val airports = resources.getStringArray(R.array.airport_array)
+        val builder = AlertDialog.Builder(requireActivity())
+        builder.setTitle("공항을 선택하세요.")
+            .setItems(airports
+            ) { dialog, which ->
+                it.text = airports[which]
+            }
+        builder.show()
+    }
+
+
+
 }
