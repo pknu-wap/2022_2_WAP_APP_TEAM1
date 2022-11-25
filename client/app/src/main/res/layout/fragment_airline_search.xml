@@ -31,7 +31,7 @@
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/round"
-                style="@style/Widget.MaterialComponents.Chip.Action"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="왕복"
@@ -39,7 +39,7 @@
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/oneWay"
-                style="@style/Widget.MaterialComponents.Chip.Action"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="편도"
@@ -49,7 +49,7 @@
         <androidx.cardview.widget.CardView
             android:id = "@+id/planeInfo"
             android:layout_width="0dp"
-            android:layout_height="300dp"
+            android:layout_height="400dp"
             android:layout_marginHorizontal="32dp"
             android:layout_marginTop="20dp"
             app:cardBackgroundColor="@color/background_gray"
@@ -66,8 +66,8 @@
                     android:id="@+id/start_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="24dp"
                     android:text="출발"
                     android:textSize="20sp"
                     app:layout_constraintStart_toStartOf="parent"
@@ -78,16 +78,15 @@
                     android:layout_width="100dp"
                     android:layout_height="0dp"
                     android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp"
                     app:layout_constraintStart_toEndOf="@+id/start_text"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="@+id/start_text" />
 
                 <TextView
                     android:id="@+id/arive_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="24dp"
                     android:text="도착"
                     android:textSize="20sp"
                     app:layout_constraintStart_toStartOf="parent"
@@ -97,76 +96,102 @@
                     android:id="@+id/date_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="24dp"
                     android:text="날짜"
                     android:textSize="20sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/arive_text" />
 
                 <TextView
-                    android:id="@+id/adult"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="60dp"
-                    android:text="성인"
-                    android:textSize="20sp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/date_text" />
-
-                <TextView
-                    android:id="@+id/child"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="70dp"
-                    android:layout_marginTop="60dp"
-                    android:text="유아"
-                    android:textSize="20sp"
-                    app:layout_constraintStart_toEndOf="@+id/adult"
-                    app:layout_constraintTop_toBottomOf="@+id/date_text" />
-
-                <TextView
-                    android:id="@+id/baby"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="70dp"
-                    android:layout_marginTop="60dp"
-                    android:text="영아"
-                    android:textSize="20sp"
-                    app:layout_constraintStart_toEndOf="@+id/child"
-                    app:layout_constraintTop_toBottomOf="@+id/date_text" />
-
-                <TextView
                     android:id="@+id/date_period"
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginStart="26dp"
                     android:text="2022-11-25"
                     android:textSize="20sp"
                     app:layout_constraintStart_toEndOf="@+id/date_text"
-                    app:layout_constraintTop_toBottomOf="@+id/arive_text" />
+                    app:layout_constraintTop_toTopOf="@+id/date_text" />
 
                 <Spinner
                     android:id="@+id/airport_spinner_arive"
                     android:layout_width="100dp"
                     android:layout_height="0dp"
                     android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp"
                     app:layout_constraintStart_toEndOf="@+id/arive_text"
-                    app:layout_constraintTop_toBottomOf="@+id/start_text" />
+                    app:layout_constraintTop_toTopOf="@+id/arive_text" />
 
                 <Button
                     android:id="@+id/date_btn"
-                    android:layout_width="80dp"
-                    android:layout_height="37dp"
+                    style="@style/Widget.Material3.Button.ElevatedButton"
+                    android:textColor="@color/white"
+                    android:backgroundTint="@color/skyBlue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="7dp"
                     android:text="선택"
                     android:textSize="15sp"
-                    app:layout_constraintTop_toBottomOf="@+id/date_period"
-                    tools:layout_editor_absoluteX="69dp" />
+                    app:layout_constraintStart_toStartOf="@+id/date_period"
+                    app:layout_constraintTop_toBottomOf="@+id/date_period" />
 
+                <TextView
+                    android:id="@+id/adult"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="80dp"
+                    android:text="성인"
+                    android:textSize="20sp"
+                    app:layout_constraintEnd_toStartOf="@+id/child"
+                    app:layout_constraintTop_toTopOf="@+id/child" />
+
+                <TextView
+                    android:id="@+id/child"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="유아"
+                    android:textSize="20sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/date_btn" />
+
+                <TextView
+                    android:id="@+id/baby"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="80dp"
+                    android:text="영아"
+                    android:textSize="20sp"
+                    app:layout_constraintStart_toEndOf="@+id/child"
+                    app:layout_constraintTop_toTopOf="@+id/child" />
+
+                <NumberPicker
+                    android:layout_width="65dp"
+                    android:layout_height="122dp"
+                    android:layout_marginEnd="-16dp"
+                    app:layout_constraintEnd_toEndOf="@+id/adult"
+                    app:layout_constraintTop_toTopOf="@+id/numberPicker" />
+
+                <NumberPicker
+                    android:id="@+id/numberPicker"
+                    android:layout_width="65dp"
+                    android:layout_height="122dp"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/child" />
+
+                <NumberPicker
+                    android:id="@+id/numberPicker2"
+                    android:layout_width="65dp"
+                    android:layout_height="122dp"
+                    android:layout_marginStart="-16dp"
+                    android:layout_marginEnd="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="@+id/baby"
+                    app:layout_constraintTop_toTopOf="@+id/numberPicker" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.cardview.widget.CardView>
 

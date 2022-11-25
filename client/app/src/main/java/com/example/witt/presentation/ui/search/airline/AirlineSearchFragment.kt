@@ -13,7 +13,7 @@ class AirlineSearchFragment: BaseFragment<FragmentAirlineSearchBinding>(R.layout
     private val dateRangePicker by lazy {
         MaterialDatePicker.Builder.dateRangePicker()
             .setTheme(R.style.CustomThemeOverlay_MaterialCalendar_Fullscreen)
-            .setTitleText("언제 여행을 떠나세요?")
+            .setTitleText("출발하는 날짜를 선택해주세요!")
             .setSelection(
                 Pair(
                     MaterialDatePicker.thisMonthInUtcMilliseconds(),
@@ -29,7 +29,7 @@ class AirlineSearchFragment: BaseFragment<FragmentAirlineSearchBinding>(R.layout
     }
 
     private fun initButton(){
-        binding.goToMakePlanButton.setOnClickListener {
+        binding.dateBtn.setOnClickListener {
             dateRangePicker.show(requireActivity().supportFragmentManager, "datePicker")
         }
     }
