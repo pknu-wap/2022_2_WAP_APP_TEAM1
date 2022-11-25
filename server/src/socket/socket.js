@@ -3,16 +3,24 @@ const server= require('http').createServer(app);
 const io=require('socket.io')(server);
 const port=80;
 
+let activeUsers={};
+
 io.on('connection', function(socket){
     console.log('socket connected');
-    socket.on('newUser',(name)=>{
+    socket.on('newUser',(User)=>{
+        const {TripId,name}=User
+        activeUsers[TripId]=name;
         console.log(name+'님이 접속하였습니다.');
+        console.log(activeUsers);
         });
     socket.on('disconnect', function() {
         console.log('user disconnected');
     });
-    socket.on('sendMessage', function(msg){
-        console.log('message: ' + msg);
+    socket.on('sendMessage', (msg)=>{
+        const {TripId,name,message}=msg;
+        console.log(TripId+name+'님이 메시지를 보냈습니다.');
+        console.log('message: ' + message);
+        io.to(TripId).emit('message',message);
       });
 });
 

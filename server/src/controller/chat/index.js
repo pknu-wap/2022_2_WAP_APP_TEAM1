@@ -1,11 +1,16 @@
 'use strict';
-const models = require("../../../models")
-const {raw2str} = require("../../../util/rawtostr")
-
+const models = require("../../models")
+const {raw2str} = require("../../util/rawtostr")
+/*
+createRoom: 방
+joinRoom:join하면서 room에 user추가
+addMessage: 메세지 추가
+getMessage: 메세지 내역 가져오기
+*/
 module.exports = {
     //Get Unread chat(GET)
     async getUnreadChat(req, res) {
-        const {TripId} = req.params;
+        const {TripId} = req.query;
         const {UserId} = req.token;
         let result = {};
         let chatList = raw2str(await models.Chat.findAll({
@@ -36,18 +41,17 @@ module.exports = {
             }
         }
 
-    }
-    ,
+    },
     //Send Chat(POST)
-    async sendChat(req, res) {
-        const {TripId} = req.params;
+    async addMessage(req, res) {
         const {UserId} = req.token;
-        const {Content} = req.body;
+        const {TripId, ChatId, Content} = req.body;
         if (Content == undefined) {
             return res.send({status: false, reason: "Bad Request"});
         }
         let chat = raw2str(await models.Chat.create({
             TripId: TripId,
+            ChatId: ChatId,
             UserId: UserId,
             Content: Content
         }));
@@ -57,7 +61,7 @@ module.exports = {
         }
         return res.send({status: true, reason: "채팅 전송 성공"});
     },
-    //Delete Chat(DELETE)
+    /*Delete Chat(DELETE)
     async deleteChat(req, res) {
         const {TripId} = req.params;
         const {ChatId} = req.body;
@@ -74,5 +78,5 @@ module.exports = {
         }
         let result = await chat.destroy();
         return res.status(200).send({status: true, reason: "채팅 삭제 성공"});
-    }
+    }*/
 }
