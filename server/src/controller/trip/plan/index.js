@@ -46,6 +46,7 @@ module.exports = {
             });
             if (place == null) {
                 place = await models.Place.create({
+                    PlaceId: PlaceId,
                     Latitude: Latitude,
                     Longitude: Longitude,
                     Category: Category,
@@ -62,8 +63,9 @@ module.exports = {
                 PlanId: plan.PlanId,
                 PlaceId: place.PlaceId
             }, {transaction: transaction});
+
             await transaction.commit();
-            return res.send({status: true, reason: "장소 추가 성공", PlaceId: place.PlaceId});
+            return res.send({status: true, reason: "장소 추가 성공", planId: plan.PlanId});
         } catch (err) {
             await transaction.rollback();
             console.log('addMemo error : ', err);
@@ -111,10 +113,7 @@ module.exports = {
                 PlanId: plan.PlanId,
                 Content: Content
             });
-
-            res.status(200).json({
-                planMemo
-            });
+            return res.send({status: true, reason: "메모 추가 성공", PlanId: plan.PlanId})
         } catch (err) {
             await transaction.rollback();
             console.log('addMemo error : ', err);

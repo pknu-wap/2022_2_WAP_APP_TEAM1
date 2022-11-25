@@ -1,7 +1,23 @@
+'use strict';
 var req = require('superagent');
 var dateutil = require('dateutil');
-var xml2jsParser = require('superagent-xml2jsparser')
+var xml2js = require('xml2js');
 
+var parser = new xml2js.Parser({explicitArray : false});
+var parseString = parser.parseString;
+
+function xml2jsParser(res, fn){
+    res.text = '';
+    res.setEncoding('utf8');
+    res.on('data', function(chunk){ res.text += chunk; });
+    res.on('end', function(){
+        try {
+            parseString(res.text, fn);
+        } catch (err) {
+            fn(err);
+        }
+    });
+};
 class flightData {
     constructor() {
         this.KIWI_API_ENDPOINT = 'https://api.tequila.kiwi.com/v2';
@@ -23,8 +39,8 @@ class flightData {
                 .query({schDate: flightDate})
                 .query({pageNo: 1})
                 .parse(xml2jsParser);
-
-            console.log(res.text);
+            res = res.body.response.body;
+            console.log(res.items);
         } catch (e) {
             console.error(e);
         }

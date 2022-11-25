@@ -9,7 +9,7 @@ module.exports = {
         const { Name, StartDate, EndDate, Region } = req.body;
 
         if (StartDate === undefined || EndDate === undefined || Name === undefined || Region === undefined) {
-            return res.send({ status: false, reason: "Bad Request" });
+            return res.status(400).send({ status: false, reason: `` });
         }
         let transaction = await models.sequelize.transaction();
         try {
@@ -34,16 +34,13 @@ module.exports = {
     },
     //Delete Trip(DELETE)
     async deleteTrip(req, res) {
-        const { TripId } = req.body;
-        if (TripId == undefined) {
-            return res.send({ status: false, reason: "Bad Request" });
+        const { UserId } = req.token;
+        const { trip } = req;
+        if (trip == undefined) {
+            return res.send({ status: false, reason: `Trip is undefined` });
         }
-        let trip = await models.Trip.findByPk(TripId);
-        if (trip == null) {
-            return res.status(404).send({ status: false, reason: "Not Found" });
-        }
-        if (trip.OwnerId !== UserId) {
-            return res.status(403).send({ status: false, reason: "Forbidden" });
+        if (trip.OwnerId != UserId) {
+            return res.status(403).send({ status: false, reason: "not a owner of trip" });
         }
         let result = await trip.destroy();
         return res.status(200).send({ status: true, reason: "일정 삭제 성공" });

@@ -25,8 +25,9 @@ app.listen(port, async () => {
     {
         const flightData = require('./flight');
         let flight = new flightData();
-        await flight.getInfoByFlightNumber('2022-11-24', '7C', '211');
-        //await kiwi.findFlight('CJU', 'GMP', '2022-11-16', '2022-11-19', '', 1, 0, 1);
+        let data = await flight.getInfoByFlightNumber('2022-11-24', 'TW', '9702');
+        //let data = await flight.findFlight('CJU', 'GMP', '2022-11-24', '2022-11-24', '', 1, 0, 1);
+        console.log(data);
     }
     catch(err)
     {

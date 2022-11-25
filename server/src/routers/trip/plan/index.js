@@ -16,4 +16,7 @@ function wrapAsync(fn) {
 }
 
 planRouter.put("/days/:Day/memo", wrapAsync(planService.addMemo));
+planRouter.patch("/:PlanId/memo", wrapAsync(planService.editMemo));
+planRouter.put("/days/:Day/place", wrapAsync(planService.addPlace));
+planRouter.post("/")
 module.exports = planRouter;

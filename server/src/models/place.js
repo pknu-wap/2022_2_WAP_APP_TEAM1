@@ -43,15 +43,7 @@ module.exports = function (sequelize, DataTypes) {
     }, {
         underscored: true,
         freezeTableName: true,
-        tableName: 'DB_PLACE',
-        hooks: {
-            beforeCreate: async (place, options) => {
-                let result = await sequelize.query('SELECT SYS_GUID() AS PLACE_ID FROM DUAL', {
-                    type: sequelize.QueryTypes.SELECT
-                });
-                place.PlaceId = raw2str(result)[0].PLACE_ID;
-            }
-        }
+        tableName: 'DB_PLACE'
     });
 
     Place.associate = function (models) {
