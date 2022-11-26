@@ -75,7 +75,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
                         Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
                     }
                 }
-            }
+            }.launchIn(viewLifecycleOwner.lifecycleScope)
 
         //joinPlan
         viewModel.joinPlanUiEvent.flowWithLifecycle(viewLifecycleOwner.lifecycle)
