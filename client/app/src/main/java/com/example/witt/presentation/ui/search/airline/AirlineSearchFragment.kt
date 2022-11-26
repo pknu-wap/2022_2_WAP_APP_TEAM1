@@ -2,6 +2,7 @@ package com.example.witt.presentation.ui.search.airline
 
 import android.os.Bundle
 import android.view.View
+import android.widget.NumberPicker
 import com.example.witt.R
 import com.example.witt.databinding.FragmentAirlineSearchBinding
 import com.example.witt.presentation.base.BaseFragment
@@ -24,6 +25,7 @@ class AirlineSearchFragment: BaseFragment<FragmentAirlineSearchBinding>(R.layout
         super.onViewCreated(view, savedInstanceState)
         initButton()
         initDatePicker()
+        initNumberPickers()
     }
 
     private fun initButton(){
@@ -59,6 +61,33 @@ class AirlineSearchFragment: BaseFragment<FragmentAirlineSearchBinding>(R.layout
                 it.text = airports[which]
             }
         builder.show()
+    }
+
+    private fun initNumberPickers(){
+        val numberPickers = (arrayListOf <NumberPicker>(binding.adultNumberPicker,binding.childNumberPicker,binding.babyNumberPicker))
+        for (index in numberPickers.indices) {
+            initNumberPicker(numberPickers[index])
+        }
+    }
+
+    // 넘버 픽커 초기화
+    private fun initNumberPicker(numberPicker:NumberPicker){
+        val data1: Array<String> = Array(10){
+                i -> i.toString()
+        }
+        numberPicker.minValue = 0
+        numberPicker.maxValue = data1.size-1
+        numberPicker.wrapSelectorWheel = false
+        numberPicker.displayedValues = data1
+        numberPickerListener(numberPicker)
+    }
+
+//     넘버 픽커 리스너
+    private fun numberPickerListener(numberPicker:NumberPicker){
+        numberPicker.setOnValueChangedListener { picker, oldVal, newVal ->
+//            Log.d("test", "oldVal : ${oldVal}, newVal : $newVal")
+//            Log.d("test", "picker.displayedValues ${picker.displayedValues[picker.value]}")
+        }
     }
 
 }
