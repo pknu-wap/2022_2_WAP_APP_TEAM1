@@ -1,12 +1,10 @@
 package com.example.witt.presentation.ui.home
 
 import android.content.SharedPreferences
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.witt.domain.model.plan.PlanStateModel
 import com.example.witt.domain.model.plan.get_plan.GetPlanListModel
-import com.example.witt.domain.model.plan.get_plan.GetPlanListResultModel
 import com.example.witt.domain.model.plan.get_plan.toPlanStateModel
 import com.example.witt.domain.repository.PlanRepository
 import com.example.witt.presentation.ui.UiEvent
@@ -79,7 +77,8 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             planRepository.getPlanList().mapCatching { response ->
                 if(response.status){
-                    _joinPlanUiEvent.emit(UiEvent.Success(response.result[-1].toPlanStateModel()))
+                    rejectPlan()
+                    _joinPlanUiEvent.emit(UiEvent.Success(response.result.last().toPlanStateModel()))
                 }else{
                     _joinPlanUiEvent.emit(UiEvent.Failure(response.reason))
                 }
