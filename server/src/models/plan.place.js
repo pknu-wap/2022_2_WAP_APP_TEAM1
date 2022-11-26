@@ -25,8 +25,7 @@ module.exports = function (sequelize, DataTypes) {
     }, {
         underscored: true,
         freezeTableName: true,
-        tableName: 'PLAN_PLACE',
-        timestamps: true
+        tableName: 'PLAN_PLACE'
     });
 
     PlanPlace.associate = function (models) {

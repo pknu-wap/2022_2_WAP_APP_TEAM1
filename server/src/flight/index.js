@@ -29,20 +29,39 @@ class flightData {
     async getInfoByFlightNumber(flightDate, airlineCode, flightNum)
     {
         try {
-            flightDate = dateutil.format(dateutil.parse(flightDate), "Ymd");
             let res = await req.get(this.AIRPORT_OPENAPI_ENDPOINT)
                 .buffer(true)
                 .accept('xml')
                 .query({ServiceKey: this.AIRPORT_OPENAPI_KEY})
                 .query({schAirline: airlineCode})
                 .query({schFlightNum: flightNum})
-                .query({schDate: flightDate})
+                .query({schDate: dateutil.format(dateutil.parse(flightDate), "Ymd")})
                 .query({pageNo: 1})
                 .parse(xml2jsParser);
-            res = res.body.response.body;
-            console.log(res.items);
+            res = res.body.response.body.items.item;
+            if (res == null) {
+                console.log('getInfoByFlightNumber: res : ', res);
+                return null;
+            }
+            if (res instanceof Array) {
+                res = res[0];
+            }
+            let flightInfo = res;
+            let sTime = flightInfo.domesticStartTime;
+            let eTime = flightInfo.domesticArrivalTime;
+            sTime = sTime.substring(0, 2) + ':' + sTime.substring(2, 4);
+            eTime = eTime.substring(0, 2) + ':' + eTime.substring(2, 4);
+            let flight = {
+                airline: airlineCode,
+                flightNo: parseInt(flightNum),
+                flyFrom: flightInfo.startcityCode,
+                flyTo: flightInfo.arrivalcityCode,
+                departure: flightDate + ' ' + sTime,
+                arrival: flightDate + ' ' + eTime,
+            }
+            return flight;
         } catch (e) {
-            console.error(e);
+            console.log('getInfoByFlightNumber: error at ', e);
         }
     }
     /**

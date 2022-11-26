@@ -38,6 +38,10 @@ module.exports = (sequelize, DataTypes) => {
         freezeTableName: true,
         tableName: 'DB_TRIP',
         hooks: {
+            beforeDestroy: async (trip, options) => {
+                await sequelize.query(`DROP SEQUENCE SEQ_CHAT_${trip.TripId}`);
+                await sequelize.query(`DROP SEQUENCE SEQ_PLAN_${trip.TripId}`);
+            },
             beforeCreate: async (trip, options) => {
                 const result = await sequelize.query('SELECT SEQ_TRIP.NEXTVAL AS TRIP_ID FROM DUAL', {
                     type: sequelize.QueryTypes.SELECT
@@ -47,11 +51,7 @@ module.exports = (sequelize, DataTypes) => {
             afterCreate: async (trip, options) => {
                 await sequelize.query(`CREATE SEQUENCE SEQ_CHAT_${trip.TripId} INCREMENT BY 1 START WITH 1 MAXVALUE 9999999 MINVALUE 1 CACHE 20 ORDER;`);
                 await sequelize.query(`CREATE SEQUENCE SEQ_PLAN_${trip.TripId} INCREMENT BY 1 START WITH 1 MAXVALUE 9999999 MINVALUE 1 CACHE 20 ORDER;`);
-                },
-            beforeDestroy: async (trip, options) => {
-                await sequelize.query(`DROP SEQUENCE SEQ_CHAT_${trip.TripId}`);
-                await sequelize.query(`DROP SEQUENCE SEQ_PLAN_${trip.TripId}`);
-            }
+                }
         }
     });
 

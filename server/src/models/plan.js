@@ -38,7 +38,7 @@ module.exports = function (sequelize, DataTypes) {
             beforeCreate: async (plan, options) => {
                 let [result, metadata] = await sequelize.query(`SELECT MAX(ORDER_INDEX) AS MAX_ORDER_INDEX FROM DB_PLAN WHERE TRIP_ID = ${plan.TripId}`);
                 plan.OrderIndex = result[0].MAX_ORDER_INDEX + 1;
-                [result, metadata] = await sequelize.query(`SELECT SEQ_PLAN_${plan.PlanId} AS PLAN_ID FROM DUAL`);
+                [result, metadata] = await sequelize.query(`SELECT SEQ_PLAN_${plan.TripId}.NEXTVAL AS PLAN_ID FROM DUAL`);
                 plan.PlanId = raw2str(result)[0].PLAN_ID;
             }
         }
