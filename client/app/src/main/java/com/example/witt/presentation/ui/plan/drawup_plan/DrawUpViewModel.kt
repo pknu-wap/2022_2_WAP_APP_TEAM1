@@ -33,6 +33,7 @@ class DrawUpViewModel @Inject constructor(
 
     fun getDetailPlan(plan: PlanStateModel){
         viewModelScope.launch {
+            planStateData.value = plan
             planRepository.getPlan(plan.TripId).mapCatching { response ->
                 if(response.status){
                     _drawUpPlanData.emit(UiState.Success(
