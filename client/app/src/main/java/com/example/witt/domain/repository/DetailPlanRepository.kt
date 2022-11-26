@@ -7,6 +7,6 @@ interface DetailPlanRepository {
 
     suspend fun makeMemo(tripId : Int, day: Int, content: String) : Result<MakeMemoModel>
 
-    suspend fun editMemo(tripId : Int, Content: String, planId: Int): Result<EditMemoModel>
+    suspend fun editMemo(tripId: Int, planId: Int, Content: String): Result<EditMemoModel>
 
 }

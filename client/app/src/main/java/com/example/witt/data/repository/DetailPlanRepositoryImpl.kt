@@ -1,6 +1,5 @@
 package com.example.witt.data.repository
 
-import com.example.witt.data.model.plan.memo.EditMemoRequest
 import com.example.witt.data.model.plan.memo.toEditMemoModel
 import com.example.witt.data.model.plan.memo.toMakeMemoModel
 import com.example.witt.data.source.remote.memo.EditMemoDataSource
@@ -21,10 +20,10 @@ class DetailPlanRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun editMemo(tripId: Int, Content: String, planId: Int, ): Result<EditMemoModel> {
-        return editMemoDataSource.editMemo(tripId = tripId, request = EditMemoRequest(Content, planId)
-        ).mapCatching { response ->
-            response.toEditMemoModel()
+    override suspend fun editMemo(tripId: Int, planId: Int, Content: String): Result<EditMemoModel> {
+        return editMemoDataSource.editMemo(tripId = tripId, planId = planId, Content)
+            .mapCatching { response ->
+                response.toEditMemoModel()
         }
     }
 
