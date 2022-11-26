@@ -18,8 +18,6 @@ import com.example.witt.data.source.remote.plan.join_plan.JoinPlanDataSource
 import com.example.witt.data.source.remote.plan.join_plan.JoinPlanDataSourceImpl
 import com.example.witt.data.source.remote.plan.join_plan.OutPlanDataSource
 import com.example.witt.data.source.remote.plan.join_plan.OutPlanDataSourceImpl
-import com.example.witt.data.source.remote.plan.remove_plan.RemovePlanDataSource
-import com.example.witt.data.source.remote.plan.remove_plan.RemovePlanDataSourceImpl
 import com.example.witt.data.source.remote.profile.ProfileUploadDataSource
 import com.example.witt.data.source.remote.profile.ProfileUploadDataSourceImpl
 import com.example.witt.data.source.remote.signin.SignInDataSource
@@ -113,11 +111,6 @@ abstract class DataSourceModule {
         editMemoDataSourceImpl: EditMemoDataSourceImpl
     ): EditMemoDataSource
 
-    @Binds
-    @Singleton
-    abstract fun provideRemovePlanDataSource(
-        removePlanDataSourceImpl: RemovePlanDataSourceImpl
-    ): RemovePlanDataSource
 
     @Binds
     @Singleton
