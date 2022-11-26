@@ -74,9 +74,9 @@ class WriteMemoViewModel @Inject constructor(
             if(!inputMemo.value.isNullOrEmpty()){
                 repository.editMemo(
                     tripId = requireNotNull(tripId.value),
-                    Content = requireNotNull(inputMemo.value),
-                    planId = requireNotNull(planId.value)
-                ).mapCatching {
+                    planId = requireNotNull(planId.value),
+                    Content = requireNotNull(inputMemo.value)
+                    ).mapCatching {
                     if(it.status){
                         _writeMemoEvent.emit(UiEvent.Success(Unit))
                     }else{
