@@ -16,8 +16,6 @@ interface PlanRepository {
 
     suspend fun getPlan(planId: Int): Result<GetPlanModel>
 
-    suspend fun removePlan(tripId: Int): Result<RemovePlanModel>
-
     suspend fun joinPlan(tripId: Int): Result<JoinPlanModel>
 
     suspend fun outPlan(tripId: Int): Result<OutPlanModel>

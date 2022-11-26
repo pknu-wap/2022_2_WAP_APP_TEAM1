@@ -17,11 +17,6 @@ interface PlanService {
         @Body request: MakePlanRequest
     ):MakePlanResponse
 
-    @DELETE("/api/trip")
-    suspend fun removePlan(
-        @Body tripId: Int
-    ): RemovePlanResponse
-
     @PUT("/api/trip/{tripId}/participants")
     suspend fun joinPlan(
         @Path ("tripId") tripId: Int
