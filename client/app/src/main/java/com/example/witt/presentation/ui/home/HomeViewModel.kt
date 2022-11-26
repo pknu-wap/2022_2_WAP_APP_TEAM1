@@ -40,7 +40,7 @@ class HomeViewModel @Inject constructor(
     fun getPlanList(){
         viewModelScope.launch {
             planRepository.getPlanList().mapCatching {
-                _planList.value = it
+                _planList.emit(it)
             }.onFailure {
                 _homeEvent.emit(UiEvent.Failure("일정을 불러오는데 실패하였습니다."))
             }
@@ -49,7 +49,7 @@ class HomeViewModel @Inject constructor(
 
     fun removePlan(tripId: Int){
         viewModelScope.launch {
-            planRepository.removePlan(tripId).mapCatching { response ->
+            planRepository.outPlan(tripId).mapCatching { response ->
                 if(response.status){
                     getPlanList()
                 }else{
