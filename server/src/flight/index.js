@@ -41,7 +41,7 @@ class flightData {
             res = res.body.response.body.items.item;
             if (res == null) {
                 console.log('getInfoByFlightNumber: res : ', res);
-                return null;
+                return {status: false, result: '항공편 정보를 찾을 수 없습니다.'};
             }
             if (res instanceof Array) {
                 res = res[0];
@@ -59,47 +59,53 @@ class flightData {
                 departure: flightDate + ' ' + sTime,
                 arrival: flightDate + ' ' + eTime,
             }
-            return flight;
+            return {status: true, result: flight};
         } catch (e) {
             console.log('getInfoByFlightNumber: error at ', e);
+            return {status: false, result: e.message};
         }
     }
     /**
      *
-     * @param {string} fly_from 출발공항, 필수
-     * @param {string} fly_to 도착공항, 필수
+     * @param {string} flyFrom 출발공항, 필수
+     * @param {string} flyTo 도착공항, 필수
      * @param {string} date 날짜, 필수
-     * @param {string} return_date 리턴 날짜, 왕복일 때만 요구
-     * @param {string} flight_type 왕복 편도 선택(기본값: oneway), 필수 [oneway, round]
+     * @param {string} returnDate 리턴 날짜, 왕복일 때만 요구
+     * @param {string} flightType 왕복 편도 선택(기본값: oneway), 필수 [oneway, round]
      * @param {integer} adults 성인 인원, 필수
      * @param {integer} children 어린이 인원, 필수
      * @param {integer} limit 검색 갯수 제한, 필수
      */
-    async findFlight(fly_from, fly_to, date, return_date, flight_type, adults, children, limit) {
+    async findFlight(flyFrom, flyTo, date, returnDate, flightType, adults, children, limit) {
         try {
             date = dateutil.format(dateutil.parse(date), "d/m/Y");
-            return_date = dateutil.format(dateutil.parse(return_date), "d/m/Y");
-            if (flight_type == '') flight_type = 'oneway';
+            returnDate = dateutil.format(dateutil.parse(returnDate), "d/m/Y");
+            if (flightType == '') flightType = 'oneway';
             let oneway_option = {date_from: date, date_to: date, flight_type: 'oneway'};
             let round_option = {
                 date_from: date,
                 date_to: date,
-                return_from: return_date,
-                return_to: return_date,
+                return_from: returnDate,
+                return_to: returnDate,
                 flight_type: 'round'
             };
-            let res = await req.get(this.KIWI_API_ENDPOINT + '/search')
-                .set({'apikey': this.KIWI_API_KEY, Accept: 'application-json'})
-                .query({fly_from: fly_from})
-                .query({fly_to: fly_to})
-                .query((flight_type == 'oneway') ? oneway_option : round_option)
-                .query({partner_market: 'kr'})
-                .query({curr: 'KRW'})
-                .query({locale: 'kr'})
-                .query({adults: adults})
-                .query({children: children})
-                .query({vehicle_type: 'aircraft'})
-                .query({limit: limit});
+            try {
+                let res = await req.get(this.KIWI_API_ENDPOINT + '/search')
+                    .set({'apikey': this.KIWI_API_KEY, Accept: 'application-json'})
+                    .query({fly_from: flyFrom})
+                    .query({fly_to: flyTo})
+                    .query((flightType == 'oneway') ? oneway_option : round_option)
+                    .query({partner_market: 'kr'})
+                    .query({curr: 'KRW'})
+                    .query({locale: 'kr'})
+                    .query({adults: adults})
+                    .query({children: children})
+                    .query({vehicle_type: 'aircraft'})
+                    .query({limit: limit});
+            } catch (e) {
+                return {status: false, result: `${JSON.parse(e.response.text).error}`};
+            }
+
             let data = JSON.parse(res.text).data;
             let flights = [];
             for (let i = 0; i < data.length; i++) {
@@ -132,12 +138,10 @@ class flightData {
                     flights.push(roundFlight);
                 }
             }
-            console.log(data);
-            return flights;
+            return {status: true, result: flights};
         } catch (e) {
             console.log(e);
-            let error = {error: e};
-            return error;
+            return {status: false, result: e.message};
         }
     }
 }
