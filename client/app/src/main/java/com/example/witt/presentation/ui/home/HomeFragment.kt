@@ -33,7 +33,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
             .setTitleText("언제 여행을 떠나세요?")
             .setSelection(
                 Pair(
-                    MaterialDatePicker.thisMonthInUtcMilliseconds(),
+                    MaterialDatePicker.todayInUtcMilliseconds(),
                     MaterialDatePicker.todayInUtcMilliseconds()
                 )
             )
