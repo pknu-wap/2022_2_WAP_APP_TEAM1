@@ -26,21 +26,18 @@
                     android:id="@+id/textAddress"
                     android:layout_width="244dp"
                     android:layout_height="20dp"
-                    android:layout_marginTop="-20dp"
+                    android:layout_marginStart="32dp"
                     android:text="address"
-                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/textCategory"
-                    app:layout_constraintTop_toBottomOf="@+id/textCategory" />
+                    app:layout_constraintTop_toTopOf="@+id/textCategory" />
 
                 <TextView
                     android:id="@+id/textCategory"
-                    android:layout_width="114dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="20dp"
                     android:layout_marginStart="16dp"
-                    android:layout_marginEnd="8dp"
                     android:text="category"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/textAddress"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textPlace" />
 
@@ -48,7 +45,8 @@
                     android:id="@+id/textPlace"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="24dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="32dp"
                     android:singleLine="true"
                     android:text="place"
                     android:textSize="20sp"
