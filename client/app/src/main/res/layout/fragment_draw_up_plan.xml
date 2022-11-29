@@ -42,6 +42,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
+                android:layout_marginBottom="64dp"
                 android:text="일정 공유하기"
                 android:textColor="@color/white"
                 android:textSize="12sp"
@@ -50,6 +51,7 @@
                 app:chipIcon="@drawable/ic_baseline_add_24"
                 app:chipIconTint="@color/white"
                 app:chipIconVisible="true"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/destination_textView" />
 
@@ -76,7 +78,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="64dp"
                 android:text="@{viewModel.planState.name}"
                 android:textSize="22sp"
                 android:textStyle="bold"
