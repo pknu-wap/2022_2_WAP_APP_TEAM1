@@ -44,7 +44,7 @@ class DrawUpPlanFragment : BaseFragment<FragmentDrawUpPlanBinding>(R.layout.frag
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        initMap()
+        //initMap()
         initButton()
         initAdapter()
         observeData()
@@ -110,8 +110,8 @@ class DrawUpPlanFragment : BaseFragment<FragmentDrawUpPlanBinding>(R.layout.frag
             memoButtonClick = { day ->
                 showMemoDialog(day, null, null)
             },
-            placeButtonClick = {
-                val direction = DrawUpPlanFragmentDirections.actionDrawUpPlanFragmentToMapSearchFragment()
+            placeButtonClick = { day ->
+                val direction = DrawUpPlanFragmentDirections.actionDrawUpPlanFragmentToMapSearchFragment(day)
                 findNavController().navigate(direction)
             }
         )
