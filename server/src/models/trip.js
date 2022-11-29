@@ -38,7 +38,7 @@ module.exports = (sequelize, DataTypes) => {
         freezeTableName: true,
         tableName: 'DB_TRIP',
         hooks: {
-            beforeDestroy: async (trip, options) => {
+            afterDestroy: async (trip, options) => {
                 await sequelize.query(`DROP SEQUENCE SEQ_CHAT_${trip.TripId}`);
                 await sequelize.query(`DROP SEQUENCE SEQ_PLAN_${trip.TripId}`);
             },

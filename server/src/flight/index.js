@@ -89,8 +89,9 @@ class flightData {
                 return_to: returnDate,
                 flight_type: 'round'
             };
+            let res;
             try {
-                let res = await req.get(this.KIWI_API_ENDPOINT + '/search')
+                res = await req.get(this.KIWI_API_ENDPOINT + '/search')
                     .set({'apikey': this.KIWI_API_KEY, Accept: 'application-json'})
                     .query({fly_from: flyFrom})
                     .query({fly_to: flyTo})
