@@ -13,7 +13,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:text="항공권 검색"
-            android:textSize="40sp"
+            android:textSize="25sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -22,8 +22,7 @@
             android:id="@+id/tripForm"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="30dp"
-            android:layout_marginTop="30dp"
+            android:layout_marginStart="16dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/title"
             app:selectionRequired="true"
@@ -35,7 +34,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="왕복"
-                android:textSize="20sp" />
+                android:textSize="14sp" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/oneWay"
@@ -43,21 +42,22 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="편도"
-                android:textSize="20sp" />
+                android:textSize="14sp" />
         </com.google.android.material.chip.ChipGroup>
 
         <androidx.cardview.widget.CardView
-            android:id = "@+id/planeInfo"
+            android:id="@+id/planeInfo"
             android:layout_width="0dp"
-            android:layout_height="400dp"
+            android:layout_height="wrap_content"
             android:layout_marginHorizontal="32dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
             app:cardBackgroundColor="@color/background_gray"
             app:cardCornerRadius="10dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.312"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tripForm">
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
@@ -69,7 +69,7 @@
                     android:layout_marginStart="24dp"
                     android:layout_marginTop="24dp"
                     android:text="출발"
-                    android:textSize="20sp"
+                    android:textSize="16sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -78,11 +78,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
                     android:layout_marginStart="16dp"
-                    app:layout_constraintStart_toEndOf="@+id/start_text"
-                    app:layout_constraintTop_toTopOf="@+id/start_text"
                     android:text="공항 선택"
                     android:textColor="@color/skyBlue"
-                    android:textSize="20sp"/>
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toEndOf="@+id/start_text"
+                    app:layout_constraintTop_toTopOf="@+id/start_text" />
 
                 <TextView
                     android:id="@+id/arive_text"
@@ -91,7 +91,7 @@
                     android:layout_marginStart="24dp"
                     android:layout_marginTop="24dp"
                     android:text="도착"
-                    android:textSize="20sp"
+                    android:textSize="16sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/start_text" />
 
@@ -102,7 +102,7 @@
                     android:layout_marginStart="24dp"
                     android:layout_marginTop="24dp"
                     android:text="날짜"
-                    android:textSize="20sp"
+                    android:textSize="16sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/arive_text" />
 
@@ -112,21 +112,21 @@
                     android:layout_height="0dp"
                     android:layout_marginStart="16dp"
                     android:text="날짜 선택"
-                    android:textSize="20sp"
                     android:textColor="@color/skyBlue"
+                    android:textSize="16sp"
                     app:layout_constraintStart_toEndOf="@+id/date_text"
                     app:layout_constraintTop_toTopOf="@+id/date_text" />
 
                 <TextView
                     android:id="@+id/airport_arive"
-                    android:textColor="@color/skyBlue"
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
                     android:layout_marginStart="16dp"
-                    app:layout_constraintStart_toEndOf="@+id/arive_text"
-                    app:layout_constraintTop_toTopOf="@+id/arive_text"
                     android:text="공항 선택"
-                    android:textSize="20sp"/>
+                    android:textColor="@color/skyBlue"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toEndOf="@+id/arive_text"
+                    app:layout_constraintTop_toTopOf="@+id/arive_text" />
 
                 <TextView
                     android:id="@+id/adult"
@@ -134,7 +134,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="80dp"
                     android:text="성인"
-                    android:textSize="20sp"
+                    android:textSize="16sp"
                     app:layout_constraintEnd_toStartOf="@+id/child"
                     app:layout_constraintTop_toTopOf="@+id/child" />
 
@@ -144,8 +144,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="30dp"
                     android:text="유아"
-                    android:textSize="20sp"
-
+                    android:textSize="16sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/date_period" />
@@ -156,37 +155,39 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="80dp"
                     android:text="영아"
-                    android:textSize="20sp"
+                    android:textSize="16sp"
                     app:layout_constraintStart_toEndOf="@+id/child"
                     app:layout_constraintTop_toTopOf="@+id/child" />
 
                 <NumberPicker
                     android:id="@+id/adultNumberPicker"
-                    android:layout_width="65dp"
-                    android:layout_height="122dp"
-                    android:layout_marginEnd="-16dp"
-                    app:layout_constraintHorizontal_bias="0.5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="@+id/adult"
-                    app:layout_constraintTop_toTopOf="@+id/childNumberPicker" />
+                    app:layout_constraintStart_toStartOf="@+id/adult"
+                    app:layout_constraintTop_toBottomOf="@+id/adult" />
 
                 <NumberPicker
                     android:id="@+id/childNumberPicker"
-                    android:layout_width="65dp"
-                    android:layout_height="122dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginBottom="16dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/child"
+                    app:layout_constraintStart_toStartOf="@+id/child"
                     app:layout_constraintTop_toBottomOf="@+id/child" />
 
                 <NumberPicker
                     android:id="@+id/babyNumberPicker"
-                    android:layout_width="65dp"
-                    android:layout_height="122dp"
-                    android:layout_marginStart="-16dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.5"
+                    android:layout_marginBottom="16dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/baby"
                     app:layout_constraintStart_toStartOf="@+id/baby"
                     app:layout_constraintTop_toTopOf="@+id/childNumberPicker" />
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -197,9 +198,9 @@
             style="@style/Widget.Material3.Button.ElevatedButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="30dp"
-            android:layout_marginTop="32dp"
-            android:layout_marginEnd="30dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
             android:backgroundTint="@color/skyBlue"
             android:text="검색하기"
             android:textColor="@color/white"
@@ -208,6 +209,5 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/planeInfo" />
 
-        '
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
