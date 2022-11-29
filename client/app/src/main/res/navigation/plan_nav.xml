@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/plan_nav"
-    app:startDestination="@id/airlineSearchFragment">
+    app:startDestination="@id/homeFragment">
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.example.witt.presentation.ui.home.HomeFragment"
@@ -45,17 +45,21 @@
         <action
             android:id="@+id/action_drawUpPlanFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
+        <action
+            android:id="@+id/action_drawUpPlanFragment_to_airlineSearchFragment"
+            app:destination="@id/airlineSearchFragment" />
     </fragment>
     <fragment
         android:id="@+id/writeMemoFragment"
         android:name="com.example.witt.presentation.ui.plan.drawup_plan.memo_dialog.WriteMemoFragment"
         android:label="WriteMemoFragment"
-        tools:layout="@layout/fragment_write_memo"
-        />
+        tools:layout="@layout/fragment_write_memo">
+    </fragment>
     <fragment
         android:id="@+id/mapSearchFragment"
         android:name="com.example.witt.presentation.ui.search.MapSearchFragment"
-        android:label="fragment_map_search">
+        android:label="fragment_map_search"
+        tools:layout="@layout/fragment_map_search">
         <argument
             android:name="dayId"
             app:argType="integer" />
@@ -79,11 +83,16 @@
             app:nullable="false"/>
         <action
             android:id="@+id/action_addPlaceFragment_to_drawUpPlanFragment"
-            app:destination="@id/drawUpPlanFragment" />
+            app:destination="@id/drawUpPlanFragment"/>
+    </fragment>
 
     <fragment
         android:id="@+id/airlineSearchFragment"
         android:name="com.example.witt.presentation.ui.search.airline.AirlineSearchFragment"
-        android:label="AirlineSearchFragment" />
-
-</navigation>
+        android:label="AirlineSearchFragment"
+        tools:layout="@layout/fragment_airline_search">
+        <action
+            android:id="@+id/action_airlineSearchFragment_to_drawUpPlanFragment"
+            app:destination="@id/drawUpPlanFragment" />
+    </fragment>
+    </navigation>
