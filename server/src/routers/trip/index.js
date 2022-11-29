@@ -2,7 +2,7 @@
 const tripRouter = require('express').Router({mergeParams: true})
 const tripService = require('../../controller/trip')
 const tripInviteService = require('../../controller/trip/invite')
-const { tripMiddleware } = require('../../controller/trip/middleware')
+const {tripMiddleware} = require('../../controller/trip/middleware')
 const token = require('../../util/jwt')
 tripRouter.use(token.authenticateAccessToken);
 

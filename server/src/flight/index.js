@@ -3,21 +3,24 @@ var req = require('superagent');
 var dateutil = require('dateutil');
 var xml2js = require('xml2js');
 
-var parser = new xml2js.Parser({explicitArray : false});
+var parser = new xml2js.Parser({explicitArray: false});
 var parseString = parser.parseString;
 
-function xml2jsParser(res, fn){
+function xml2jsParser(res, fn) {
     res.text = '';
     res.setEncoding('utf8');
-    res.on('data', function(chunk){ res.text += chunk; });
-    res.on('end', function(){
+    res.on('data', function (chunk) {
+        res.text += chunk;
+    });
+    res.on('end', function () {
         try {
             parseString(res.text, fn);
         } catch (err) {
             fn(err);
         }
     });
-};
+}
+
 class flightData {
     constructor() {
         this.KIWI_API_ENDPOINT = 'https://api.tequila.kiwi.com/v2';
@@ -26,8 +29,7 @@ class flightData {
         this.AIRPORT_OPENAPI_KEY = process.env.AIRPORT_OPENAPI_KEY;
     }
 
-    async getInfoByFlightNumber(flightDate, airlineCode, flightNum)
-    {
+    async getInfoByFlightNumber(flightDate, airlineCode, flightNum) {
         try {
             let res = await req.get(this.AIRPORT_OPENAPI_ENDPOINT)
                 .buffer(true)
@@ -65,6 +67,7 @@ class flightData {
             return {status: false, result: e.message};
         }
     }
+
     /**
      *
      * @param {string} flyFrom 출발공항, 필수

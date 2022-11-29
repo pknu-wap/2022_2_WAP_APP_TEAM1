@@ -1,9 +1,11 @@
-const { Model } = require('sequelize');
+const {Model} = require('sequelize');
 
 function iterateModel(model) {
     let obj = model.dataValues;
     for (var prop in obj) {
-        if (obj.hasOwnProperty(prop) == false) { return; }
+        if (obj.hasOwnProperty(prop) == false) {
+            return;
+        }
 
         if (obj[prop] instanceof Buffer) {
             obj[prop] = obj[prop].toString('hex').toUpperCase();
@@ -20,6 +22,7 @@ function iterateModel(model) {
         }
     }
 }
+
 const raw2str = (sql) => {
     // Buffer Check
     if (sql instanceof Buffer) {
@@ -37,7 +40,7 @@ const raw2str = (sql) => {
             if (sql[i] instanceof Buffer) {
                 sql[i] = sql[i].toString('hex').toUpperCase();
             }
-        }   
+        }
     }
     return sql;
 }

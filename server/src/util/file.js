@@ -1,6 +1,5 @@
 'use strict';
 
-const {QueryTypes} = require("sequelize");
 const crypto = require('crypto');
 const fs = require('fs');
 const path = require('path');

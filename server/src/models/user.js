@@ -1,4 +1,4 @@
-const { raw2str } = require('../util/rawtostr');
+const {raw2str} = require('../util/rawtostr');
 module.exports = function (sequelize, DataTypes) {
     const User = sequelize.define('User', {
         UserId: {
@@ -52,9 +52,9 @@ module.exports = function (sequelize, DataTypes) {
         }
     });
     User.associate = function (models) {
-        models.User.hasMany(models.TripParticipant, { foreignKey: 'UserId', sourceKey: 'UserId' });
-        models.User.hasMany(models.Trip, { foreignKey: 'OwnerId', sourceKey: 'UserId' });
-        models.User.belongsTo(models.FileInfo, { foreignKey: 'ProfileImage', targetKey: 'FileName' });
+        models.User.hasMany(models.TripParticipant, {foreignKey: 'UserId', sourceKey: 'UserId'});
+        models.User.hasMany(models.Trip, {foreignKey: 'OwnerId', sourceKey: 'UserId'});
+        models.User.belongsTo(models.FileInfo, {foreignKey: 'ProfileImage', targetKey: 'FileName'});
     };
     return User;
 }
