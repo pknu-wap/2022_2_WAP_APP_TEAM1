@@ -9,7 +9,7 @@ class MapSearchAdapter(
      val placeItemOnClick : (PlaceModel) -> Unit
 ) : RecyclerView.Adapter<MapSearchAdapter.Holder>(){
 
-    var listData = mutableListOf<PlaceModel>()
+     val listData = mutableListOf<PlaceModel>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         val binding = ItemMapSearchRecyclerBinding.inflate(LayoutInflater.from(parent.context),parent,false)
@@ -28,7 +28,7 @@ class MapSearchAdapter(
 
         fun setPlace(place: PlaceModel){
             binding.textPlace.text = place.place_name
-            binding.textCategory.text = if (place.category_group_name.isNullOrBlank()) "기타" else place.category_group_name
+            binding.textCategory.text = place.category_group_name.ifBlank { "기타" }
             binding.textAddress.text = place.address_name
             binding.timePlanCardView.setOnClickListener{
                 placeItemOnClick(place)
