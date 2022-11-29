@@ -57,21 +57,30 @@
         android:name="com.example.witt.presentation.ui.search.MapSearchFragment"
         android:label="fragment_map_search"
         tools:layout="@layout/fragment_map_search" >
+        <argument
+            android:name="dayId"
+            app:argType="integer" />
         <action
-            android:id="@+id/action_mapSearchFragment_to_placeInsertFragment"
-            app:destination="@id/placeInsertFragment" />
+            android:id="@+id/action_mapSearchFragment_to_addPlaceFragment"
+            app:destination="@id/addPlaceFragment" />
     </fragment>
 
     <fragment
-        android:id="@+id/placeInsertFragment"
-        android:name="com.example.witt.presentation.ui.search.PlaceInsertFragment"
-        android:label="PlaceInsertFragment"
-        android:layout="@layout/fragment_place_insert"
-        tools:layout="@layout/fragment_place_insert">
+        android:id="@+id/addPlaceFragment"
+        android:name="com.example.witt.presentation.ui.search.AddPlaceFragment"
+        android:label="addPlaceFragment"
+        android:layout="@layout/fragment_add_place"
+        tools:layout="@layout/fragment_add_place">
+        <argument
+            android:name="day"
+            app:argType="integer" />
         <argument
             android:name="place"
             app:argType="com.example.witt.data.model.search.PlaceModel"
             app:nullable="false"/>
+        <action
+            android:id="@+id/action_addPlaceFragment_to_drawUpPlanFragment"
+            app:destination="@id/drawUpPlanFragment" />
     </fragment>
 
 </navigation>
