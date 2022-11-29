@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/plan_nav"
-    app:startDestination="@id/homeFragment">
+    app:startDestination="@id/airlineSearchFragment">
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.example.witt.presentation.ui.home.HomeFragment"
@@ -55,8 +55,7 @@
     <fragment
         android:id="@+id/mapSearchFragment"
         android:name="com.example.witt.presentation.ui.search.MapSearchFragment"
-        android:label="fragment_map_search"
-        tools:layout="@layout/fragment_map_search" >
+        android:label="fragment_map_search">
         <argument
             android:name="dayId"
             app:argType="integer" />
@@ -81,6 +80,10 @@
         <action
             android:id="@+id/action_addPlaceFragment_to_drawUpPlanFragment"
             app:destination="@id/drawUpPlanFragment" />
-    </fragment>
+
+    <fragment
+        android:id="@+id/airlineSearchFragment"
+        android:name="com.example.witt.presentation.ui.search.airline.AirlineSearchFragment"
+        android:label="AirlineSearchFragment" />
 
 </navigation>

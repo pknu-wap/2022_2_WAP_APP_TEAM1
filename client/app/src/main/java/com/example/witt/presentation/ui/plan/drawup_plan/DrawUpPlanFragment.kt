@@ -39,7 +39,7 @@ class DrawUpPlanFragment : BaseFragment<FragmentDrawUpPlanBinding>(R.layout.frag
     private lateinit var planAdapter: PlanAdapter
 
     private val planViewModel by activityViewModels<PlanViewModel>()
-    private val viewModel : DrawUpViewModel by viewModels()
+    private val viewModel: DrawUpViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -70,11 +70,11 @@ class DrawUpPlanFragment : BaseFragment<FragmentDrawUpPlanBinding>(R.layout.frag
         }
     }
 
-    private fun observeData(){
+    private fun observeData() {
         binding.viewModel = planViewModel
 
         //planViewModel에서 데이터 가져오기
-        planViewModel.planState.observe(viewLifecycleOwner){
+        planViewModel.planState.observe(viewLifecycleOwner) {
             viewModel.getDetailPlan(it)
         }
 
@@ -92,12 +92,12 @@ class DrawUpPlanFragment : BaseFragment<FragmentDrawUpPlanBinding>(R.layout.frag
 
         viewModel.drawUpPlanData.flowWithLifecycle(viewLifecycleOwner.lifecycle)
             .onEach {
-                when(it){
-                    is UiState.Success ->{
+                when (it) {
+                    is UiState.Success -> {
                         planAdapter.submitList(it.data)
                     }
-                    is UiState.Failure ->{}
-                    is UiState.Init ->{}
+                    is UiState.Failure -> {}
+                    is UiState.Init -> {}
                 }
             }.launchIn(viewLifecycleOwner.lifecycleScope)
     }
@@ -107,6 +107,7 @@ class DrawUpPlanFragment : BaseFragment<FragmentDrawUpPlanBinding>(R.layout.frag
         planAdapter = PlanAdapter(
             context = requireContext(),
             memoClick = {  showMemoDialog(it.Day, it.PlanId, it.Memo.Content) },
+
             memoButtonClick = { day ->
                 showMemoDialog(day, null, null)
             },
@@ -132,22 +133,26 @@ class DrawUpPlanFragment : BaseFragment<FragmentDrawUpPlanBinding>(R.layout.frag
         memoDialog.show(requireActivity().supportFragmentManager, "MEMO")
     }
 
-    //todo with() kotlin 내장함수로 코드 클린하게! 주석 처리도 부탁드립니다~
     private fun initMap() {
-        val mapView by lazy { MapView(requireActivity()) }
-        binding.mapView.addView(mapView)
-        mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(defaultSeoulx, defaultSeouly), true)
-        mapView.setZoomLevel(5, true)
-        val marker = MapPOIItem()
-        marker.itemName = "Default Marker"
-        marker.tag = 0
-        marker.mapPoint = MapPoint.mapPointWithGeoCoord(defaultSeoulx, defaultSeouly)
-        marker.markerType = MapPOIItem.MarkerType.BluePin // 기본으로 제공하는 BluePin 마커 모양.
-
-        marker.selectedMarkerType =
-            MapPOIItem.MarkerType.RedPin // 마커를 클릭했을때, 기본으로 제공하는 RedPin 마커 모양.
-        mapView.addPOIItem(marker)
-
+        val mapView = MapView(requireActivity())
+        with(mapView) {
+            binding.mapView.addView(this)
+            setMapCenterPoint(
+                MapPoint.mapPointWithGeoCoord(defaultSeoulx, defaultSeouly), //맵 위치
+                true
+            )
+            setZoomLevel(5, true)
+            val marker = MapPOIItem()
+            with(marker) {
+                itemName = "Default Marker" //머커에 표시되는 이름
+                tag = 0
+                mapPoint = MapPoint.mapPointWithGeoCoord(defaultSeoulx, defaultSeouly) //마커 위치
+                markerType = MapPOIItem.MarkerType.BluePin // 기본으로 제공하는 BluePin 마커 모양.
+                selectedMarkerType =
+                    MapPOIItem.MarkerType.RedPin // 마커를 클릭했을때, 기본으로 제공하는 RedPin 마커 모양.
+            }
+            addPOIItem(marker)
+        }
     }
 
     private fun sendKakaoLink(context: Context, defaultFeed: FeedTemplate) {
@@ -173,7 +178,7 @@ class DrawUpPlanFragment : BaseFragment<FragmentDrawUpPlanBinding>(R.layout.frag
         }
     }
 
-    companion object{
+    companion object {
         private const val defaultSeoulx = 37.53737528
         private const val defaultSeouly = 127.00557633
     }
