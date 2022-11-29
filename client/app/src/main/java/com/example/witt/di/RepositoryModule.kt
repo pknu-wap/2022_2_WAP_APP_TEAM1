@@ -9,6 +9,7 @@ import com.example.witt.data.source.local.user_profile.ProfileDataSource
 import com.example.witt.data.source.remote.duplicate_check.DuplicateEmailDataSource
 import com.example.witt.data.source.remote.memo.EditMemoDataSource
 import com.example.witt.data.source.remote.memo.MakeMemoDataSource
+import com.example.witt.data.source.remote.plan.detail_plan.AddPlaceDataSource
 import com.example.witt.data.source.remote.plan.get_plan.GetPlanDataSource
 import com.example.witt.data.source.remote.plan.get_plan.GetPlanListDataSource
 import com.example.witt.data.source.remote.plan.make_plan.MakePlanDataSource
@@ -68,9 +69,10 @@ object RepositoryModule {
     @Provides
     @Singleton
     fun provideDetailPlanRepository(makeMemoDataSource: MakeMemoDataSource,
-                                    editMemoDataSource: EditMemoDataSource
+                                    editMemoDataSource: EditMemoDataSource,
+                                    addPlaceDataSource: AddPlaceDataSource
     ): DetailPlanRepository{
-        return DetailPlanRepositoryImpl(makeMemoDataSource, editMemoDataSource)
+        return DetailPlanRepositoryImpl(makeMemoDataSource, editMemoDataSource, addPlaceDataSource)
     }
 
 }
