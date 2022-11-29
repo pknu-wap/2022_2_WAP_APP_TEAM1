@@ -15,12 +15,12 @@
             android:layout_marginTop="16dp"
             android:hint="장소 검색"
             android:textSize="20sp"
-            app:layout_constraintEnd_toStartOf="@+id/button3"
+            app:layout_constraintEnd_toStartOf="@+id/searchPlaceButton"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
-            android:id="@+id/button3"
+            android:id="@+id/searchPlaceButton"
             android:layout_width="80dp"
             android:layout_height="50dp"
             android:layout_marginTop="16dp"
