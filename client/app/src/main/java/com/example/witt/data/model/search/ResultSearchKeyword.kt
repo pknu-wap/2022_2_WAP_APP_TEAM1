@@ -4,7 +4,6 @@ import android.os.Parcelable
 import com.example.witt.domain.model.plan.detail_plan.AddPlaceModel
 import kotlinx.parcelize.Parcelize
 
-
 // 검색 결과를 담는 클래스
 data class ResultSearchKeyword(
     var documents: List<PlaceModel>          // 검색 결과
@@ -19,7 +18,7 @@ data class PlaceModel(
     var category_group_name: String,    // 중요 카테고리만 그룹핑한 카테고리 그룹명
 //  var phone: String,                  // 전화번호
     var address_name: String,           // 전체 지번 주소
-//    var road_address_name: String,      // 전체 도로명 주소
+    var road_address_name: String,      // 전체 도로명 주소
     var x: String,                      // X 좌표값 혹은 longitude
     var y: String,                      // Y 좌표값 혹은 latitude
 //    var place_url: String,              // 장소 상세페이지 URL
@@ -31,6 +30,6 @@ fun PlaceModel.toAddPlaceRequest() = AddPlaceModel(
     latitude = y,
     longitude = x,
     category = category_name,
-    administrationCode = id.toInt(),
+    roadAddress = road_address_name,
     name = place_name
 )

@@ -5,6 +5,6 @@ data class AddPlaceRequest(
     val Latitude: String,
     val Longitude: String,
     val Category: String,
-    val AdministrationCode: Int,
+    val RoadAddress: String,
     val Name : String
 )

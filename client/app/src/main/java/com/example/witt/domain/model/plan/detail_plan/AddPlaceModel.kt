@@ -7,7 +7,7 @@ data class AddPlaceModel (
     val latitude: String,
     val longitude: String,
     val category: String,
-    val administrationCode: Int,
+    val roadAddress: String,
     val name : String
         )
 
@@ -16,6 +16,6 @@ fun AddPlaceModel.toAddPlaceRequest() = AddPlaceRequest(
     Latitude = latitude,
     Longitude = longitude,
     Category = category,
-    AdministrationCode = administrationCode,
+    RoadAddress = roadAddress,
     Name = name
 )
