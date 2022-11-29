@@ -102,7 +102,6 @@ class SignInFragment : BaseFragment<FragmentSignInBinding>(R.layout.fragment_sig
         }
 
         binding.goToSignUpButton.setOnClickListener{
-            startActivity(Intent(requireActivity(), PlanActivity::class.java))
             val direction = SignInFragmentDirections.actionSignInFragmentToPlanNav()
             findNavController().navigate(direction)
         }
