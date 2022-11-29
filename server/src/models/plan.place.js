@@ -1,5 +1,5 @@
 'use strict';
-const { raw2str } = require('../util/rawtostr');
+const {raw2str} = require("../util/rawtostr");
 module.exports = function (sequelize, DataTypes) {
     const PlanPlace = sequelize.define('PlanPlace', {
         TripId:
@@ -19,13 +19,18 @@ module.exports = function (sequelize, DataTypes) {
         PlaceId:
         {
             field: 'PLACE_ID',
-            type: DataTypes.STRING(32),
+            type: DataTypes.STRING(200),
             allowNull: false
         }
     }, {
         underscored: true,
         freezeTableName: true,
-        tableName: 'PLAN_PLACE'
+        tableName: 'PLAN_PLACE',
+        hooks: {
+            afterFind: async (planPlace, options) => {
+                planPlace = raw2str(planPlace);
+            }
+        }
     });
 
     PlanPlace.associate = function (models) {

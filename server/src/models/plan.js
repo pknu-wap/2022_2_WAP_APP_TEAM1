@@ -23,6 +23,12 @@ module.exports = function (sequelize, DataTypes) {
             type: DataTypes.INTEGER,
             allowNull: false
         },
+        Type:
+            {
+                field: 'TYPE',
+                type: DataTypes.INTEGER,
+                allowNull: false
+            },
         OrderIndex:
         {
             field: 'ORDER_INDEX',

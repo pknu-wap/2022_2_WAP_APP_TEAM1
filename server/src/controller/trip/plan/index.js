@@ -1,7 +1,5 @@
 'use strict';
 const models = require("../../../models")
-const token = require("../../../util/jwt")
-const {raw2str} = require("../../../util/rawtostr")
 
 module.exports = {
     // Commit Plans (POST)
@@ -56,7 +54,8 @@ module.exports = {
             }
             let plan = await models.Plan.create({
                 TripId: trip.TripId,
-                Day: Day
+                Day: Day,
+                Type: 0,
             }, {transaction: transaction});
             let planPlace = await models.PlanPlace.create({
                 TripId: trip.TripId,
@@ -105,7 +104,8 @@ module.exports = {
             //계획 생성
             let plan = await models.Plan.create({
                 TripId: trip.TripId,
-                Day: Day
+                Day: Day,
+                Type: 1
             });
             // 생성된 계획에 메모 등록
             let planMemo = await models.PlanMemo.create({

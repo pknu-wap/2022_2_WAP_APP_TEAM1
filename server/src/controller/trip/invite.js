@@ -24,13 +24,16 @@ module.exports = {
         if (trip == null) {
             return res.status(404).send({ status: false, reason: `Trip: ${TripId} does not exist` });
         }
+        if (trip.OwnerId == UserId) {
+            return res.status(403).send({ status: false, reason: `User: ${UserId} is a owner of Trip: ${TripId}` });
+        }
         await models.TripParticipant.create({
             TripId: TripId,
             UserId: UserId
         });
         return res.status(200).send({status: true, reason: "일정 참여 성공" });
     },
-    //Leave Plan(DELETE)
+    /*//Leave Plan(DELETE)
     async leaveTrip(req, res) {
         const { TripId } = req.params;
         const { UserId } = req.token;
@@ -49,6 +52,9 @@ module.exports = {
         if (trip == null) {
             return res.status(404).send({ status: false, reason: `Trip: ${TripId} does not exist` });
         }
+        if (trip.OwnerId == UserId) {
+            return res.status(403).send({ status: false, reason: `User: ${UserId} is the owner of Trip: ${TripId}` });
+        }
         await models.TripParticipant.destroy({
             where: {
                 TripId: TripId,
@@ -56,5 +62,5 @@ module.exports = {
             }
         });
         return res.status(200).send({status: true, reason: "일정 탈퇴 성공"});
-    },
+    },*/
 }

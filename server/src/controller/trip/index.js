@@ -40,16 +40,26 @@ module.exports = {
             return res.send({ status: false, reason: `Trip is undefined` });
         }
         if (trip.OwnerId != UserId) {
-            return res.status(403).send({ status: false, reason: "not a owner of trip" });
+            let participant = await models.TripParticipant.findOne({
+                where: {
+                    TripId: trip.TripId,
+                    UserId: UserId
+                }
+            });
+            if (participant == null) {
+                return res.send({ status: false, reason: `User: ${UserId} is not a member of Trip: ${trip.TripId}` });
+            }
+            await participant.destroy();
+            return res.send({ status: true, reason: "더 이상 이 여행의 참여자가 아닙니다." });
         }
-        let result = await trip.destroy();
-        return res.status(200).send({ status: true, reason: "일정 삭제 성공" });
+        await trip.destroy();
+        return res.status(200).send({ status: true, reason: "여행이 정상적으로 삭제되었습니다." });
     },
     //Get Trip(GET)
     async getTrip(req, res) {
         const { trip } = req;
         const { UserId } = req.token;
-
+        let data = {};
         let tripParticipants = raw2str(await models.TripParticipant.findAll({
             where: {
                 TripId: trip.TripId
@@ -59,29 +69,49 @@ module.exports = {
                 attributes: ['UserId', 'Nickname', 'ProfileImage']
             }]
         })).map(participant => participant.User);
+
         let plans = await models.Plan.findAll({
             where: {
                 TripId: trip.TripId
             },
-            attributes: ['PlanId', 'Day', 'OrderIndex'],
+            attributes: ['PlanId', 'Day', 'OrderIndex', 'Type'],
             raw: true
         });
         for (let i = 0; i < plans.length; i++) {
-            plans[i].Memo = await models.PlanMemo.findOne({
-                where: {
-                    TripId: trip.TripId,
-                    PlanId: plans[i].PlanId
-                },
-                attributes: ['Content', 'Created_At', 'Updated_At']
-            });
-            /*plans[i].Places = raw2str(await models.Place.findAll({
-                where: {
-                    TripId: trip.TripId,
-                    PlanId: plans[i].PlanId
-                }
-            }));*/
+            if (plans[i].Type == 0) { // Place
+                plans[i].Place = await models.PlanPlace.findOne({
+                    where: {
+                        TripId: trip.TripId,
+                        PlanId: plans[i].PlanId
+                    },
+                    attributes: ['PlaceId'],
+                    include: [{
+                        model: models.Place,
+                        attributes: ['Name', 'RoadAddress', 'Latitude', 'Longitude', 'Category']
+                    }]
+                });
+                plans[i].Place = plans[i].Place.Place;
+            }
+            if (plans[i].Type == 1) { // Memo
+                plans[i].Memo = await models.PlanMemo.findOne({
+                    where: {
+                        TripId: trip.TripId,
+                        PlanId: plans[i].PlanId
+                    },
+                    attributes: ['Content', 'Created_At', 'Updated_At']
+                });
+            }
         }
-        return res.status(200).send({ status: true, reason: "일정 조회 성공", plans });
+        data.TripId = trip.TripId;
+        data.OwnerId = trip.OwnerId;
+        data.Name = trip.Name;
+        data.StartDate = trip.StartDate;
+        data.EndDate = trip.EndDate;
+        data.Region = trip.Region;
+        data.Participants = tripParticipants;
+        data.Plans = plans;
+
+        return res.status(200).send({ status: true, reason: "일정 조회 성공", data });
     },
     //Get Trip List(GET)
     async getTripList(req, res) {

@@ -5,7 +5,7 @@ module.exports = function (sequelize, DataTypes) {
         PlaceId:
         {
             field: 'PLACE_ID',
-            type: DataTypes.STRING(32),
+            type: DataTypes.STRING(200),
             primaryKey: true,
             allowNull: false,
             defaultValue: ''
@@ -27,19 +27,19 @@ module.exports = function (sequelize, DataTypes) {
             field: 'CATEGORY',
             type: DataTypes.STRING(20),
             allowNull: false
-        },  
-        AdministrationCode:
-        {
-            field: 'ADMINISTRATION_CODE',
-            type: DataTypes.INTEGER,
-            allowNull: false
         },
-        Name:  
-        {
+        Name:
+            {
             field: 'NAME',
             type: DataTypes.STRING(100),
             allowNull: false
         },
+        RoadAddress:
+            {
+                field: 'ROAD_ADDRESS',
+                type: DataTypes.STRING(200),
+                allowNull: false
+            }
     }, {
         underscored: true,
         freezeTableName: true,
@@ -47,8 +47,7 @@ module.exports = function (sequelize, DataTypes) {
     });
 
     Place.associate = function (models) {
-     //   Place.hasMany(models.PlanPlace, { foreignKey: 'PlaceId', sourceKey: 'PlaceId' });
-    //    Place.belongsTo(models.Region, { foreignKey: 'AdministrationCode', targetKey: 'AdministrationCode' });
+        Place.hasMany(models.PlanPlace, { foreignKey: 'PlaceId', sourceKey: 'PlaceId' });
     };
     return Place;
 };

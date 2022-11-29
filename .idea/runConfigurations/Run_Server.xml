@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Run Server" type="NodeJSConfigurationType" path-to-js-file="./src/app.js" working-dir="$PROJECT_DIR$/server">
+  <configuration default="false" name="Run Server" type="NodeJSConfigurationType" path-to-node="$USER_HOME$/.nvm/versions/node/v14.20.1/bin/node" path-to-js-file="./src/app.js" working-dir="$PROJECT_DIR$/server">
     <method v="2" />
   </configuration>
 </component>
