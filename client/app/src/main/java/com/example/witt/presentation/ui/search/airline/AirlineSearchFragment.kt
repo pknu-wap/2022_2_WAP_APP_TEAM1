@@ -9,8 +9,7 @@ import com.example.witt.presentation.base.BaseFragment
 import com.google.android.material.datepicker.MaterialDatePicker
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
-import java.text.SimpleDateFormat
-import java.util.*
+import com.example.witt.utils.convertTimestampToDate
 
 class AirlineSearchFragment: BaseFragment<FragmentAirlineSearchBinding>(R.layout.fragment_airline_search){
 
@@ -42,14 +41,8 @@ class AirlineSearchFragment: BaseFragment<FragmentAirlineSearchBinding>(R.layout
 
     private fun initDatePicker() {
         datePicker.addOnPositiveButtonClickListener {
-            binding.datePeriod.text= formattingDate(it)
+            binding.datePeriod.text = it.convertTimestampToDate()
         }
-    }
-
-    private fun formattingDate(time:Long):String{
-        val date = Date(time)
-        val format = SimpleDateFormat("yyyy.MM.dd")
-        return format.format(date)
     }
 
     private fun showDialog(it: TextView){
@@ -64,22 +57,23 @@ class AirlineSearchFragment: BaseFragment<FragmentAirlineSearchBinding>(R.layout
     }
 
     private fun initNumberPickers(){
-        val numberPickers = (arrayListOf <NumberPicker>(binding.adultNumberPicker,binding.childNumberPicker,binding.babyNumberPicker))
+        val numberPickers = arrayListOf(
+            binding.adultNumberPicker, binding.childNumberPicker, binding.babyNumberPicker)
         for (index in numberPickers.indices) {
             initNumberPicker(numberPickers[index])
         }
     }
 
     // 넘버 픽커 초기화
-    private fun initNumberPicker(numberPicker:NumberPicker){
-        val data1: Array<String> = Array(10){
-                i -> i.toString()
+    private fun initNumberPicker(numberPicker: NumberPicker){
+
+
+        with(numberPicker){
+            minValue = 0
+            maxValue = 9
+            wrapSelectorWheel = false
+            numberPickerListener(this)
         }
-        numberPicker.minValue = 0
-        numberPicker.maxValue = data1.size-1
-        numberPicker.wrapSelectorWheel = false
-        numberPicker.displayedValues = data1
-        numberPickerListener(numberPicker)
     }
 
 //     넘버 픽커 리스너
