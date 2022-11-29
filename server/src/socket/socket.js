@@ -1,7 +1,113 @@
+"use strict"
 const app=require('express')();
 const server= require('http').createServer(app);
-const io=require('socket.io')(server);
+const io= require("socket.io")(server);
+const models=require('../../../server/src/models');
+//const sequelize=require('socket.io-sequelize');
+const {raw2str} = require("../../../server/src/util/rawtostr");
 const port=80;
+//const {instrument} = require('@socket.io/admin-ui');
+
+//연결, 채팅방 있으면 join, 없으면 create(TripId, UserId)
+io.on('connection', async (socket)=>{
+    const {TripId}=socket.handshake.query;
+    const {UserId}=socket.handshake.headers.token;
+    let room=raw2str(await models.Chat.findOne({
+        where:{
+            TripId:TripId
+        }
+    }));
+    if(room==null){
+        console.log("옳지 않은 경로입니다.");
+        return;
+    }else{
+        socket.join(room);
+        let chat=raw2str(await models.Chat.create({
+            TripId:TripId,
+            UserId:UserId,
+        }));
+        if (chat==null){
+            console.log("채팅방 입장 도중 오류가 발생했습니다.");
+            return;
+        }
+        console.log("join in"+room);
+    }
+    console.log("connected to "+room, UserId);
+
+    //이전 채팅 내역 가져오기(TripId)
+    let result={};//새로 읽은 내역을 담는 객체
+    let chatList=raw2str(await models.Chat.findAll({ //TripId에 해당하는 모든 채팅 내역 가져오기
+        where:{
+            TripId:TripId
+        }
+    }));
+    for(let i=0;i<chatList.length;i++){ //모든 채팅 내역에 대해
+        let readChat=await models.ChatRead.findAll({ //읽은 채팅 내역 가져오기
+            where:{
+                TripId:TripId,
+                ChatId:chatList[i].ChatId,
+                UserId:UserId
+            }
+        });
+        result.push(readChat);
+        if(readChat.length==0){ //읽은 채팅 내역이 없으면
+            let chat={};//안 읽은 채팅 내역을 담는 객체
+            chat.ChatId=chatList[i].ChatId;
+            chat.UserId=chatList[i].UserId;
+            chat.Content=chatList[i].Content;
+            chat.CreatedAt=chatList[i].CreatedAt;
+            await models.ChatRead.create({//읽은 채팅에 내역 추가
+                TripId:TripId,
+                ChatId:chatList[i].ChatId,
+                UserId:UserId
+            });
+            result.push(chat);
+            console.log(chat);
+        }
+    }
+    socket.to(TripId).emit('getChat',result);
+
+    //채팅 보내기(TripId,UserId, ChatId, Content)
+    socket.on("addMessage",async (socket)=>{
+        const {TripId}=socket.handshake.query;
+        const {UserId}=socket.handshake.headers.token;
+        const {ChatId,Content}=socket.handshake.body;
+        if(Content==undefined){
+            return res.send({status:false,reason:"Bad Request"});
+        }
+        let chat=raw2str(await models.Chat.create({
+            TripId:TripId,
+            UserId:UserId,
+            ChatId:ChatId,
+            Content:Content
+        }));
+        if(chat==null){
+            return res.send({status:false,reason:"채팅 전송 도중 오류가 발생했습니다."});
+        }
+        else{
+            io.to(TripId).emit("sendMessage",chat);
+        }
+        console.log("success to send Message : ${chat}",chat);
+    }),
+    //채팅방 나가기
+    socket.on("disconnect",()=>{
+        console.log("leave from"+room);
+    })
+});
+server.listen(port, async () => {
+    console.log(`http://localhost:${port}`);
+    console.log('[Socket] is running...');
+});
+/*
+instrument(io,{
+    auth: {
+        type: "basic",
+        username: "admin",
+        password: "admin"
+    },
+})
+*/
+/*
 
 let activeUsers={};
 
@@ -29,6 +135,7 @@ server.listen(port, async () => {
     console.log('[Socket] is running...');
     
 })
+*/
 
 
 // Compare this snippet from server\src\socket\controller.js:
