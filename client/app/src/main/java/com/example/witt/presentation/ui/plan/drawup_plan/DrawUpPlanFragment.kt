@@ -105,13 +105,25 @@ class DrawUpPlanFragment : BaseFragment<FragmentDrawUpPlanBinding>(R.layout.frag
                     is UiState.Init -> {}
                 }
             }.launchIn(viewLifecycleOwner.lifecycleScope)
+
+        //여기서 Map 작업 및 다른 작업 하시면 됩니다~
+        viewModel.planData.flowWithLifecycle(viewLifecycleOwner.lifecycle)
+            .onEach {
+                when(it){
+                    is UiState.Success -> {
+
+                    }
+                    is UiState.Failure -> {}
+                    is UiState.Init -> {}
+                }
+            }
     }
 
     private fun initAdapter() {
 
         planAdapter = PlanAdapter(
             context = requireContext(),
-            memoClick = {  showMemoDialog(it.Day, it.PlanId, it.Memo.Content) },
+            memoClick = {  showMemoDialog(it.day, it.planId, it.memo?.content) },
 
             memoButtonClick = { day ->
                 showMemoDialog(day, null, null)
