@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.witt.domain.model.plan.adapter.PlanModel
 import com.example.witt.domain.model.plan.PlanStateModel
+import com.example.witt.domain.model.plan.get_plan.PlanDataModel
 import com.example.witt.domain.repository.PlanRepository
 import com.example.witt.domain.use_case.plan.ConvertDetailPlanUseCase
 import com.example.witt.presentation.ui.UiEvent
@@ -31,17 +32,23 @@ class DrawUpViewModel @Inject constructor(
     private val _drawUpPlanData : MutableStateFlow<UiState<List<PlanModel>>> = MutableStateFlow(UiState.Init)
     val drawUpPlanData : StateFlow<UiState<List<PlanModel>>> get() = _drawUpPlanData
 
+    private val _planData: MutableStateFlow<UiState<PlanDataModel>> = MutableStateFlow(UiState.Init)
+    val planData : StateFlow<UiState<PlanDataModel>> get() = _planData
+
     fun getDetailPlan(plan: PlanStateModel){
         viewModelScope.launch {
-            planStateData.value  = plan
+            planStateData.value = plan
             planRepository.getPlan(plan.TripId).mapCatching { response ->
                 if(response.status){
                     _drawUpPlanData.emit(UiState.Success(
-                        convertDetailPlanUseCase(plan.StartDate, plan.EndDate, response.plans)
+                        convertDetailPlanUseCase(plan.StartDate, plan.EndDate, response.data.plans)
                     ))
+                    _planData.emit(UiState.Success(response.data))
                 }else{
                     _drawUpPlanEvent.emit(UiEvent.Failure(response.reason))
                 }
+            }.onFailure { e->
+                e.printStackTrace()
             }
         }
     }
