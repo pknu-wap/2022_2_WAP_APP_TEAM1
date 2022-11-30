@@ -34,7 +34,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/ic_kakao_login" />
+                    app:srcCompat="@drawable/ic_blue_circle_24" />
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="0dp"
