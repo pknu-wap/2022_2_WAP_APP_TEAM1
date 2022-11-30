@@ -3,36 +3,33 @@ const app=require('express')();
 const server= require('http').createServer(app);
 const io= require("socket.io")(server);
 const models=require('../../../server/src/models');
+//const wsModule=require('ws');
 //const sequelize=require('socket.io-sequelize');
 const {raw2str} = require("../../../server/src/util/rawtostr");
-const port=80;
+
+/*
+const webSocketServer=new wsModule.Server(
+    {
+        server:server,
+    }
+);
+*/
+//const WebSocketServer=require('websocket').server;
+//const port=80;
 //const {instrument} = require('@socket.io/admin-ui');
 
 //연결, 채팅방 있으면 join, 없으면 create(TripId, UserId)
 io.on('connection', async (socket)=>{
-    const {TripId}=socket.handshake.query;
-    const {UserId}=socket.handshake.headers.token;
-    let room=raw2str(await models.Chat.findOne({
-        where:{
-            TripId:TripId
+    const {TripId}  = socket.query;
+        const { UserId } = socket.query;
+        console.log('TripId: ' + TripId);
+        console.log('UserId: ' + UserId);
+        if (TripId == undefined || UserId == undefined) {
+            console.log("Bad Request");
         }
-    }));
-    if(room==null){
-        console.log("옳지 않은 경로입니다.");
-        return;
-    }else{
-        socket.join(room);
-        let chat=raw2str(await models.Chat.create({
-            TripId:TripId,
-            UserId:UserId,
-        }));
-        if (chat==null){
-            console.log("채팅방 입장 도중 오류가 발생했습니다.");
-            return;
-        }
-        console.log("join in"+room);
-    }
-    console.log("connected to "+room, UserId);
+        socket.join(TripId);
+        console.log("join in" + TripId);
+        console.log("connected to " + TripId, UserId);
 
     //이전 채팅 내역 가져오기(TripId)
     let result={};//새로 읽은 내역을 담는 객체
@@ -69,18 +66,17 @@ io.on('connection', async (socket)=>{
 
     //채팅 보내기(TripId,UserId, ChatId, Content)
     socket.on("addMessage",async (socket)=>{
-        const {TripId}=socket.handshake.query;
-        const {UserId}=socket.handshake.headers.token;
-        const {ChatId,Content}=socket.handshake.body;
+        const {Content}=socket;
+        console.log("ChatId, Content",ChatId,Content);
         if(Content==undefined){
             return res.send({status:false,reason:"Bad Request"});
         }
         let chat=raw2str(await models.Chat.create({
             TripId:TripId,
             UserId:UserId,
-            ChatId:ChatId,
             Content:Content
         }));
+        console.log(Content)
         if(chat==null){
             return res.send({status:false,reason:"채팅 전송 도중 오류가 발생했습니다."});
         }

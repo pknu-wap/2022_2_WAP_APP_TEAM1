@@ -5,7 +5,7 @@ module.exports=function(sequelize, DataTypes){
         TripId:
         {
             field:'TRIP_ID',
-            type:DataTypes.NUMBER,
+            type:DataTypes.INTEGER,
             primaryKey:true,
             allowNull:false,
             defaultValue:''
@@ -13,10 +13,10 @@ module.exports=function(sequelize, DataTypes){
         ChatId:
         {
             field:'CHAT_ID',
-            type:DataTypes.NUMBER,
+            type:DataTypes.INTEGER,
             primaryKey:true,
             allowNull:false,
-            defaultValue:''
+            defaultValue:1
         },
         UserId:
         {
@@ -26,6 +26,12 @@ module.exports=function(sequelize, DataTypes){
             allowNull:false,
             defaultValue:''
         }
+    },{
+    underscored: true,
+        freezeTableName: true,
+        tableName: 'DB_CHAT_READ',
+        timestamps: true,
+        underscored: true
     });
     ChatRead.associate=function(models){
         models.ChatRead.belongsTo(models.Chat,{foreignKey:'TripId',targetKey:'TripId'});

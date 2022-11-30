@@ -1,11 +1,12 @@
 'use stricts';
+const { raw2str } = require('../util/rawtostr');
 
 module.exports=function(sequelize, DataTypes){
     const Chat=sequelize.define('Chat',{
         TripId:
         {
             field:'TRIP_ID',
-            type:DataTypes.NUMBER,
+            type:DataTypes.INTEGER,
             primaryKey:true,
             allowNull:false,
             defaultValue:''
@@ -13,10 +14,10 @@ module.exports=function(sequelize, DataTypes){
         ChatId:
         {
             field:'CHAT_ID',
-            type:DataTypes.NUMBER,
+            type:DataTypes.INTEGER,
             primaryKey:true,
             allowNull:false,
-            defaultValue:''
+            defaultValue:1
         },
         UserId:
         {
@@ -38,7 +39,16 @@ module.exports=function(sequelize, DataTypes){
         underscored: true,
         freezeTableName: true,
         tableName: 'DB_CHAT',
-        timestamps: true
+        timestamps: true,
+        underscored: true,
+        hooks: {
+            beforeCreate: async (chat, options) => {
+                const result = await sequelize.query('SELECT SEQ_CHAT.NEXTVAL AS CHAT_ID FROM DUAL', {
+                    type: sequelize.QueryTypes.SELECT
+                });
+                Chat.ChatId = raw2str(result)[0].CHAT_ID;
+            }
+        }
 
     });
     Chat.associate=function(models){
