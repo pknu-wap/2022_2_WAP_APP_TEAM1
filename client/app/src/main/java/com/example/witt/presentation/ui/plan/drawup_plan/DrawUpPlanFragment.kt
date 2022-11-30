@@ -70,7 +70,7 @@ class DrawUpPlanFragment : BaseFragment<FragmentDrawUpPlanBinding>(R.layout.frag
         }
 
         binding.addAirlineButton.setOnClickListener {
-            val direction = DrawUpPlanFragmentDirections.actionDrawUpPlanFragmentToAirlineSearchFragment()
+            val direction = DrawUpPlanFragmentDirections.actionDrawUpPlanFragmentToFlightSearchFragment()
             findNavController().navigate(direction)
         }
     }

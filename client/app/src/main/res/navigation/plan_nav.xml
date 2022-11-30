@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/plan_nav"
-    app:startDestination="@id/homeFragment">
+    app:startDestination="@id/flightSearchFragment">
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.example.witt.presentation.ui.home.HomeFragment"
@@ -48,6 +48,9 @@
         <action
             android:id="@+id/action_drawUpPlanFragment_to_airlineSearchFragment"
             app:destination="@id/airlineSearchFragment" />
+        <action
+            android:id="@+id/action_drawUpPlanFragment_to_flightSearchFragment"
+            app:destination="@id/flightSearchFragment" />
     </fragment>
     <fragment
         android:id="@+id/writeMemoFragment"
@@ -95,4 +98,8 @@
             android:id="@+id/action_airlineSearchFragment_to_drawUpPlanFragment"
             app:destination="@id/drawUpPlanFragment" />
     </fragment>
-    </navigation>
+    <fragment
+        android:id="@+id/flightSearchFragment"
+        android:name="com.example.witt.presentation.ui.search.airline.FlightSearchFragment"
+        android:label="FlightSearchFragment" />
+</navigation>
