@@ -42,11 +42,13 @@ module.exports=function(sequelize, DataTypes){
         timestamps: true,
         underscored: true,
         hooks: {
-            beforeCreate: async (chat, options) => {
-                const result = await sequelize.query('SELECT SEQ_CHAT.NEXTVAL AS CHAT_ID FROM DUAL', {
-                    type: sequelize.QueryTypes.SELECT
-                });
-                Chat.ChatId = raw2str(result)[0].CHAT_ID;
+            beforeCreate: async (Chat, options) => {
+                const result = await sequelize.query(`SELECT SEQ_CHAT_${Chat.TripId}.NEXTVAL
+                                                      AS CHAT_ID 
+                                                      FROM DUAL`, {
+                                                        type: sequelize.QueryTypes.SELECT
+                                                    });
+                Chat.ChatId = result[0].CHAT_ID;
             }
         }
 

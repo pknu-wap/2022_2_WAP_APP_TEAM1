@@ -41,6 +41,7 @@ app.listen(port, async () => {
                 TripId: TripId
             }
         }));
+        console.log(TripId+ 'chatlist: '+chatList);
         for (let i = 0; i < chatList.length; i++) { //모든 채팅 내역에 대해
             let readChat = await models.ChatRead.findAll({ //읽은 채팅 내역 가져오기
                 where: {
@@ -62,13 +63,15 @@ app.listen(port, async () => {
                     UserId: UserId
                 });
                 result.push(chat);
-                console.log(chat);
             }
         }
-        socket.to(TripId).emit('getChat', result);
+        console.log('result: ' +result);
+        socket.to(TripId).emit('connection', result);
         //채팅 보내기(TripId,UserId, Content)
         socket.on("addMessage", async (socket) => {
-            const Content = socket;
+            //const { TripId } = socket;
+            //const { UserId } = socket;
+            const {Content} = socket;
             console.log(TripId, UserId, Content);
             if (Content == undefined) {
                 console.log("Bad Request");
@@ -76,7 +79,7 @@ app.listen(port, async () => {
             let chat = raw2str(await models.Chat.create({
                 TripId: TripId,
                 UserId: UserId,
-                CONTENT: Content
+                Content: Content
             }));
             if (chat == null) {
                 return res.send({ status: false, reason: "채팅 전송 도중 오류가 발생했습니다." });
@@ -88,7 +91,7 @@ app.listen(port, async () => {
         })
         //채팅방 나가기
         socket.on("disconnect", () => {
-            console.log("leave from" + room);
+            console.log("leave from" + TripId);
         })
     });
     /*
