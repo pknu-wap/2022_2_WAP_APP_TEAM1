@@ -16,7 +16,7 @@ class SignInDataSourceImpl @Inject constructor(
         withContext(coroutineDispatcher) {
             try {
                 val response = service.signIn(
-                    signInRequest
+                    SignInRequest(signInRequest.AccountType, signInRequest.Username, signInRequest.Password)
                 )
                 Result.success(response)
             } catch (e: Exception) {
