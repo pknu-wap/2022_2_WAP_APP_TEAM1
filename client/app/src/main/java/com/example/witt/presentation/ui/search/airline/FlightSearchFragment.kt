@@ -32,14 +32,14 @@ class FlightSearchFragment: BaseFragment<FragmentFlightSearchBinding>(R.layout.f
     }
 
     //Date 리스트 생성
-    private fun tripDateRange(sd:LocalDate,ed:LocalDate):List<LocalDate>{
-        var dateRange = mutableListOf<LocalDate>()
+    private fun tripDateRange(sd:LocalDate,ed:LocalDate):Array<String>{
+        var dateRange = mutableListOf<String>()
         var date = sd
         while(date<=ed){
-            dateRange.add(date)
+            dateRange.add(date.toString())
             date = date.plusDays(1)
         }
-        return dateRange
+        return dateRange.toTypedArray()
     }
 
     //항공사 선택 dialog 초기화
@@ -63,18 +63,18 @@ class FlightSearchFragment: BaseFragment<FragmentFlightSearchBinding>(R.layout.f
 
 
     //Date 선택 dialog 초기화
-    private fun initDate(dateRange:List<LocalDate>){
+    private fun initDate(dateRange:Array<String>){
         binding.date.setOnClickListener {
             showDateDialog(it as TextView,dateRange)
         }
     }
 
-    private fun showDateDialog(it: TextView, dateRange: List<LocalDate>){
+    private fun showDateDialog(it: TextView, dateRange: Array<String>){
         val builder = AlertDialog.Builder(requireActivity())
         builder.setTitle("날짜를 선택하세요.")
-            .setItems(dateRange.size){
+            .setItems(dateRange){
                 _,which ->
-                it.text = dateRange[which].toString()
+                it.text = dateRange[which]
             }
         builder.show()
     }
