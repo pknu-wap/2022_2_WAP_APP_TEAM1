@@ -24,6 +24,7 @@ import net.daum.mf.map.api.MapPoint
 import com.example.witt.presentation.ui.plan.drawup_plan.memo_dialog.WriteMemoFragment
 import com.example.witt.presentation.widget.RemoveConfirmDialog
 import com.example.witt.utils.DefaultTemplate
+import com.example.witt.utils.convertCoordinates
 import com.kakao.sdk.common.util.KakaoCustomTabsClient
 import com.kakao.sdk.share.ShareClient
 import com.kakao.sdk.share.WebSharerClient
@@ -44,7 +45,8 @@ class DrawUpPlanFragment : BaseFragment<FragmentDrawUpPlanBinding>(R.layout.frag
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //initMap()
+
+        initMap()
         initButton()
         initAdapter()
         observeData()
@@ -53,15 +55,17 @@ class DrawUpPlanFragment : BaseFragment<FragmentDrawUpPlanBinding>(R.layout.frag
     private fun initButton() {
         binding.sharePlanButton.setOnClickListener {
             //todo refactor
-            planViewModel.planState.value?.let{
+            planViewModel.planState.value?.let {
                 sendKakaoLink(requireContext(), DefaultTemplate.createTemplate(it))
-            } ?: Toast.makeText(requireContext(), "카카오톡 링크를 생성하는데 실패하였습니다.",
-                Toast.LENGTH_SHORT).show()
+            } ?: Toast.makeText(
+                requireContext(), "카카오톡 링크를 생성하는데 실패하였습니다.",
+                Toast.LENGTH_SHORT
+            ).show()
         }
 
         binding.outPlanButton.setOnClickListener {
             RemoveConfirmDialog(
-                onClickRemove ={
+                onClickRemove = {
                     viewModel.outPlan()
                 },
                 onClickCancel = {},
@@ -77,20 +81,23 @@ class DrawUpPlanFragment : BaseFragment<FragmentDrawUpPlanBinding>(R.layout.frag
 
     private fun observeData() {
         binding.viewModel = planViewModel
-
         //planViewModel에서 데이터 가져오기
         planViewModel.planState.observe(viewLifecycleOwner) {
             viewModel.getDetailPlan(it)
+            initMap(it.Region)
         }
 
         viewModel.drawUpPlanEvent.flowWithLifecycle(viewLifecycleOwner.lifecycle)
             .onEach {
-                when(it){
-                    is UiEvent.Success ->{
-                        val direction = DrawUpPlanFragmentDirections.actionDrawUpPlanFragmentToHomeFragment()
+                when (it) {
+                    is UiEvent.Success -> {
+                        val direction =
+                            DrawUpPlanFragmentDirections.actionDrawUpPlanFragmentToHomeFragment()
                         findNavController().navigate(direction)
                     }
-                    is UiEvent.Failure ->{ Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()}
+                    is UiEvent.Failure -> {
+                        Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
+                    }
                 }
             }.launchIn(viewLifecycleOwner.lifecycleScope)
 
@@ -150,20 +157,27 @@ class DrawUpPlanFragment : BaseFragment<FragmentDrawUpPlanBinding>(R.layout.frag
         memoDialog.show(requireActivity().supportFragmentManager, "MEMO")
     }
 
-    private fun initMap() {
+    private fun initMap(destination: String) {
         val mapView = MapView(requireActivity())
+        val destinationCoordinate = destination.convertCoordinates()
         with(mapView) {
             binding.mapView.addView(this)
             setMapCenterPoint(
-                MapPoint.mapPointWithGeoCoord(defaultSeoulx, defaultSeouly), //맵 위치
+                MapPoint.mapPointWithGeoCoord(
+                    destinationCoordinate.first,
+                    destinationCoordinate.second
+                ),
                 true
             )
-            setZoomLevel(5, true)
+            setZoomLevel(7, true)
             val marker = MapPOIItem()
             with(marker) {
-                itemName = "Default Marker" //머커에 표시되는 이름
+                itemName = destination //머커에 표시되는 이름
                 tag = 0
-                mapPoint = MapPoint.mapPointWithGeoCoord(defaultSeoulx, defaultSeouly) //마커 위치
+                mapPoint = MapPoint.mapPointWithGeoCoord(
+                    destinationCoordinate.first,
+                    destinationCoordinate.second
+                ) //마커 위치
                 markerType = MapPOIItem.MarkerType.BluePin // 기본으로 제공하는 BluePin 마커 모양.
                 selectedMarkerType =
                     MapPOIItem.MarkerType.RedPin // 마커를 클릭했을때, 기본으로 제공하는 RedPin 마커 모양.
@@ -195,8 +209,4 @@ class DrawUpPlanFragment : BaseFragment<FragmentDrawUpPlanBinding>(R.layout.frag
         }
     }
 
-    companion object {
-        private const val defaultSeoulx = 37.53737528
-        private const val defaultSeouly = 127.00557633
-    }
 }

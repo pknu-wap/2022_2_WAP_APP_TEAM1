@@ -8,39 +8,37 @@
         android:layout_height="match_parent"
         tools:context=".presentation.ui.search.MapSearchFragment">
 
-        <EditText
-            android:id="@+id/editText"
-            android:layout_width="287dp"
-            android:layout_height="49dp"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/plan_id_textField"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
             android:layout_marginTop="16dp"
-            android:hint="장소 검색"
-            android:textSize="20sp"
-            app:layout_constraintEnd_toStartOf="@+id/searchPlaceButton"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <Button
-            android:id="@+id/searchPlaceButton"
-            android:layout_width="80dp"
-            android:layout_height="50dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:text="검색"
-            android:textSize="16sp"
+            android:layout_marginEnd="32dp"
+            android:hint="장소 검색하기"
+            app:counterMaxLength="20"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </com.google.android.material.textfield.TextInputLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/search_map_recyclerView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editText"
-            app:layout_constraintVertical_bias="0.505" />
+            app:layout_constraintTop_toBottomOf="@+id/plan_id_textField" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
