@@ -3,22 +3,40 @@ package com.example.witt.presentation.ui.plan.drawup_plan.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.witt.databinding.ItemDetailPlanBinding
+import com.example.witt.databinding.ItemPlanMemoBinding
+import com.example.witt.databinding.ItemPlanPlaceBinding
 import com.example.witt.domain.model.plan.get_plan.DetailPlanModel
 import com.example.witt.presentation.listener.ItemTouchHelperListener
 
 class DetailPlanAdapter(
     val memoClick : (DetailPlanModel) -> Unit
-) : RecyclerView.Adapter<DetailPlanAdapter.PlanDateViewHolder>(), ItemTouchHelperListener{
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>(), ItemTouchHelperListener{
 
     val planContentData = mutableListOf<DetailPlanModel>()
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlanDateViewHolder {
-        return PlanDateViewHolder(ItemDetailPlanBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) : RecyclerView.ViewHolder = when(viewType){
+        TYPE_MEMO -> {
+            val binding = ItemPlanMemoBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            PlanMemoViewHolder(binding)
+        }
+        else ->{
+            val binding = ItemPlanPlaceBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            PlanPlaceViewHolder(binding)
+        }
     }
 
-    override fun onBindViewHolder(holder: PlanDateViewHolder, position: Int) {
-        holder.bind(planContentData[position])
+    override fun getItemViewType(position: Int): Int =
+        planContentData[position].type
+
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+       when(holder){
+           is PlanMemoViewHolder -> {
+               holder.bind(planContentData[position])
+           }
+           is PlanPlaceViewHolder -> {
+               holder.bind(planContentData[position])
+           }
+       }
     }
 
     override fun getItemCount(): Int {
@@ -38,13 +56,26 @@ class DetailPlanAdapter(
         return true
     }
 
-    inner class PlanDateViewHolder(private val binding: ItemDetailPlanBinding)
+    inner class PlanMemoViewHolder(private val binding: ItemPlanMemoBinding)
         : RecyclerView.ViewHolder(binding.root){
         fun bind(item: DetailPlanModel){
-            binding.item = item.Memo
+            binding.item = item.memo
             binding.timePlanCardView.setOnClickListener{
                 memoClick(item)
             }
         }
+    }
+
+    inner class PlanPlaceViewHolder(private val binding : ItemPlanPlaceBinding)
+        : RecyclerView.ViewHolder(binding.root){
+            fun bind(item: DetailPlanModel){
+                binding.item = item.place
+                binding.placeNumberTextView.text = adapterPosition.toString()
+            }
+        }
+
+    companion object{
+        const val TYPE_PLACE = 0
+        const val TYPE_MEMO = 1
     }
 }
