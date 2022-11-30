@@ -30,7 +30,7 @@ module.exports=function(sequelize, DataTypes){
     underscored: true,
         freezeTableName: true,
         tableName: 'DB_CHAT_READ',
-        timestamps: true,
+        timestamps: false,
         underscored: true
     });
     ChatRead.associate=function(models){

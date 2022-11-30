@@ -63,6 +63,7 @@ module.exports = (sequelize, DataTypes) => {
     
     Trip.associate = function (models) {
         Trip.hasMany(models.TripParticipant, {foreignKey: 'TripId', sourceKey: 'TripId'});
+        Trip.hasMany(models.Chat, {foreignKey: 'TripId', sourceKey: 'TripId'} );
         Trip.belongsTo(models.User, {foreignKey: 'OwnerId', targetKey: 'UserId'});
     };
     return Trip;

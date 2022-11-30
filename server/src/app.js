@@ -7,6 +7,7 @@ const models = require('./models');
 const { raw2str } = require('./util/rawtostr');
 const socketport = 80;
 const { Server } = require('socket.io');
+//const sequelize = require('socket.io-sequelize');
 const { query } = require("express");
 const io = new Server();
 //const chat=require('./socket');
@@ -21,7 +22,15 @@ app.use("/api", api);
 
 
 app.listen(port, async () => {
+    try {
+        await models.sequelize.sync({ force: false, alter: false })
+    }
+    catch (err) {
+        console.log('DB 연결 중 오류 발생: ', err);
+        process.exit();
+    }
     io.listen(8080);
+   //io.use(sequelize('db', './models'));
     console.log("socket.io listening on port 8080");
     io.on('connection', async (socket) => {
         const {TripId}  = socket.handshake.query;
@@ -35,7 +44,7 @@ app.listen(port, async () => {
         console.log("join in" + TripId);
         console.log("connected to " + TripId, UserId);
         //이전 채팅 내역 가져오기(TripId)
-        let result = {};//새로 읽은 내역을 담는 객체
+        let result = [];//새로 읽은 내역을 담는 객체
         let chatList = raw2str(await models.Chat.findAll({ //TripId에 해당하는 모든 채팅 내역 가져오기
             where: {
                 TripId: TripId
@@ -71,23 +80,36 @@ app.listen(port, async () => {
         socket.on("addMessage", async (socket) => {
             //const { TripId } = socket;
             //const { UserId } = socket;
+            let transaction = await models.sequelize.transaction();
+            try {
             const {Content} = socket;
             console.log(TripId, UserId, Content);
             if (Content == undefined) {
                 console.log("Bad Request");
             }
-            let chat = raw2str(await models.Chat.create({
+            else
+            {
+            let chat = await models.Chat.create({ //채팅 내역 추가
                 TripId: TripId,
                 UserId: UserId,
                 Content: Content
-            }));
+            }, {transaction: transaction});
+
             if (chat == null) {
-                return res.send({ status: false, reason: "채팅 전송 도중 오류가 발생했습니다." });
+                await transaction.rollback();
+                console.log('chat is null');
             }
             else {
+                await transaction.commit();
                 io.to(TripId).emit("addMessage", chat);
             }
             console.log("success to send Message : ${chat}", chat);
+        }
+        } catch (e) {
+            await transaction.rollback();
+            console.log('error: ', e.message);
+            console.log('stack: ', e.stack);
+        }
         })
         //채팅방 나가기
         socket.on("disconnect", () => {
@@ -101,13 +123,7 @@ app.listen(port, async () => {
     });
     */
 
-    try {
-        await models.sequelize.sync({ force: false, alter: false })
-    }
-    catch (err) {
-        console.log('DB 연결 중 오류 발생: ', err);
-        process.exit();
-    }
+    
     /*try
     {
         const kiwi_api = require('./kiwi-api');

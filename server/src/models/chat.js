@@ -23,7 +23,6 @@ module.exports=function(sequelize, DataTypes){
         {
             field:'USER_ID',
             type:DataTypes.STRING(32),
-            primaryKey:false,
             allowNull:false,
             defaultValue:''
         },
@@ -31,7 +30,6 @@ module.exports=function(sequelize, DataTypes){
         {
             field:'CONTENT',
             type:DataTypes.STRING(2000),
-            primaryKey:false,
             allowNull:false,
             defaultValue:''
         }
@@ -40,13 +38,13 @@ module.exports=function(sequelize, DataTypes){
         freezeTableName: true,
         tableName: 'DB_CHAT',
         timestamps: true,
-        underscored: true,
         hooks: {
             beforeCreate: async (Chat, options) => {
                 const result = await sequelize.query(`SELECT SEQ_CHAT_${Chat.TripId}.NEXTVAL
                                                       AS CHAT_ID 
                                                       FROM DUAL`, {
-                                                        type: sequelize.QueryTypes.SELECT
+                                                        type: sequelize.QueryTypes.SELECT,
+                                                        transaction: options.transaction
                                                     });
                 Chat.ChatId = result[0].CHAT_ID;
             }
@@ -54,8 +52,8 @@ module.exports=function(sequelize, DataTypes){
 
     });
     Chat.associate=function(models){
-        models.Chat.belongsTo(models.Trip,{foreignKey:'TripId',targetKey:'TripId'});
-        models.Chat.belongsTo(models.User,{foreignKey:'UserId',targetKey:'UserId'});
+        Chat.belongsTo(models.Trip,{foreignKey:'TripId',targetKey:'TripId'});
+        Chat.belongsTo(models.User,{foreignKey:'UserId',targetKey:'UserId'});
     };
     return Chat;
 }
