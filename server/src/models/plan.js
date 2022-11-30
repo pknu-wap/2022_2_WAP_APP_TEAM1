@@ -59,6 +59,8 @@ module.exports = function (sequelize, DataTypes) {
         Plan.hasMany(models.PlanMemo, {foreignKey: 'TripId', sourceKey: 'TripId'});
         Plan.hasMany(models.PlanPlace, {foreignKey: 'PlanId', sourceKey: 'PlanId'});
         Plan.hasMany(models.PlanPlace, {foreignKey: 'TripId', sourceKey: 'TripId'});
+        Plan.hasMany(models.PlanFlight, {foreignKey: 'PlanId', sourceKey: 'PlanId'});
+        Plan.hasMany(models.PlanFlight, {foreignKey: 'TripId', sourceKey: 'TripId'});
     };
     return Plan;
 };
