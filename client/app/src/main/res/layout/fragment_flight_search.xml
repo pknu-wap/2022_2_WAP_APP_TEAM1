@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -36,6 +37,51 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
+
+                <TextView
+                    android:id="@+id/airline_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="32dp"
+                    android:text="항공사"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/date_text" />
+
+                <TextView
+                    android:id="@+id/airline"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:text="선택하기"
+                    android:textColor="@color/skyBlue"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toStartOf="@+id/date"
+                    app:layout_constraintTop_toTopOf="@+id/airline_text" />
+
+                <TextView
+                    android:id="@+id/date_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="32dp"
+                    android:text="날짜"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="32dp"
+                    android:text="선택하기"
+                    android:textColor="@color/skyBlue"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toEndOf="@+id/date_text"
+                    app:layout_constraintTop_toTopOf="@+id/date_text" />
+
+
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/flight_id_textField"
                     style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
@@ -50,56 +96,13 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/start_text">
+                    app:layout_constraintTop_toBottomOf="@id/airline_text">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/flight_id_editText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
                 </com.google.android.material.textfield.TextInputLayout>
-
-                <TextView
-                    android:id="@+id/start_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="32dp"
-                    android:layout_marginTop="32dp"
-                    android:text="항공사"
-                    android:textSize="16sp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/date_text" />
-
-                <TextView
-                    android:id="@+id/airport_start"
-                    android:layout_width="wrap_content"
-                    android:layout_height="0dp"
-                    android:text="선택하기"
-                    android:textColor="@color/skyBlue"
-                    android:textSize="16sp"
-                    app:layout_constraintStart_toStartOf="@+id/date_period"
-                    app:layout_constraintTop_toTopOf="@+id/start_text" />
-
-                <TextView
-                    android:id="@+id/date_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="32dp"
-                    android:layout_marginTop="32dp"
-                    android:text="날짜"
-                    android:textSize="16sp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/date_period"
-                    android:layout_width="wrap_content"
-                    android:layout_height="0dp"
-                    android:layout_marginStart="32dp"
-                    android:text="선택하기"
-                    android:textColor="@color/skyBlue"
-                    android:textSize="16sp"
-                    app:layout_constraintStart_toEndOf="@+id/date_text"
-                    app:layout_constraintTop_toTopOf="@+id/date_text" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
