@@ -1,6 +1,7 @@
 package com.example.witt.data.source.remote.memo
 
 import com.example.witt.data.api.PlanMemoService
+import com.example.witt.data.model.plan.detail_plan.request.MemoRequest
 import com.example.witt.data.model.plan.memo.MakeMemoResponse
 import com.example.witt.di.IoDispatcher
 import kotlinx.coroutines.CoroutineDispatcher
@@ -15,7 +16,7 @@ class MakeMemoDataSourceImpl @Inject constructor(
     override suspend fun makeMemo(tripId : Int, day: Int, content: String): Result<MakeMemoResponse>
     = withContext(coroutineDispatcher){
         runCatching {
-            service.makeMemo(tripId, day, content)
+            service.makeMemo(tripId, day, MemoRequest(content))
         }.onFailure {
             it.printStackTrace()
         }
