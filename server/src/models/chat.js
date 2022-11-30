@@ -17,7 +17,7 @@ module.exports=function(sequelize, DataTypes){
             type:DataTypes.INTEGER,
             primaryKey:true,
             allowNull:false,
-            defaultValue:1
+            defaultValue:''
         },
         UserId:
         {
@@ -47,6 +47,7 @@ module.exports=function(sequelize, DataTypes){
                                                         transaction: options.transaction
                                                     });
                 Chat.ChatId = result[0].CHAT_ID;
+                console.log(result[0].CHAT_ID);
             }
         }
 
