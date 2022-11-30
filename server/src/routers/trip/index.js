@@ -26,8 +26,8 @@ tripRouter.delete("/:TripId/participants", wrapAsync(tripInviteService.leavePlan
 const planRouter = require('./plan')
 tripRouter.use('/:TripId/plan', planRouter);
 
-// Trip Chat Settings
+/* Trip Chat Settings
 const chatRouter = require('./chat')
 tripRouter.use('/:TripId/chat', chatRouter);
-
+*/
 module.exports = tripRouter;
