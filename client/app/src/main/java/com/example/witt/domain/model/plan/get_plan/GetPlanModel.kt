@@ -3,17 +3,45 @@ package com.example.witt.domain.model.plan.get_plan
 data class GetPlanModel (
     val status: Boolean,
     val reason: String,
-    val plans: List<DetailPlanModel>
+    val data: PlanDataModel,
 )
+
+data class PlanDataModel(
+    val endDate: String,
+    val name: String,
+    val ownerId: String,
+    val participant: List<PlanParticipantModel>?,
+    val plans: List<DetailPlanModel>,
+    val region: String,
+    val startDate: String,
+    val tripId: Int
+)
+
+data class PlanParticipantModel(
+    val userId : String,
+    val nickName : String,
+    val profileImage : String
+)
+
 data class DetailPlanModel (
-    val PlanId : Int,
-    val Day: Int,
-    val OrderIndex: Int,
-    val Memo: PlanMemoModel
+    val day: Int,
+    val memo: PlanMemoModel?,
+    val orderIndex: Int,
+    val place: PlanPlaceModel?,
+    val planId: Int,
+    val type: Int
     )
 
 data class PlanMemoModel (
-    val Content : String,
-    val Created_At: String,
-    val Updated_At: String
+    val content : String,
+    val created_At: String,
+    val updated_At: String
     )
+
+data class PlanPlaceModel(
+    val category: String,
+    val latitude: Double,
+    val longitude: Double,
+    val name: String,
+    val roadAddress: String
+)
