@@ -5,8 +5,8 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
-import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.witt.BuildConfig
 import com.example.witt.R
@@ -29,10 +29,11 @@ class MapSearchFragment: BaseFragment<FragmentMapSearchBinding>(R.layout.fragmen
         const val API_KEY = BuildConfig.KAKAO_REST_API_KEY
     }
 
+    private val args by navArgs<MapSearchFragmentArgs>()
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         searchKeywordInit()
-
     }
 
     private fun searchKeywordInit(){
@@ -43,6 +44,26 @@ class MapSearchFragment: BaseFragment<FragmentMapSearchBinding>(R.layout.fragmen
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         })
+    }
+
+    private fun initAdapter(data: List<PlaceModel>){
+        val adapter = MapSearchAdapter(
+            placeItemOnClick = {
+                initNavigation(it)
+            }
+        )
+        adapter.listData.clear()
+        adapter.listData.addAll(data)
+        binding.searchMapRecyclerView.adapter = adapter
+        binding.searchMapRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+    }
+
+    private fun initNavigation(place: PlaceModel){
+        if( findNavController().currentDestination?.id == R.id.mapSearchFragment) {
+            val direction = MapSearchFragmentDirections
+                .actionMapSearchFragmentToAddPlaceFragment(day = args.dayId, place = place)
+            findNavController().navigate(direction)
+        }
     }
 
     private fun searchKeyword(keyword: String){
@@ -58,38 +79,14 @@ class MapSearchFragment: BaseFragment<FragmentMapSearchBinding>(R.layout.fragmen
                     call: Call<ResultSearchKeyword>,
                     response: Response<ResultSearchKeyword>
                 ) {
-                    val data: MutableList<PlaceModel> = loadData(response.body())
-                    val adapter = MapSearchAdapter(
-                        placeItemOnClick = {
-                            initNavigation(it)
-                        }
-                    )
-                    adapter.listData = data
-                    binding.searchMapRecyclerView.adapter = adapter
-                    binding.searchMapRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+                    response.body()?.let{
+                        initAdapter(it.documents)
+                    }
                 }
-
                 override fun onFailure(call: Call<ResultSearchKeyword>, t: Throwable) {
                     Log.w("mapSearch", "통신 실패 : ${t.message}")
                 }
             })
-        }
-    }
-
-    private fun loadData(searchResult: ResultSearchKeyword?):MutableList<PlaceModel>{
-        val data:MutableList<PlaceModel> = mutableListOf()
-        if (!searchResult?.documents.isNullOrEmpty()) {
-            for(index in 0 until (searchResult?.documents?.size!!)){
-                searchResult.documents.get(index).let { data.add(it) }
-            }
-        }
-        return data
-    }
-
-    private fun initNavigation(place: PlaceModel){
-        val bundle = bundleOf("place" to place)
-        if( findNavController().currentDestination?.id == R.id.mapSearchFragment) {
-            findNavController().navigate(R.id.action_mapSearchFragment_to_placeInsertFragment, bundle)
         }
     }
 }

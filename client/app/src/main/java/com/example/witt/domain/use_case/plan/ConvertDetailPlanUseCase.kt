@@ -21,7 +21,7 @@ class ConvertDetailPlanUseCase @Inject constructor(
 
         var i = 1
         while(sd <= ed) {
-            result.add(PlanModel("Day $i", sd.toString(), data.filter{it.Day == i}))
+            result.add(PlanModel("Day $i", sd.toString(), data.filter{it.day == i}))
             sd = sd.plusDays(1)
             i += 1
         }

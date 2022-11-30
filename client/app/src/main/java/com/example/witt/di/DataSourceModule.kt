@@ -8,6 +8,8 @@ import com.example.witt.data.source.remote.memo.EditMemoDataSource
 import com.example.witt.data.source.remote.memo.EditMemoDataSourceImpl
 import com.example.witt.data.source.remote.memo.MakeMemoDataSource
 import com.example.witt.data.source.remote.memo.MakeMemoDataSourceImpl
+import com.example.witt.data.source.remote.plan.detail_plan.AddPlaceDataSource
+import com.example.witt.data.source.remote.plan.detail_plan.AddPlaceDataSourceImpl
 import com.example.witt.data.source.remote.plan.get_plan.GetPlanDataSource
 import com.example.witt.data.source.remote.plan.get_plan.GetPlanDataSourceImpl
 import com.example.witt.data.source.remote.plan.get_plan.GetPlanListDataSource
@@ -124,4 +126,9 @@ abstract class DataSourceModule {
         outPlanDataSourceImpl: OutPlanDataSourceImpl
     ): OutPlanDataSource
 
+    @Binds
+    @Singleton
+    abstract fun provideAddPlaceDataSource(
+        addPlaceDataSourceImpl : AddPlaceDataSourceImpl
+    ): AddPlaceDataSource
 }

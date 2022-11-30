@@ -2,4 +2,21 @@
     <string name="app_name">Witt</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string-array name="airport_array">
+        <item>인천</item>
+        <item>김포</item>
+        <item>제주</item>
+        <item>부산</item>
+        <item>대구</item>
+        <item>광주</item>
+        <item>울산</item>
+        <item>포항</item>
+        <item>양양</item>
+        <item>무안</item>
+        <item>청주</item>
+        <item>여수</item>
+        <item>군산</item>
+        <item>원주</item>
+        <item>진주</item>
+    </string-array>
 </resources>
