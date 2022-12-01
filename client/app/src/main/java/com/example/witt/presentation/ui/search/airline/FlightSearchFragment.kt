@@ -1,21 +1,26 @@
 package com.example.witt.presentation.ui.search.airline
 
+import android.content.DialogInterface
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import com.example.witt.R
 import com.example.witt.presentation.base.BaseFragment
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.activityViewModels
 import com.example.witt.data.repository.FlightRepositoryImpl
 import com.example.witt.databinding.FragmentFlightSearchBinding
+import com.example.witt.domain.model.flight.SearchFlightModel
 import com.example.witt.domain.model.flight.SearchFlightRequest
 import com.example.witt.presentation.ui.plan.PlanViewModel
+import com.example.witt.presentation.widget.AddFlightDialog
 import com.example.witt.utils.convertAirline
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -90,17 +95,38 @@ class FlightSearchFragment: BaseFragment<FragmentFlightSearchBinding>(R.layout.f
     private fun initButton() {
         binding.flightSearchBtn.setOnClickListener {
             CoroutineScope(Dispatchers.IO).launch {
-                searchFlight()
+               searchFlight().mapCatching {
+                   withContext (Dispatchers.Main){
+                       if(it.Status) {
+                           showInsertDialog(it)
+                       }else{
+                           Toast.makeText(requireActivity(), "항공편을 확인해주세요.", Toast.LENGTH_SHORT).show()
+                       }
+                   }
+               }.onFailure {
+
+               }
             }
         }
     }
 
-    private suspend fun searchFlight(){
+    private suspend fun searchFlight():Result<SearchFlightModel>{
         val flightDate = binding.date.text.toString()
         val airlineCode = binding.date.text.toString().convertAirline()
         val flightNum = binding.flightIdEditText.text.toString()
         val searchFlightRequest = SearchFlightRequest(flightDate,airlineCode,flightNum)
         val result = repository.findFlight(searchFlightRequest)
         Log.d("test",result.toString())
+        return result
+    }
+
+
+    private fun showInsertDialog(
+        result:SearchFlightModel
+    ){
+       AddFlightDialog(
+           requireActivity(),
+           result
+       ).show()
     }
 }
