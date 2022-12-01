@@ -1,3 +1,4 @@
+
 const {raw2str} = require('../util/rawtostr');
 module.exports = function (sequelize, DataTypes) {
     const FileInfo = sequelize.define('FileInfo', {
@@ -20,6 +21,7 @@ module.exports = function (sequelize, DataTypes) {
                 type: DataTypes.STRING(32),
                 allowNull: false
             },
+
     }, {
         underscored: true,
         freezeTableName: true,

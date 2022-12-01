@@ -1,3 +1,4 @@
+
 const {raw2str} = require('../util/rawtostr');
 module.exports = function (sequelize, DataTypes) {
     const User = sequelize.define('User', {

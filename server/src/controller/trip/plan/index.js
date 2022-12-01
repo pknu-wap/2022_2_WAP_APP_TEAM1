@@ -101,7 +101,6 @@ module.exports = {
                 PlanId: plan.PlanId,
                 PlaceId: place.PlaceId
             }, {transaction: transaction});
-
             await transaction.commit();
             return res.send({status: true, reason: "장소 추가 성공", planId: plan.PlanId, planPlace: planPlace});
         } catch (err) {
@@ -159,6 +158,5 @@ module.exports = {
             console.log('addMemo error : ', err);
             res.status(500).send({status: false, reason: "Internal Server Error"});
         }
-
     }
 }

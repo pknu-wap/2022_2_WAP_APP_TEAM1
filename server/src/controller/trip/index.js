@@ -10,6 +10,7 @@ module.exports = {
 
         if (StartDate === undefined || EndDate === undefined || Name === undefined || Region === undefined) {
             return res.status(400).send({status: false, reason: ``});
+
         }
         let transaction = await models.sequelize.transaction();
         try {
@@ -60,6 +61,7 @@ module.exports = {
         const {trip} = req;
         const {UserId} = req.token;
         let data = {};
+
         let tripParticipants = raw2str(await models.TripParticipant.findAll({
             where: {
                 TripId: trip.TripId
@@ -69,7 +71,6 @@ module.exports = {
                 attributes: ['UserId', 'Nickname', 'ProfileImage']
             }]
         })).map(participant => participant.User);
-
         let plans = await models.Plan.findAll({
             where: {
                 TripId: trip.TripId

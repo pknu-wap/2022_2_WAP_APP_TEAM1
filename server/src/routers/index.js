@@ -9,4 +9,7 @@ router.use('/trip', trip)
 const flight = require('./flight')
 router.use('/flight', flight)
 
+const trip = require('./trip')
+router.use('/trip', trip)
+
 module.exports = router

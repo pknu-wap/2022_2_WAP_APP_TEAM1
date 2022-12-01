@@ -1,4 +1,5 @@
 const models = require("../../models")
+
 const {raw2str} = require("../../util/rawtostr")
 
 async function tripMiddleware(req, res, next) {
@@ -14,5 +15,4 @@ async function tripMiddleware(req, res, next) {
     req.trip = trip;
     next();
 }
-
 module.exports = {tripMiddleware}

@@ -2,7 +2,6 @@ const userRouter = require('express').Router()
 const userService = require('../../controller/user')
 const token = require('../../util/jwt')
 const multer = require('multer')
-
 function wrapAsync(fn) {
     return function (req, res, next) {
         fn(req, res, next).catch(next);

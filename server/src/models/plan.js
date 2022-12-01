@@ -36,12 +36,14 @@ module.exports = function (sequelize, DataTypes) {
                 allowNull: false,
                 defaultValue: 0
             }
+
     }, {
         underscored: true,
         freezeTableName: true,
         tableName: 'DB_PLAN',
         hooks: {
             beforeCreate: async (plan, options) => {
+
                 let [result, metadata] = await sequelize.query(`SELECT MAX(ORDER_INDEX) AS MAX_ORDER_INDEX
                                                                 FROM DB_PLAN
                                                                 WHERE TRIP_ID = ${plan.TripId}`);

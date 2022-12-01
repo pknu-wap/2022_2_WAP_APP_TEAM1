@@ -1,5 +1,6 @@
 const models = require("../../models")
 const {raw2str} = require("../../util/rawtostr")
+
 const token = require("../../util/jwt")
 module.exports = {
     //Login(POST)
@@ -9,7 +10,6 @@ module.exports = {
         if (AccountType == undefined || Username == undefined) {
             return res.send({status: false, reason: "AccountType or Username is undefined"});
         }
-
         if (AccountType > 2 || AccountType < 0) {
             return res.send({status: false, reason: "AccountType is invalid"});
         }
@@ -36,7 +36,6 @@ module.exports = {
                 RefreshToken: RefreshToken,
                 isProfileExists: isProfileExists
             });
-
         }
         //Social Login(Kakao, Naver)
         let user = raw2str(await models.User.findOrCreate({
@@ -61,6 +60,7 @@ module.exports = {
         const {Username, Password} = req.body;
         if (Username == undefined || Password == undefined) {
             return res.send({status: false, reason: "Username or Password is undefined"});
+
         }
         let user = raw2str(await models.User.create({
             AccountType: 0,
@@ -69,6 +69,7 @@ module.exports = {
         }));
         let AccessToken = token.generateAccessToken(user.UserId);
         let RefreshToken = token.generateRefreshToken(user.UserId);
+
         return res.send({status: true, reason: "회원가입 성공", AccessToken: AccessToken, RefreshToken: RefreshToken});
     },
     //Duplicate Check(GET)
@@ -86,10 +87,12 @@ module.exports = {
     //Get Info(GET)
     async getInfo(req, res) {
         const {UserId} = req.token;
+
         let user = raw2str(await models.User.findByPk(UserId))
         if (user == null) {
             return res.status(401).send("Unauthorized");
         }
+
         return res.send({status: true, reason: "정보 조회 성공", user: user});
     },
     //Update Info(PUT)
@@ -97,6 +100,7 @@ module.exports = {
         const {UserId} = req.token;
         const {Nickname, PhoneNum, ProfileImage} = req.body;
         const {file} = req;
+
         let user = raw2str(await models.User.findByPk(UserId));
         if (Nickname !== undefined && Nickname !== "") {
             user.Nickname = Nickname;
@@ -108,6 +112,7 @@ module.exports = {
         try {
             if (file !== undefined) {
                 let image_result = await require("../../util/file")(file.buffer, file.originalname);
+
                 if (image_result.result == false) {
                     return res.status(500).send({status: false, reason: "이미지 업로드 실패"});
                 }

@@ -31,6 +31,7 @@ class flightData {
 
     async getInfoByFlightNumber(flightDate, airlineCode, flightNum) {
         try {
+            console.log('getInfoByFlightNumber: begin');
             let res = await req.get(this.AIRPORT_OPENAPI_ENDPOINT)
                 .buffer(true)
                 .accept('xml')
@@ -61,6 +62,7 @@ class flightData {
                 departure: flightDate + ' ' + sTime,
                 arrival: flightDate + ' ' + eTime,
             }
+            console.log('getInfoByFlightNumber: end, result : ', flight);
             return {status: true, result: '조회에 성공하였습니다.', flight: flight};
         } catch (e) {
             console.log('getInfoByFlightNumber: error at ', e);
