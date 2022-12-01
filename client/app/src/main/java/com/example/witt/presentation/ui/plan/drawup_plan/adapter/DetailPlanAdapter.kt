@@ -70,7 +70,7 @@ class DetailPlanAdapter(
         : RecyclerView.ViewHolder(binding.root){
             fun bind(item: DetailPlanModel){
                 binding.item = item.place
-                binding.placeNumberTextView.text = adapterPosition.toString()
+                binding.placeNumberTextView.text = item.orderIndex.toString()
             }
         }
 
