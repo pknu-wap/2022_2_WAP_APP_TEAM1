@@ -85,7 +85,7 @@ class DrawUpPlanFragment : BaseFragment<FragmentDrawUpPlanBinding>(R.layout.frag
         //planViewModel에서 데이터 가져오기
         planViewModel.planState.observe(viewLifecycleOwner) {
             viewModel.getDetailPlan(it)
-            initMap(it.Region)
+            //initMap(it.Region)
         }
 
         viewModel.drawUpPlanEvent.flowWithLifecycle(viewLifecycleOwner.lifecycle)
@@ -154,7 +154,11 @@ class DrawUpPlanFragment : BaseFragment<FragmentDrawUpPlanBinding>(R.layout.frag
     }
 
     private fun showMemoDialog(day: Int, planId: Int?, memo: String?) {
-        val memoDialog = WriteMemoFragment()
+        val memoDialog = WriteMemoFragment(
+            onClick = {
+                viewModel.refreshPlan()
+            }
+        )
         val args = Bundle()
 
         args.putInt("day", day)
@@ -216,5 +220,4 @@ class DrawUpPlanFragment : BaseFragment<FragmentDrawUpPlanBinding>(R.layout.frag
             }
         }
     }
-
 }

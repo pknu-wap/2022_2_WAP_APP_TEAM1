@@ -21,7 +21,9 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
 @AndroidEntryPoint
-class WriteMemoFragment: DialogFragment() {
+class WriteMemoFragment(
+    val onClick : () -> Unit
+): DialogFragment() {
 
     private var _binding: FragmentWriteMemoBinding? = null
     val binding get() = _binding ?: throw IllegalStateException()
@@ -76,6 +78,7 @@ class WriteMemoFragment: DialogFragment() {
             .onEach { event ->
                 when(event){
                     is UiEvent.Success ->{
+                        onClick()
                         dismiss()
                     }
                     is UiEvent.Failure -> {
