@@ -43,17 +43,20 @@ module.exports = {
     },
     async addFlight(req, res) {
       let transaction = await models.sequelize.transaction();
+        console.log('addFlight: begin');
         try {
             const {trip} = req;
             let {AirlineCode, FlightNum, DepartureTime, ArrivalTime, DepartureAirport, ArrivalAirport} = req.body;
             DepartureTime = new Date(DepartureTime);
             ArrivalTime = new Date(ArrivalTime);
             const day = calculateD_Day(DepartureTime, trip.StartDate, trip.EndDate);
+            console.log('addFlight: day = ', day);
             const plan = await models.Plan.create({
                 TripId: trip.TripId,
                 Day: day,
                 Type: 2
             }, {transaction: transaction});
+            console.log('addFlight: plan = ', plan);
             const planFlight = await models.PlanFlight.create({
                 TripId: trip.TripId,
                 PlanId: plan.PlanId,
@@ -64,6 +67,7 @@ module.exports = {
                 DepartureAirport: DepartureAirport,
                 ArrivalAirport: ArrivalAirport
             }, {transaction: transaction});
+            console.log('addFlight: planFlight = ', planFlight);
             await transaction.commit();
             return res.send({status: true, reason: "항공편 추가 성공", PlanId: plan.PlanId, PlanFlight: planFlight});
         } catch (e) {

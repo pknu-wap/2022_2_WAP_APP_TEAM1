@@ -52,6 +52,12 @@ class flightData {
             let flightInfo = res;
             let sTime = flightInfo.domesticStartTime;
             let eTime = flightInfo.domesticArrivalTime;
+            let flightNumber = airlineCode + parseInt(flightNum);
+            if (flightInfo.domesticNum != flightNumber)
+            {
+                console.log('getInfoByFlightNumber: res : ', res);
+                return {status: false, result: '항공편 정보를 찾을 수 없습니다.', flight: {}};
+            }
             sTime = sTime.substring(0, 2) + ':' + sTime.substring(2, 4);
             eTime = eTime.substring(0, 2) + ':' + eTime.substring(2, 4);
             let flight = {

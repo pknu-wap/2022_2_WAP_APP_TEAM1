@@ -25,4 +25,7 @@ tripRouter.put("/:TripId/participants", wrapAsync(tripInviteService.joinTrip));
 const planRouter = require('./plan')
 tripRouter.use('/:TripId/plan', planRouter);
 
+// Trip Chat
+const chatRouter = require('./chat')
+tripRouter.use('/chat', chatRouter);
 module.exports = tripRouter;

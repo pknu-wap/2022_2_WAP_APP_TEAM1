@@ -1,6 +1,5 @@
 'use strict';
 const planRouter = require('express').Router({mergeParams: true})
-const tripService = require('../../../controller/trip')
 const {tripMiddleware} = require('../../../controller/trip/middleware')
 const planService = require('../../../controller/trip/plan')
 const token = require('../../../util/jwt')

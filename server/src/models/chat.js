@@ -1,4 +1,4 @@
-'use stricts';
+'use strict';
 const { raw2str } = require('../util/rawtostr');
 
 module.exports=function(sequelize, DataTypes){
@@ -9,7 +9,6 @@ module.exports=function(sequelize, DataTypes){
                 type:DataTypes.INTEGER,
                 primaryKey:true,
                 allowNull:false,
-                defaultValue:''
             },
         ChatId:
             {
@@ -17,21 +16,25 @@ module.exports=function(sequelize, DataTypes){
                 type:DataTypes.INTEGER,
                 primaryKey:true,
                 allowNull:false,
-                defaultValue:''
+                defaultValue: 0
             },
         UserId:
             {
                 field:'USER_ID',
                 type:DataTypes.STRING(32),
                 allowNull:false,
-                defaultValue:''
             },
         Content:
             {
                 field:'CONTENT',
                 type:DataTypes.STRING(2000),
                 allowNull:false,
-                defaultValue:''
+            },
+        Type:
+            {
+                field:'TYPE',
+                type:DataTypes.INTEGER,
+                allowNull:false,
             }
     }, {
         underscored: true,
@@ -40,21 +43,14 @@ module.exports=function(sequelize, DataTypes){
         timestamps: true,
         hooks: {
             beforeCreate: async (Chat, options) => {
-                const result = await sequelize.query(`SELECT SEQ_CHAT_${Chat.TripId}.NEXTVAL
-                                                      AS CHAT_ID 
-                                                      FROM DUAL`, {
-                    type: sequelize.QueryTypes.SELECT,
-                    transaction: options.transaction
+                const result = await sequelize.query(`SELECT SEQ_CHAT_${Chat.TripId}.NEXTVAL AS CHAT_ID FROM DUAL`, {
+                    type: sequelize.QueryTypes.SELECT
                 });
                 Chat.ChatId = result[0].CHAT_ID;
-                console.log(result[0].CHAT_ID);
             },
             afterFind: async (Chat, options) => {
-
-                console.log('before ', Chat.UserId);
                 Chat = raw2str(Chat);
-                console.log('after ', Chat.UserId);
-            },
+            }
         }
 
     });

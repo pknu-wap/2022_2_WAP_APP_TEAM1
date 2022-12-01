@@ -49,6 +49,9 @@ module.exports = function (sequelize, DataTypes) {
                     type: sequelize.QueryTypes.SELECT
                 });
                 user.UserId = raw2str(result)[0].USER_ID;
+            },
+            afterFind: async (user, options) => {
+                user = raw2str(user);
             }
         }
     });
