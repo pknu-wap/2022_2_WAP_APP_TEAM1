@@ -1,6 +1,7 @@
 package com.example.witt.data.model.plan.get_plan
 
 import com.example.witt.domain.model.plan.get_plan.*
+import com.example.witt.utils.convertIsoToDate
 
 data class GetPlanResponse (
     val status: Boolean,
@@ -55,13 +56,13 @@ fun GetPlanResponse.toGetPlanModel() = GetPlanModel(
 )
 
 fun PlanDataResponse.toPlanDataModel() = PlanDataModel(
-    endDate = EndDate,
+    endDate = EndDate.convertIsoToDate(),
     name = Name,
     ownerId = OwnerId,
     participants = Participants?.map { it.toPlanParticipantsModel() },
     plans = Plans.map { it.toDetailPlanModel() },
     region = Region,
-    startDate = StartDate,
+    startDate = StartDate.convertIsoToDate(),
     tripId = TripId,
 )
 
