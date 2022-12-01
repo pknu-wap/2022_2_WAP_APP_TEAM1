@@ -37,7 +37,6 @@ object ApiModule {
                 }
             )
             .addInterceptor(authInterceptor)
-
             .build()
     }
 
@@ -127,5 +126,11 @@ object ApiModule {
     fun provideDetailPlanService(
         retrofit: Retrofit
     ): DetailPlanService = retrofit.create(DetailPlanService::class.java)
+
+    @Provides
+    @Singleton
+    fun provideAddFlightService(
+        retrofit: Retrofit
+    ): AddFlightService = retrofit.create(AddFlightService::class.java)
 
 }
