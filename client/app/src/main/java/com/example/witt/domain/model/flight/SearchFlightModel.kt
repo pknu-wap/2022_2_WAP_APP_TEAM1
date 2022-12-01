@@ -17,3 +17,12 @@ data class Flight(
     val departure:String,
     val arrival:String
 )
+
+fun Flight.toAddFlightRequest() = AddFlightRequest(
+    AirlineCode = airline,
+    FlightNum = flightNo,
+    DepartureAirport = flyFrom,
+    ArrivalAirport =  flyTo,
+    DepartureTime = departure,
+    ArrivalTime = arrival
+)
