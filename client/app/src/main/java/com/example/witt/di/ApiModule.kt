@@ -67,6 +67,12 @@ object ApiModule {
 
     @Provides
     @Singleton
+    fun providesFlightSearchService(
+        retrofit: Retrofit
+    ): FlightSearchService = retrofit.create(FlightSearchService::class.java)
+
+    @Provides
+    @Singleton
     fun providesDuplicateEmailService(
         retrofit: Retrofit
     ): DuplicateEmailService = retrofit.create(DuplicateEmailService::class.java)
@@ -120,5 +126,11 @@ object ApiModule {
     fun provideDetailPlanService(
         retrofit: Retrofit
     ): DetailPlanService = retrofit.create(DetailPlanService::class.java)
+
+    @Provides
+    @Singleton
+    fun provideAddFlightService(
+        retrofit: Retrofit
+    ): AddFlightService = retrofit.create(AddFlightService::class.java)
 
 }
