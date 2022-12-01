@@ -21,10 +21,12 @@ app.listen(port, async () => {
     io.listen(socketport);
     console.log(`socket.io listening on port ${socketport}`);
     io.on('connection', async (socket) => {
+        //채팅 나가기
         socket.on('leave', async (data) => {
             console.log('leave', data);
             socket.leave(socket.TripId);
         });
+        //채팅 참여(TripId, UserId)
         socket.on('join', async (data) => {
             const {TripId, UserId} = data;
             socket.TripId = TripId;
@@ -69,11 +71,10 @@ app.listen(port, async () => {
                 chatList[i].dataValues.isWrittenByMe = (chatList[i].UserId == UserId);
                 result.push(chatList[i].dataValues);
             }
-            socket.emit('evtConnection', result);
+            socket.emit('evtJoin', result);
         });
-
-        //채팅 보내기(TripId,UserId, Content)
-        socket.on("addMessage", async (receivedData) => {
+        //채팅 보내기(Content)
+        socket.on('addMessage', async (receivedData) => {
             if (socket.TripId == undefined || socket.UserId == undefined) {
                 console.log("addMessage: TripId or UserId is undefined");
                 return;
@@ -99,7 +100,10 @@ app.listen(port, async () => {
                     else {
                         await transaction.commit();
                         chat.dataValues.Nickname = socket.Nickname;
-                        io.sockets.in(socket.TripId).emit("evtMessage", chat.dataValues); //나를 제외한 방 인원에게 이벤트 전송
+                        chat.dataValues.isWrittenByMe = false;
+                        socket.broadcast.to(socket.TripId).emit("evtMessage", chat.dataValues); //방 인원에게 이벤트 전송
+                        chat.dataValues.isWrittenByMe = true;
+                        socket.emit("evtMessage", chat.dataValues); //나에게 이벤트 전송
                     }
                     console.log("success to send Message : ", chat.dataValues);
                 }
@@ -108,9 +112,9 @@ app.listen(port, async () => {
                 console.log('errors: ', e.message);
                 console.log('stack: ', e.stack);
             }
-        })
+        });
 
-        //파일 보내기(TripId,UserId, File)
+        //파일 보내기(FileName)
         socket.on("addFile", async (receivedData) => {
             const { FileName } = receivedData;
             if (FileName == undefined) {
@@ -121,8 +125,8 @@ app.listen(port, async () => {
             let transaction = await models.sequelize.transaction();
             try {
                 let chat = await models.Chat.create({ //채팅 내역 추가
-                    TripId: TripId,
-                    UserId: UserId,
+                    TripId: socket.TripId,
+                    UserId: socket.UserId,
                     Content: FileName,
                     Type: 1
                 }, {transaction: transaction});
@@ -133,10 +137,13 @@ app.listen(port, async () => {
                 }
                 else {
                     await transaction.commit();
-                    chat.dataValues.Nickname = Nickname;
-                    socket.broadcast.to(TripId).emit("evtMessage", chat.dataValues); //나를 제외한 방 인원에게 이벤트 전송
+                    chat.dataValues.Nickname = socket.Nickname;
+                    chat.dataValues.isWrittenByMe = false;
+                    socket.broadcast.to(socket.TripId).emit("evtMessage", chat.dataValues); //나를 제외한 방 인원에게 이벤트 전송
+                    chat.dataValues.isWrittenByMe = true;
+                    socket.emit("evtMessage", chat.dataValues); //나에게 이벤트 전송
                 }
-                console.log("success to send File : ${chat}", chat.dataValues);
+                console.log("success to send File : ", chat.dataValues);
             } catch (e) {
                 await transaction.rollback();
                 console.log('errors: ', e.message);
@@ -145,7 +152,7 @@ app.listen(port, async () => {
         });
         //채팅방 나가기
         socket.on("disconnect", () => {
-            console.log("leave from room");// connection 때 선언한 TripId
+            console.log("disconnected: ", socket.UserId, ' ', socket.Nickname);// connection 때 선언한 TripId
         });
     });
 

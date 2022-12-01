@@ -2,6 +2,10 @@ server/node_modules
 server/data
 server/src/.env
 server/src/data
+node_modules/
+package-lock.json
+package.json
+server/package-lock.json
 .DS_Store
 Icon
 
