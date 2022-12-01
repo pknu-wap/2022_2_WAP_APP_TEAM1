@@ -20,7 +20,7 @@ module.exports = (sequelize, DataTypes) => {
     });
     TripParticipant.associate = function (models) {
         TripParticipant.belongsTo(models.Trip, {foreignKey: 'TripId', targetKey: 'TripId'});
-        TripParticipant.belongsTo(models.User, {foreignKey: 'UserId', targetKey: 'UserId'});; 
+        TripParticipant.belongsTo(models.User, {foreignKey: 'UserId', targetKey: 'UserId'});
     };
     return TripParticipant;
 };

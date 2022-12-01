@@ -7,11 +7,13 @@ function wrapAsync(fn) {
         fn(req, res, next).catch(next);
     };
 }
+
 function multipartImage(req, res, next) {
-        multer().single('Image')(req, res, function (err) {
-            return res.status(400).send("Invalid image");
-        });
+    multer().single('Image')(req, res, function (err) {
+        return res.status(400).send("Invalid image");
+    });
 }
+
 userRouter.head("/me", token.authenticateRefreshToken, wrapAsync(userService.updateToken));
 userRouter.get("/me", token.authenticateAccessToken, wrapAsync(userService.getInfo));
 userRouter.post("/me", wrapAsync(userService.login));

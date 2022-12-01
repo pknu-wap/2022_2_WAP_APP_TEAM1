@@ -2,7 +2,7 @@
 const tripRouter = require('express').Router({mergeParams: true})
 const tripService = require('../../controller/trip')
 const tripInviteService = require('../../controller/trip/invite')
-const { tripMiddleware } = require('../../controller/trip/middleware')
+const {tripMiddleware} = require('../../controller/trip/middleware')
 const token = require('../../util/jwt')
 tripRouter.use(token.authenticateAccessToken);
 
@@ -19,8 +19,7 @@ tripRouter.put("/", wrapAsync(tripService.createTrip));
 tripRouter.get("/", wrapAsync(tripService.getTripList));
 
 // Trip Participants
-tripRouter.put("/:TripId/participants", wrapAsync(tripInviteService.joinPlan));
-tripRouter.delete("/:TripId/participants", wrapAsync(tripInviteService.leavePlan));
+tripRouter.put("/:TripId/participants", wrapAsync(tripInviteService.joinTrip));
 
 // Trip Plan Settings
 const planRouter = require('./plan')

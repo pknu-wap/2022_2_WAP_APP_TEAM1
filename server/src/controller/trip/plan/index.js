@@ -1,7 +1,14 @@
 'use strict';
 const models = require("../../../models")
-const token = require("../../../util/jwt")
-const {raw2str} = require("../../../util/rawtostr")
+function calculateD_Day(targetDate, startDate, endDate)
+{
+    let d_day = -1;
+    if (targetDate >= startDate && targetDate <= endDate)
+    {
+        d_day = Math.floor((targetDate - startDate) / (1000 * 60 * 60 * 24)) + 1;
+    }
+    return d_day;
+}
 
 module.exports = {
     // Commit Plans (POST)
@@ -34,11 +41,41 @@ module.exports = {
             return res.send({status: false, reason: "Internal Server Error"});
         }
     },
+    async addFlight(req, res) {
+      let transaction = await models.sequelize.transaction();
+        try {
+            const {trip} = req;
+            const {AirlineCode, FlightNum, DepartureTime, ArrivalTime, DepartureAirport, ArrivalAirport} = req.body;
+            const day = calculateD_Day(DepartureTime, trip.StartDate, trip.EndDate);
+            const plan = await models.Plan.create({
+                TripId: trip.TripId,
+                Day: day,
+                Type: 2
+            }, {transaction: transaction});
+            const planFlight = await models.PlanFlight.create({
+                TripId: trip.TripId,
+                PlanId: plan.PlanId,
+                AirlineCode: AirlineCode,
+                FlightNum: FlightNum,
+                DepartureTime: DepartureTime,
+                ArrivalTime: ArrivalTime,
+                DepartureAirport: DepartureAirport,
+                ArrivalAirport: ArrivalAirport
+            }, {transaction: transaction});
+            await transaction.commit();
+            return res.send({status: true, reason: "항공편 추가 성공", PlanId: plan.PlanId, PlanFlight: planFlight});
+        } catch (e) {
+            console.log('addFlight: ', e.message);
+            console.log('stack: ', e.stack);
+            await transaction.rollback();
+            return res.status(500).send({status: false, reason: "Internal Server Error"});
+        }
+    },
     async addPlace(req, res) {
         let transaction = await models.sequelize.transaction();
         try {
             const {trip} = req;
-            const {Latitude, Longitude, Category, AdministrationCode, Name} = req.body;
+            const {PlaceId, Latitude, Longitude, Category, Name, RoadAddress} = req.body;
             const {Day} = req.params;
 
             let place = await models.Place.findOne({
@@ -46,16 +83,18 @@ module.exports = {
             });
             if (place == null) {
                 place = await models.Place.create({
+                    PlaceId: PlaceId,
                     Latitude: Latitude,
                     Longitude: Longitude,
                     Category: Category,
-                    AdministrationCode: AdministrationCode,
-                    Name: Name
+                    Name: Name,
+                    RoadAddress: RoadAddress
                 }, {transaction: transaction});
             }
             let plan = await models.Plan.create({
                 TripId: trip.TripId,
-                Day: Day
+                Day: Day,
+                Type: 0,
             }, {transaction: transaction});
             let planPlace = await models.PlanPlace.create({
                 TripId: trip.TripId,
@@ -63,10 +102,10 @@ module.exports = {
                 PlaceId: place.PlaceId
             }, {transaction: transaction});
             await transaction.commit();
-            return res.send({status: true, reason: "장소 추가 성공", PlaceId: place.PlaceId});
+            return res.send({status: true, reason: "장소 추가 성공", planId: plan.PlanId, planPlace: planPlace});
         } catch (err) {
             await transaction.rollback();
-            console.log('addMemo error : ', err);
+            console.log('addPlace error : ', err);
             res.status(500).send({status: false, reason: "Internal Server Error"});
         }
     },
@@ -75,18 +114,18 @@ module.exports = {
         let transaction = await models.sequelize.transaction();
         try {
             const {trip} = req;
-            const {Content, PlanId} = req.body;
-
-            let plan = await models.Plan.findOne({
+            const {Content} = req.body;
+            const {PlanId} = req.params;
+            let memo = await models.PlanMemo.findOne({
                 where: {TripId: trip.TripId, PlanId: PlanId}
             });
-            if (plan == null) {
+            if (memo == null) {
                 return res.send({status: false, reason: "PlanId is invalid"});
             }
-            plan.Content = Content;
-            await plan.save({transaction: transaction});
+            memo.Content = Content;
+            await memo.save({transaction: transaction});
             await transaction.commit();
-            return res.send({status: true, reason: "메모 수정 성공"});
+            return res.send({status: true, reason: "메모 수정 성공", memo: memo});
         } catch (err) {
             await transaction.rollback();
             console.log('editMemo error : ', err);
@@ -103,7 +142,8 @@ module.exports = {
             //계획 생성
             let plan = await models.Plan.create({
                 TripId: trip.TripId,
-                Day: Day
+                Day: Day,
+                Type: 1
             });
             // 생성된 계획에 메모 등록
             let planMemo = await models.PlanMemo.create({
@@ -111,15 +151,12 @@ module.exports = {
                 PlanId: plan.PlanId,
                 Content: Content
             });
-
-            res.status(200).json({
-                planMemo
-            });
+            await transaction.commit();
+            return res.send({status: true, reason: "메모 추가 성공", PlanId: plan.PlanId, planMemo: planMemo})
         } catch (err) {
             await transaction.rollback();
             console.log('addMemo error : ', err);
             res.status(500).send({status: false, reason: "Internal Server Error"});
         }
-        await transaction.commit();
     }
 }

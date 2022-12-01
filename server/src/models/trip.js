@@ -38,17 +38,28 @@ module.exports = (sequelize, DataTypes) => {
         freezeTableName: true,
         tableName: 'DB_TRIP',
         hooks: {
+            afterDestroy: async (trip, options) => {
+                await sequelize.query(`DROP SEQUENCE SEQ_CHAT_${trip.TripId}`);
+                await sequelize.query(`DROP SEQUENCE SEQ_PLAN_${trip.TripId}`);
+            },
             beforeCreate: async (trip, options) => {
                 const result = await sequelize.query('SELECT SEQ_TRIP.NEXTVAL AS TRIP_ID FROM DUAL', {
                     type: sequelize.QueryTypes.SELECT
                 });
                 trip.TripId = raw2str(result)[0].TRIP_ID;
+            },
+            afterCreate: async (trip, options) => {
+                await sequelize.query(`CREATE SEQUENCE SEQ_CHAT_${trip.TripId} INCREMENT BY 1 START WITH 1 MAXVALUE 9999999 MINVALUE 1 CACHE 20 ORDER;`);
+                await sequelize.query(`CREATE SEQUENCE SEQ_PLAN_${trip.TripId} INCREMENT BY 1 START WITH 1 MAXVALUE 9999999 MINVALUE 1 CACHE 20 ORDER;`);
             }
         }
     });
 
-    Trip.isMemberOf = async function(models, tripId, userId) {
+    Trip.isMemberOf = async function (models, tripId, userId) {
         let trip = raw2str(await Trip.findByPk(tripId));
+        if (trip == null) {
+            return false;
+        }
         if (trip.OwnerId === userId) {
             return true;
         }
@@ -58,9 +69,9 @@ module.exports = (sequelize, DataTypes) => {
                 UserId: userId
             }
         }));
-        return tripParticipant != null;   
+        return tripParticipant != null;
     };
-    
+
     Trip.associate = function (models) {
         Trip.hasMany(models.TripParticipant, {foreignKey: 'TripId', sourceKey: 'TripId'});
         Trip.belongsTo(models.User, {foreignKey: 'OwnerId', targetKey: 'UserId'});
