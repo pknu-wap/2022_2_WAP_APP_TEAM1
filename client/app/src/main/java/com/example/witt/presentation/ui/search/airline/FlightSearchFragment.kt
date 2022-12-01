@@ -1,30 +1,38 @@
 package com.example.witt.presentation.ui.search.airline
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import com.example.witt.R
 import com.example.witt.presentation.base.BaseFragment
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.activityViewModels
+import com.example.witt.data.repository.FlightRepositoryImpl
 import com.example.witt.databinding.FragmentFlightSearchBinding
+import com.example.witt.domain.model.flight.SearchFlightRequest
 import com.example.witt.presentation.ui.plan.PlanViewModel
+import com.example.witt.utils.convertAirline
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 class FlightSearchFragment: BaseFragment<FragmentFlightSearchBinding>(R.layout.fragment_flight_search){
 
     private val planViewModel by activityViewModels<PlanViewModel>()
+    private val repository = FlightRepositoryImpl()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initAirline()
         observeData()
+        initButton()
     }
 
     private fun observeData() {
         planViewModel.planState.observe(viewLifecycleOwner) {
-            it.TripId
             val sd = LocalDate.parse(it.StartDate, DateTimeFormatter.ofPattern("yyyy.MM.dd"))
             val ed = LocalDate.parse(it.EndDate, DateTimeFormatter.ofPattern("yyyy.MM.dd"))
             initDate(tripDateRange(sd,ed))
@@ -77,5 +85,22 @@ class FlightSearchFragment: BaseFragment<FragmentFlightSearchBinding>(R.layout.f
                 it.text = dateRange[which]
             }
         builder.show()
+    }
+
+    private fun initButton() {
+        binding.flightSearchBtn.setOnClickListener {
+            CoroutineScope(Dispatchers.IO).launch {
+                searchFlight()
+            }
+        }
+    }
+
+    private suspend fun searchFlight(){
+        val flightDate = binding.date.text.toString()
+        val airlineCode = binding.date.text.toString().convertAirline()
+        val flightNum = binding.flightIdEditText.text.toString()
+        val searchFlightRequest = SearchFlightRequest(flightDate,airlineCode,flightNum)
+        val result = repository.findFlight(searchFlightRequest)
+        Log.d("test",result.toString())
     }
 }
