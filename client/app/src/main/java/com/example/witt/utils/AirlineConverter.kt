@@ -10,6 +10,6 @@ fun String.convertAirline():String{
         "에어서울(RS)" -> "RS"
         "에어부산(BX)" -> "BX"
         "플라이강원(4V)" -> "4V"
-        else -> "KE"
+        else -> ""
     }
 }
