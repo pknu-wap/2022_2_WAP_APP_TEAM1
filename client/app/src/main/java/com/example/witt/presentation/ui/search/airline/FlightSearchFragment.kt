@@ -10,6 +10,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import com.example.witt.data.repository.FlightRepositoryImpl
 import com.example.witt.databinding.FragmentFlightSearchBinding
 import com.example.witt.domain.model.flight.SearchFlightModel
@@ -24,11 +25,12 @@ import kotlinx.coroutines.withContext
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
-class FlightSearchFragment: BaseFragment<FragmentFlightSearchBinding>(R.layout.fragment_flight_search){
+class FlightSearchFragment :
+    BaseFragment<FragmentFlightSearchBinding>(R.layout.fragment_flight_search) {
 
     private val planViewModel by activityViewModels<PlanViewModel>()
     private val repository = FlightRepositoryImpl()
-
+    var tripId: Int = 0
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initAirline()
@@ -40,15 +42,16 @@ class FlightSearchFragment: BaseFragment<FragmentFlightSearchBinding>(R.layout.f
         planViewModel.planState.observe(viewLifecycleOwner) {
             val sd = LocalDate.parse(it.StartDate, DateTimeFormatter.ofPattern("yyyy.MM.dd"))
             val ed = LocalDate.parse(it.EndDate, DateTimeFormatter.ofPattern("yyyy.MM.dd"))
-            initDate(tripDateRange(sd,ed))
+            initDate(tripDateRange(sd, ed))
+            tripId = it.TripId
         }
     }
 
     //Date 리스트 생성
-    private fun tripDateRange(sd:LocalDate,ed:LocalDate):Array<String>{
+    private fun tripDateRange(sd: LocalDate, ed: LocalDate): Array<String> {
         var dateRange = mutableListOf<String>()
         var date = sd
-        while(date<=ed){
+        while (date <= ed) {
             dateRange.add(date.toString())
             date = date.plusDays(1)
         }
@@ -56,8 +59,8 @@ class FlightSearchFragment: BaseFragment<FragmentFlightSearchBinding>(R.layout.f
     }
 
     //항공사 선택 dialog 초기화
-    private fun initAirline(){
-        binding.airline.setOnClickListener{
+    private fun initAirline() {
+        binding.airline.setOnClickListener {
             showAirlineDialog(it as TextView)
         }
     }
@@ -76,17 +79,16 @@ class FlightSearchFragment: BaseFragment<FragmentFlightSearchBinding>(R.layout.f
 
 
     //Date 선택 dialog 초기화
-    private fun initDate(dateRange:Array<String>){
+    private fun initDate(dateRange: Array<String>) {
         binding.date.setOnClickListener {
-            showDateDialog(it as TextView,dateRange)
+            showDateDialog(it as TextView, dateRange)
         }
     }
 
-    private fun showDateDialog(it: TextView, dateRange: Array<String>){
+    private fun showDateDialog(it: TextView, dateRange: Array<String>) {
         val builder = AlertDialog.Builder(requireActivity())
         builder.setTitle("날짜를 선택하세요.")
-            .setItems(dateRange){
-                _,which ->
+            .setItems(dateRange) { _, which ->
                 it.text = dateRange[which]
             }
         builder.show()
@@ -95,38 +97,47 @@ class FlightSearchFragment: BaseFragment<FragmentFlightSearchBinding>(R.layout.f
     private fun initButton() {
         binding.flightSearchBtn.setOnClickListener {
             CoroutineScope(Dispatchers.IO).launch {
-               searchFlight().mapCatching {
-                   withContext (Dispatchers.Main){
-                       if(it.Status) {
-                           showInsertDialog(it)
-                       }else{
-                           Toast.makeText(requireActivity(), "항공편을 확인해주세요.", Toast.LENGTH_SHORT).show()
-                       }
-                   }
-               }.onFailure {
+                searchFlight().mapCatching {
+                    withContext(Dispatchers.Main) {
+                        if (it.Status) {
+                            showInsertDialog(it)
+                        } else {
+                            Toast.makeText(requireActivity(), "항공편을 확인해주세요.", Toast.LENGTH_SHORT)
+                                .show()
+                        }
+                    }
+                }.onFailure {
 
-               }
+                }
             }
         }
     }
 
-    private suspend fun searchFlight():Result<SearchFlightModel>{
+    private suspend fun searchFlight(): Result<SearchFlightModel> {
         val flightDate = binding.date.text.toString()
-        val airlineCode = binding.date.text.toString().convertAirline()
+        val airlineCode = binding.airline.text.toString().convertAirline()
         val flightNum = binding.flightIdEditText.text.toString()
-        val searchFlightRequest = SearchFlightRequest(flightDate,airlineCode,flightNum)
+        val searchFlightRequest = SearchFlightRequest(flightDate, airlineCode, flightNum)
         val result = repository.findFlight(searchFlightRequest)
-        Log.d("test",result.toString())
+        Log.d("test", result.toString())
         return result
     }
 
 
     private fun showInsertDialog(
-        result:SearchFlightModel
-    ){
-       AddFlightDialog(
-           requireActivity(),
-           result
-       ).show()
+        result: SearchFlightModel
+    ) {
+        AddFlightDialog(
+            requireActivity(),
+            result,
+            tripId,
+            onClickApprove = {
+                val direction = FlightSearchFragmentDirections.actionFlightSearchFragmentToDrawUpPlanFragment()
+                findNavController().navigate(direction)
+            },
+            onClickCancel = {
+
+            }
+        ).show()
     }
 }
