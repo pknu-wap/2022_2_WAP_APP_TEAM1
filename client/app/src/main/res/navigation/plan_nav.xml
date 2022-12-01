@@ -84,6 +84,9 @@
         <action
             android:id="@+id/action_addPlaceFragment_to_drawUpPlanFragment"
             app:destination="@id/drawUpPlanFragment"/>
+        <action
+            android:id="@+id/action_addPlaceFragment_to_drawUpPlanFragment2"
+            app:destination="@id/drawUpPlanFragment" />
     </fragment>
 
     <fragment
