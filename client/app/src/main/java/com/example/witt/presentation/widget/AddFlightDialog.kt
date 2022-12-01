@@ -3,14 +3,23 @@ package com.example.witt.presentation.widget
 import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.WindowManager
+import com.example.witt.data.repository.AddFlightRepositoryImpl
 import com.example.witt.databinding.DialogSearchFlightBinding
 import com.example.witt.domain.model.flight.SearchFlightModel
+import com.example.witt.domain.model.flight.toAddFlightRequest
+import kotlinx.coroutines.*
 
 class AddFlightDialog(
     context: Context,
-    private val result:SearchFlightModel
+    private val result:SearchFlightModel,
+    private val tripId:Int,
+    private val onClickApprove: () -> Unit = {},
+    private val onClickCancel: () -> Unit = {}
 ) : Dialog(context) {
+
+    private val repository = AddFlightRepositoryImpl()
 
     private val binding by lazy { DialogSearchFlightBinding.inflate(layoutInflater) }
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -19,10 +28,14 @@ class AddFlightDialog(
         initText(result)
 
         binding.dialogApproveButton.setOnClickListener {
-            onClickApprove()
+            CoroutineScope(Dispatchers.IO).launch {
+                addFlightRepo()
+                withContext(Dispatchers.Main){
+                    onClickApprove()
+                }
+            }
             dismiss()
         }
-
         binding.dialogCancelButton.setOnClickListener {
             onClickCancel()
             dismiss()
@@ -41,8 +54,9 @@ class AddFlightDialog(
         binding.departureTime.text = result.Flight.departure
         binding.ariveTime.text = result.Flight.arrival
     }
-    private fun onClickApprove(){
-
+    private suspend fun addFlightRepo(){
+        val result = repository.addFlight(tripId, result.Flight.toAddFlightRequest())
+        Log.d("test",result.toString() )
     }
     private fun onClickCancel (){
 
