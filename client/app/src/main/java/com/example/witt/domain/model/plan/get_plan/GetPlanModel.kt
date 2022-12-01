@@ -10,7 +10,7 @@ data class PlanDataModel(
     val endDate: String,
     val name: String,
     val ownerId: String,
-    val participant: List<PlanParticipantModel>?,
+    val participants: List<PlanParticipantModel>?,
     val plans: List<DetailPlanModel>,
     val region: String,
     val startDate: String,

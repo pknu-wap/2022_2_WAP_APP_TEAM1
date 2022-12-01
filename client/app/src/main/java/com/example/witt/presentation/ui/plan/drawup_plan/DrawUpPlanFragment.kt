@@ -18,6 +18,7 @@ import com.example.witt.presentation.base.BaseFragment
 import com.example.witt.presentation.ui.UiEvent
 import com.example.witt.presentation.ui.UiState
 import com.example.witt.presentation.ui.plan.PlanViewModel
+import com.example.witt.presentation.ui.plan.drawup_plan.adapter.ParticipantAdapter
 import com.example.witt.presentation.ui.plan.drawup_plan.adapter.PlanAdapter
 import net.daum.mf.map.api.MapPOIItem
 import net.daum.mf.map.api.MapPoint
@@ -38,6 +39,7 @@ import net.daum.mf.map.api.MapView
 class DrawUpPlanFragment : BaseFragment<FragmentDrawUpPlanBinding>(R.layout.fragment_draw_up_plan) {
 
     private lateinit var planAdapter: PlanAdapter
+    private lateinit var participantAdapter: ParticipantAdapter
 
     private val planViewModel by activityViewModels<PlanViewModel>()
     private val viewModel: DrawUpViewModel by viewModels()
@@ -45,11 +47,10 @@ class DrawUpPlanFragment : BaseFragment<FragmentDrawUpPlanBinding>(R.layout.frag
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
-        initMap()
         initButton()
         initAdapter()
         observeData()
+
     }
 
     private fun initButton() {
@@ -118,12 +119,14 @@ class DrawUpPlanFragment : BaseFragment<FragmentDrawUpPlanBinding>(R.layout.frag
             .onEach {
                 when(it){
                     is UiState.Success -> {
-
+                        it.data.participants?.let{ participantList ->
+                            participantAdapter.submitList(participantList)
+                        }
                     }
                     is UiState.Failure -> {}
                     is UiState.Init -> {}
                 }
-            }
+            }.launchIn(viewLifecycleOwner.lifecycleScope)
     }
 
     private fun initAdapter() {
@@ -140,9 +143,14 @@ class DrawUpPlanFragment : BaseFragment<FragmentDrawUpPlanBinding>(R.layout.frag
                 findNavController().navigate(direction)
             }
         )
+        participantAdapter = ParticipantAdapter()
 
-        binding.datePlanRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-        binding.datePlanRecyclerView.adapter = planAdapter
+        with(binding){
+            participantRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+            participantRecyclerView.adapter = participantAdapter
+            datePlanRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+            datePlanRecyclerView.adapter = planAdapter
+        }
     }
 
     private fun showMemoDialog(day: Int, planId: Int?, memo: String?) {

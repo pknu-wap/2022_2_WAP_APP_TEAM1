@@ -6,6 +6,7 @@ import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.witt.R
@@ -16,6 +17,7 @@ import com.example.witt.presentation.base.BaseFragment
 import com.example.witt.presentation.ui.UiEvent
 import com.example.witt.presentation.ui.plan.PlanViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import net.daum.mf.map.api.MapPOIItem
 import net.daum.mf.map.api.MapPoint
@@ -27,11 +29,12 @@ class AddPlaceFragment: BaseFragment<FragmentAddPlaceBinding>(R.layout.fragment_
     private val args: AddPlaceFragmentArgs by navArgs()
     private val viewModel: AddPlaceViewModel by viewModels()
     private val planViewModel: PlanViewModel by activityViewModels()
+    private val mapView by lazy { MapView(requireActivity()) }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         observeData()
-        //initMap()
+        initMap()
         initView()
     }
 
@@ -44,6 +47,7 @@ class AddPlaceFragment: BaseFragment<FragmentAddPlaceBinding>(R.layout.fragment_
             .onEach {
                 when(it){
                     is UiEvent.Success ->{
+                        removeMap()
                         val direction = AddPlaceFragmentDirections
                             .actionAddPlaceFragmentToDrawUpPlanFragment()
                         findNavController().navigate(direction)
@@ -52,7 +56,8 @@ class AddPlaceFragment: BaseFragment<FragmentAddPlaceBinding>(R.layout.fragment_
                         Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
                     }
                 }
-            }
+            }.launchIn(viewLifecycleOwner.lifecycleScope)
+
     }
 
     private fun initView(){
@@ -62,7 +67,6 @@ class AddPlaceFragment: BaseFragment<FragmentAddPlaceBinding>(R.layout.fragment_
     }
 
     private fun initMap() {
-        val mapView by lazy { MapView(requireContext()) }
         val place: PlaceModel = args.place
         val xPosition = place.x.toDouble()
         val yPosition = place.y.toDouble()
@@ -84,6 +88,10 @@ class AddPlaceFragment: BaseFragment<FragmentAddPlaceBinding>(R.layout.fragment_
             selectedMarkerType = MapPOIItem.MarkerType.RedPin // 마커를 클릭했을때 RedPin 마커 모양.
         }
         mapView.addPOIItem(marker)
+    }
+
+    private fun removeMap(){
+        binding.mapView.removeView(mapView)
     }
 
 }
