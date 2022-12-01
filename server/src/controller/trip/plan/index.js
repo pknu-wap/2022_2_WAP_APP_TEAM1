@@ -45,7 +45,9 @@ module.exports = {
       let transaction = await models.sequelize.transaction();
         try {
             const {trip} = req;
-            const {AirlineCode, FlightNum, DepartureTime, ArrivalTime, DepartureAirport, ArrivalAirport} = req.body;
+            let {AirlineCode, FlightNum, DepartureTime, ArrivalTime, DepartureAirport, ArrivalAirport} = req.body;
+            DepartureTime = new Date(DepartureTime);
+            ArrivalTime = new Date(ArrivalTime);
             const day = calculateD_Day(DepartureTime, trip.StartDate, trip.EndDate);
             const plan = await models.Plan.create({
                 TripId: trip.TripId,
