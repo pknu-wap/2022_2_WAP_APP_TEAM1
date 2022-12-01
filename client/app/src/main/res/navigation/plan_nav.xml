@@ -101,5 +101,9 @@
     <fragment
         android:id="@+id/flightSearchFragment"
         android:name="com.example.witt.presentation.ui.search.airline.FlightSearchFragment"
-        android:label="FlightSearchFragment" />
+        android:label="FlightSearchFragment" >
+        <action
+            android:id="@+id/action_flightSearchFragment_to_drawUpPlanFragment"
+            app:destination="@id/drawUpPlanFragment" />
+    </fragment>
 </navigation>
