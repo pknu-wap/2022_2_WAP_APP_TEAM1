@@ -6,7 +6,7 @@ const models = require('./models');
 const bodyParser = require('body-parser');
 const {Server} = require('socket.io');
 const io = new Server();
-
+app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false})); //application/x-www-form-urlencoded 타입 사용 등록
 app.use("/api", api);
 

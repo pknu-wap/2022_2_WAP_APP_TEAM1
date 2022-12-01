@@ -1,8 +1,7 @@
 'use strict';
 const router = require('express').Router();
 const flightClass = require('../../flight');
-// let data = await flight.getInfoByFlightNumber('2022-11-27', 'TW', '702');
-//         //let data = await flight.findFlight('CJU', 'GMP', '2022-11-27', '2022-11-24', '', 1, 0, 1);
+
 router.get('/flightNumber', async (req, res) => {
     const {flightDate, airlineCode, flightNum} = req.query;
     const flight = new flightClass();

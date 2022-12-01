@@ -13,19 +13,19 @@ module.exports = function (sequelize, DataTypes) {
         Latitude:
             {
                 field: 'LATITUDE',
-                type: DataTypes.DOUBLE,
+                type: DataTypes.STRING(200),
                 allowNull: false
             },
         Longitude:
             {
                 field: 'LONGITUDE',
-                type: DataTypes.DOUBLE,
+                type: DataTypes.STRING(200),
                 allowNull: false
             },
         Category:
             {
                 field: 'CATEGORY',
-                type: DataTypes.STRING(20),
+                type: DataTypes.STRING(200),
                 allowNull: false
             },
         Name:

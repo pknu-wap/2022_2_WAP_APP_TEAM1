@@ -101,6 +101,15 @@ module.exports = {
                     attributes: ['Content', 'Created_At', 'Updated_At']
                 });
             }
+            if (plans[i].Type == 2) { // Flight
+                plans[i].Flight = await models.PlanFlight.findOne({
+                    where: {
+                        TripId: trip.TripId,
+                        PlanId: plans[i].PlanId
+                    },
+                    attributes: ['AirlineCode', 'FlightNum', 'DepartureTime', 'ArrivalTime', 'DepartureAirport', 'ArrivalAirport']
+                });
+            }
         }
         data.TripId = trip.TripId;
         data.OwnerId = trip.OwnerId;
@@ -111,7 +120,7 @@ module.exports = {
         data.Participants = tripParticipants;
         data.Plans = plans;
 
-        return res.status(200).send({status: true, reason: "일정 조회 성공", data});
+        return res.status(200).send({status: true, reason: "일정 조회 성공", result: data});
     },
     //Get Trip List(GET)
     async getTripList(req, res) {

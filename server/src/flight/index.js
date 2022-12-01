@@ -43,7 +43,7 @@ class flightData {
             res = res.body.response.body.items.item;
             if (res == null) {
                 console.log('getInfoByFlightNumber: res : ', res);
-                return {status: false, result: '항공편 정보를 찾을 수 없습니다.'};
+                return {status: false, result: '항공편 정보를 찾을 수 없습니다.', flight: {}};
             }
             if (res instanceof Array) {
                 res = res[0];
@@ -61,10 +61,10 @@ class flightData {
                 departure: flightDate + ' ' + sTime,
                 arrival: flightDate + ' ' + eTime,
             }
-            return {status: true, result: flight};
+            return {status: true, result: '조회에 성공하였습니다.', flight: flight};
         } catch (e) {
             console.log('getInfoByFlightNumber: error at ', e);
-            return {status: false, result: e.message};
+            return {status: false, result: e.message, flight: {}};
         }
     }
 

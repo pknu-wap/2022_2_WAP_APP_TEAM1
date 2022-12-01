@@ -48,7 +48,7 @@ module.exports = function (sequelize, DataTypes) {
                 plan.OrderIndex = result[0].MAX_ORDER_INDEX + 1;
                 [result, metadata] = await sequelize.query(`SELECT SEQ_PLAN_${plan.TripId}.NEXTVAL AS PLAN_ID
                                                             FROM DUAL`);
-                plan.PlanId = raw2str(result)[0].PLAN_ID;
+                plan.PlanId = result[0].PLAN_ID;
             }
         }
     });

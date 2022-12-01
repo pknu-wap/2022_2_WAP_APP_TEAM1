@@ -1,5 +1,14 @@
 'use strict';
 const models = require("../../../models")
+function calculateD_Day(targetDate, startDate, endDate)
+{
+    let d_day = -1;
+    if (targetDate >= startDate && targetDate <= endDate)
+    {
+        d_day = Math.floor((targetDate - startDate) / (1000 * 60 * 60 * 24)) + 1;
+    }
+    return d_day;
+}
 
 module.exports = {
     // Commit Plans (POST)
@@ -30,6 +39,36 @@ module.exports = {
         } catch (e) {
             await transaction.rollback();
             return res.send({status: false, reason: "Internal Server Error"});
+        }
+    },
+    async addFlight(req, res) {
+      let transaction = await models.sequelize.transaction();
+        try {
+            const {trip} = req;
+            const {AirlineCode, FlightNum, DepartureTime, ArrivalTime, DepartureAirport, ArrivalAirport} = req.body;
+            const day = calculateD_Day(DepartureTime, trip.StartDate, trip.EndDate);
+            const plan = await models.Plan.create({
+                TripId: trip.TripId,
+                Day: day,
+                Type: 2
+            }, {transaction: transaction});
+            const planFlight = await models.PlanFlight.create({
+                TripId: trip.TripId,
+                PlanId: plan.PlanId,
+                AirlineCode: AirlineCode,
+                FlightNum: FlightNum,
+                DepartureTime: DepartureTime,
+                ArrivalTime: ArrivalTime,
+                DepartureAirport: DepartureAirport,
+                ArrivalAirport: ArrivalAirport
+            }, {transaction: transaction});
+            await transaction.commit();
+            return res.send({status: true, reason: "항공편 추가 성공", PlanId: plan.PlanId, PlanFlight: planFlight});
+        } catch (e) {
+            console.log('addFlight: ', e.message);
+            console.log('stack: ', e.stack);
+            await transaction.rollback();
+            return res.status(500).send({status: false, reason: "Internal Server Error"});
         }
     },
     async addPlace(req, res) {
