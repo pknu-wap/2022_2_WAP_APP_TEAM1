@@ -110,7 +110,7 @@
         </androidx.cardview.widget.CardView>
 
         <Button
-            android:id="@+id/profile_edit_button"
+            android:id="@+id/flight_search_btn"
             style="@style/Widget.Material3.Button.ElevatedButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
