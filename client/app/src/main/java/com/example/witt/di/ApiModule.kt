@@ -37,6 +37,7 @@ object ApiModule {
                 }
             )
             .addInterceptor(authInterceptor)
+
             .build()
     }
 
@@ -64,6 +65,12 @@ object ApiModule {
     fun providesSignUpService(
         retrofit: Retrofit
     ): SignUpService = retrofit.create(SignUpService::class.java)
+
+    @Provides
+    @Singleton
+    fun providesFlightSearchService(
+        retrofit: Retrofit
+    ): FlightSearchService = retrofit.create(FlightSearchService::class.java)
 
     @Provides
     @Singleton
