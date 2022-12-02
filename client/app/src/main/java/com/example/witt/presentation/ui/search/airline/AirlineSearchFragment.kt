@@ -46,7 +46,7 @@ class AirlineSearchFragment: BaseFragment<FragmentAirlineSearchBinding>(R.layout
     }
 
     private fun showDialog(it: TextView){
-        val airports = resources.getStringArray(R.array.airport_array)
+        val airports = resources.getStringArray(R.array.airline_array)
         val builder = AlertDialog.Builder(requireActivity())
         builder.setTitle("공항을 선택하세요.")
             .setItems(airports
@@ -66,8 +66,6 @@ class AirlineSearchFragment: BaseFragment<FragmentAirlineSearchBinding>(R.layout
 
     // 넘버 픽커 초기화
     private fun initNumberPicker(numberPicker: NumberPicker){
-
-
         with(numberPicker){
             minValue = 0
             maxValue = 9
