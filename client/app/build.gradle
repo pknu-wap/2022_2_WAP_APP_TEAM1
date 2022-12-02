@@ -30,6 +30,8 @@ android {
 
         buildConfigField "String", "apiUrl",properties['api_url']
         buildConfigField "String", "host_domain", properties['host_domain']
+        buildConfigField "String", "host_domain_socket", properties['host_domain_socket']
+
 
         resValue "string", "kakao_oauth_host", properties['kakao_oauth_host']
         resValue "string", "kakao_native_app_key", properties["kakao_native_app_key"]
@@ -127,5 +129,10 @@ dependencies {
 
     //custom permission
     implementation 'io.github.ParkSangGwon:tedpermission-normal:3.3.0'
+
+    //socket io
+    implementation('io.socket:socket.io-client:2.0.1') {
+        exclude group: 'org.json', module: 'json'
+    }
 
 }
