@@ -10,3 +10,7 @@ fun Long.convertTimestampToDate(): String =
 fun String.convertIsoToDate(): String =
      LocalDateTime.parse(this, DateTimeFormatter.ISO_DATE_TIME)
          .format(DateTimeFormatter.ofPattern("yyyy.MM.dd"))
+
+fun String.convertIsoToTime(): String =
+    LocalDateTime.parse(this, DateTimeFormatter.ISO_DATE_TIME)
+        .format(DateTimeFormatter.ofPattern("a HH:mm"))
