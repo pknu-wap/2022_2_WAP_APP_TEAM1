@@ -6,11 +6,14 @@ import com.example.witt.data.mapper.toProfileUploadModel
 import com.example.witt.data.mapper.toUserProfileModel
 import com.example.witt.data.model.local.UserProfile
 import com.example.witt.data.model.profile.request.ProfileUploadRequest
+import com.example.witt.data.model.user.response.toGetUserInfoModel
 import com.example.witt.data.source.local.user_profile.ProfileDataSource
 import com.example.witt.data.source.remote.duplicate_check.DuplicateEmailDataSource
 import com.example.witt.data.source.remote.profile.ProfileUploadDataSource
+import com.example.witt.data.source.remote.user.GetUserInfoDataSource
 import com.example.witt.domain.model.profile.remote.ProfileUploadModel
 import com.example.witt.domain.model.user.DuplicateEmailModel
+import com.example.witt.domain.model.user.GetUserInfoModel
 import com.example.witt.domain.model.user.UserProfileModel
 import com.example.witt.domain.repository.UserRepository
 import kotlinx.coroutines.flow.Flow
@@ -21,7 +24,8 @@ import javax.inject.Inject
 class UserRepositoryImpl @Inject constructor(
     private val duplicateEmailDataSource: DuplicateEmailDataSource,
     private val profileDataSource: ProfileDataSource,
-    private val profileUploadDataSource: ProfileUploadDataSource
+    private val profileUploadDataSource: ProfileUploadDataSource,
+    private val getUserInfoDataSource: GetUserInfoDataSource
 ):UserRepository {
     override suspend fun duplicateEmail(email: String): Result<DuplicateEmailModel> {
         return duplicateEmailDataSource.duplicateEmailCheck(DuplicateEmailRequest(email))
@@ -55,6 +59,12 @@ class UserRepositoryImpl @Inject constructor(
             )
         ).mapCatching { response ->
             response.toProfileUploadModel()
+        }
+    }
+
+    override suspend fun getUserInfo(): Result<GetUserInfoModel> {
+        return getUserInfoDataSource.getUserInfo().mapCatching { response ->
+            response.toGetUserInfoModel()
         }
     }
 }

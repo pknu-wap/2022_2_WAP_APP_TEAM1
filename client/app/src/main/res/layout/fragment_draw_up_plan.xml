@@ -88,6 +88,25 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/go_chat_button"
+                style="@style/Widget.Material3.Chip.Filter.Elevated"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:text="채팅하기"
+                android:textColor="@color/white_green"
+                android:textSize="12sp"
+                app:checkedIconEnabled="false"
+                app:chipBackgroundColor="@color/white"
+                app:chipIcon="@drawable/ic_baseline_chat_24"
+                app:chipIconTint="@color/white_green"
+                app:chipIconVisible="true"
+                app:layout_constraintEnd_toStartOf="@+id/out_plan_button"
+                app:layout_constraintTop_toTopOf="parent" />
+
             <TextView
                 android:id="@+id/planName_text_view"
                 android:layout_width="wrap_content"

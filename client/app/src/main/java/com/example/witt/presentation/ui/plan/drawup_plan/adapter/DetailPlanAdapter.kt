@@ -1,12 +1,15 @@
 package com.example.witt.presentation.ui.plan.drawup_plan.adapter
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.witt.databinding.ItemPlanFlightBinding
 import com.example.witt.databinding.ItemPlanMemoBinding
 import com.example.witt.databinding.ItemPlanPlaceBinding
 import com.example.witt.domain.model.plan.get_plan.DetailPlanModel
 import com.example.witt.presentation.listener.ItemTouchHelperListener
+import com.example.witt.utils.convertIsoToTime
 
 class DetailPlanAdapter(
     val memoClick : (DetailPlanModel) -> Unit
@@ -19,9 +22,13 @@ class DetailPlanAdapter(
             val binding = ItemPlanMemoBinding.inflate(LayoutInflater.from(parent.context), parent, false)
             PlanMemoViewHolder(binding)
         }
-        else ->{
+        TYPE_PLACE ->{
             val binding = ItemPlanPlaceBinding.inflate(LayoutInflater.from(parent.context), parent, false)
             PlanPlaceViewHolder(binding)
+        }
+        else ->{
+            val binding = ItemPlanFlightBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            PlanFlightViewHolder(binding)
         }
     }
 
@@ -34,6 +41,9 @@ class DetailPlanAdapter(
                holder.bind(planContentData[position])
            }
            is PlanPlaceViewHolder -> {
+               holder.bind(planContentData[position])
+           }
+           is PlanFlightViewHolder -> {
                holder.bind(planContentData[position])
            }
        }
@@ -74,6 +84,19 @@ class DetailPlanAdapter(
             }
         }
 
+    @SuppressLint("SetTextI18n")
+    inner class PlanFlightViewHolder(private val binding: ItemPlanFlightBinding)
+        : RecyclerView.ViewHolder(binding.root){
+            fun bind(item: DetailPlanModel){
+                item.flight?.let{
+                    binding.flightTimeTextView.text =
+                        it.departureAirport + " " + it.departureTime.convertIsoToTime() + " - " + it.arrivalAirport + " " +
+                                it.arrivalTime.convertIsoToTime()
+                    binding.flightAirlineTextView.text =
+                        it.airlineCode + it.flightNum
+                }
+            }
+        }
     companion object{
         const val TYPE_PLACE = 0
         const val TYPE_MEMO = 1

@@ -49,6 +49,9 @@
             android:id="@+id/action_drawUpPlanFragment_to_airlineSearchFragment"
             app:destination="@id/airlineSearchFragment" />
         <action
+            android:id="@+id/action_drawUpPlanFragment_to_chatFragment"
+            app:destination="@id/chatFragment" />
+        <action
             android:id="@+id/action_drawUpPlanFragment_to_flightSearchFragment"
             app:destination="@id/flightSearchFragment" />
     </fragment>
@@ -99,6 +102,14 @@
         tools:layout="@layout/fragment_airline_search">
         <action
             android:id="@+id/action_airlineSearchFragment_to_drawUpPlanFragment"
+            app:destination="@id/drawUpPlanFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/chatFragment"
+        android:name="com.example.witt.presentation.ui.chat.ChatFragment"
+        android:label="ChatFragment" >
+        <action
+            android:id="@+id/action_chatFragment_to_drawUpPlanFragment
             app:destination="@id/drawUpPlanFragment" />
     </fragment>
     <fragment

@@ -67,4 +67,21 @@ class DrawUpViewModel @Inject constructor(
         }
     }
 
+    //planState가 mapping 된 후 부터 사용 가능
+    fun refreshPlan(){
+        viewModelScope.launch {
+            planRepository.getPlan(requireNotNull(planStateData.value?.TripId)).mapCatching { response ->
+                if(response.status){
+                    _drawUpPlanData.emit(UiState.Success(
+                        convertDetailPlanUseCase(response.data.startDate, response.data.endDate, response.data.plans)
+                    ))
+                    _planData.emit(UiState.Success(response.data))
+                }else{
+                    _drawUpPlanEvent.emit(UiEvent.Failure(response.reason))
+                }
+            }.onFailure { e->
+                e.printStackTrace()
+            }
+        }
+    }
 }

@@ -2,17 +2,12 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
-    <data>
-        <variable
-            name="item"
-            type="com.example.witt.domain.model.plan.get_plan.PlanMemoModel" />
-    </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/time_plan_cardView"
+            android:id="@+id/plan_flight_cardView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -25,29 +20,41 @@
                 android:layout_height="match_parent">
 
                 <ImageView
-                    android:id="@+id/time_plan_icon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:id="@+id/flight_plan_icon"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:scaleType="fitXY"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginBottom="16dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/ic_baseline_circle_24" />
+                    app:srcCompat="@drawable/ic_blue_circle_24" />
+
+                <ImageView
+                    android:id="@+id/airplane_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="@+id/flight_plan_icon"
+                    app:layout_constraintEnd_toEndOf="@+id/flight_plan_icon"
+                    app:layout_constraintStart_toStartOf="@+id/flight_plan_icon"
+                    app:layout_constraintTop_toTopOf="@+id/flight_plan_icon"
+                    app:srcCompat="@drawable/ic_baseline_airplanemode_active_24" />
 
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/flightPlanCardView"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="16dp"
                     android:layout_marginBottom="16dp"
-                    app:cardElevation="5dp"
                     app:cardCornerRadius="5dp"
+                    app:cardElevation="5dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/time_plan_icon"
+                    app:layout_constraintStart_toEndOf="@+id/flight_plan_icon"
                     app:layout_constraintTop_toTopOf="parent">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
@@ -55,20 +62,37 @@
                         android:layout_height="match_parent">
 
                         <TextView
-                            android:id="@+id/time_plan_memo_textView"
+                            android:id="@+id/flight_time_textView"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="16dp"
                             android:layout_marginTop="16dp"
                             android:layout_marginEnd="16dp"
-                            android:layout_marginBottom="16dp"
+                            android:maxEms="16"
                             android:singleLine="true"
-                            android:text="@{item.content}"
-                            tools:text="memo"
-                            app:layout_constraintBottom_toBottomOf="parent"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            app:layout_constraintBottom_toTopOf="@+id/flight_Airline_textView"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
+                            app:layout_constraintTop_toTopOf="parent"
+                            tools:text="memo" />
+
+                        <TextView
+                            android:id="@+id/flight_Airline_textView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginEnd="16dp"
+                            android:layout_marginBottom="16dp"
+                            android:maxEms="16"
+                            android:singleLine="true"
+                            android:textSize="14sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.0"
+                            app:layout_constraintStart_toStartOf="parent"
+                            tools:text="memo" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                 </androidx.cardview.widget.CardView>

@@ -20,6 +20,7 @@ import com.example.witt.data.source.remote.signin.SignInDataSource
 import com.example.witt.data.source.remote.signup.SignUpDataSource
 import com.example.witt.data.source.remote.social_signin.SocialSignInDataSource
 import com.example.witt.data.source.remote.token_signin.TokenSignInDataSource
+import com.example.witt.data.source.remote.user.GetUserInfoDataSource
 import com.example.witt.domain.repository.AuthRepository
 import com.example.witt.domain.repository.DetailPlanRepository
 import com.example.witt.domain.repository.PlanRepository
@@ -49,9 +50,11 @@ object RepositoryModule {
     @Singleton
     fun provideUserRepository(duplicateEmailDataSource: DuplicateEmailDataSource,
                               profileDataSource: ProfileDataSource,
-                              profileUploadDataSource: ProfileUploadDataSource
+                              profileUploadDataSource: ProfileUploadDataSource,
+                              getUserInfoDataSource: GetUserInfoDataSource
     ): UserRepository{
-        return UserRepositoryImpl(duplicateEmailDataSource, profileDataSource,profileUploadDataSource)
+        return UserRepositoryImpl(duplicateEmailDataSource, profileDataSource,profileUploadDataSource,
+        getUserInfoDataSource)
     }
 
     @Provides
@@ -70,7 +73,7 @@ object RepositoryModule {
     @Singleton
     fun provideDetailPlanRepository(makeMemoDataSource: MakeMemoDataSource,
                                     editMemoDataSource: EditMemoDataSource,
-                                    addPlaceDataSource: AddPlaceDataSource
+                                    addPlaceDataSource: AddPlaceDataSource,
     ): DetailPlanRepository{
         return DetailPlanRepositoryImpl(makeMemoDataSource, editMemoDataSource, addPlaceDataSource)
     }
