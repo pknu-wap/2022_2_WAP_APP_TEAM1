@@ -78,6 +78,11 @@ class DrawUpPlanFragment : BaseFragment<FragmentDrawUpPlanBinding>(R.layout.frag
             val direction = DrawUpPlanFragmentDirections.actionDrawUpPlanFragmentToAirlineSearchFragment()
             findNavController().navigate(direction)
         }
+
+        binding.goChatButton.setOnClickListener{
+            val direction = DrawUpPlanFragmentDirections.actionDrawUpPlanFragmentToChatFragment()
+            findNavController().navigate(direction)
+        }
     }
 
     private fun observeData() {
