@@ -30,6 +30,8 @@ import com.example.witt.data.source.remote.social_signin.SocialSignInDataSource
 import com.example.witt.data.source.remote.social_signin.SocialSignInDataSourceImpl
 import com.example.witt.data.source.remote.token_signin.TokenSignInDataSource
 import com.example.witt.data.source.remote.token_signin.TokenSignInDataSourceImpl
+import com.example.witt.data.source.remote.user.GetUserInfoDataSource
+import com.example.witt.data.source.remote.user.GetUserInfoDataSourceImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -131,4 +133,11 @@ abstract class DataSourceModule {
     abstract fun provideAddPlaceDataSource(
         addPlaceDataSourceImpl : AddPlaceDataSourceImpl
     ): AddPlaceDataSource
+
+
+    @Binds
+    @Singleton
+    abstract fun provideGetUserInfoDataSource(
+        getUserInfoDataSourceImpl: GetUserInfoDataSourceImpl
+    ): GetUserInfoDataSource
 }
