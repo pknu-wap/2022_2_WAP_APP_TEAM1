@@ -7,8 +7,14 @@
         <entry key="..\:/Users/jaino/2022_2_WAP_APP_TEAM1/client/app/src/main/res/drawable/button_unsel.xml" value="0.2515" />
         <entry key="..\:/Users/jaino/2022_2_WAP_APP_TEAM1/client/app/src/main/res/drawable/destination_button_state.xml" value="0.2515" />
         <entry key="..\:/Users/jaino/2022_2_WAP_APP_TEAM1/client/app/src/main/res/drawable/ic_baseline_add_24.xml" value="0.2515" />
+        <entry key="..\:/Users/jaino/2022_2_WAP_APP_TEAM1/client/app/src/main/res/drawable/ic_baseline_airplanemode_active_24.xml" value="0.2265" />
+        <entry key="..\:/Users/jaino/2022_2_WAP_APP_TEAM1/client/app/src/main/res/drawable/ic_baseline_arrow_back_ios_24.xml" value="0.2265" />
+        <entry key="..\:/Users/jaino/2022_2_WAP_APP_TEAM1/client/app/src/main/res/drawable/ic_baseline_chat_24.xml" value="0.2265" />
+        <entry key="..\:/Users/jaino/2022_2_WAP_APP_TEAM1/client/app/src/main/res/drawable/ic_baseline_circle_24.xml" value="0.2265" />
         <entry key="..\:/Users/jaino/2022_2_WAP_APP_TEAM1/client/app/src/main/res/drawable/ic_baseline_delete_24.xml" value="0.245" />
+        <entry key="..\:/Users/jaino/2022_2_WAP_APP_TEAM1/client/app/src/main/res/drawable/ic_baseline_send_24.xml" value="0.2265" />
         <entry key="..\:/Users/jaino/2022_2_WAP_APP_TEAM1/client/app/src/main/res/drawable/ic_blue_circle_24.xml" value="0.2635" />
+        <entry key="..\:/Users/jaino/2022_2_WAP_APP_TEAM1/client/app/src/main/res/drawable/ic_green_circle_24.xml" value="0.2265" />
         <entry key="..\:/Users/jaino/2022_2_WAP_APP_TEAM1/client/app/src/main/res/drawable/ic_kakao_login.xml" value="0.2515" />
         <entry key="..\:/Users/jaino/2022_2_WAP_APP_TEAM1/client/app/src/main/res/drawable/ic_launcher_background.xml" value="0.2595" />
         <entry key="..\:/Users/jaino/2022_2_WAP_APP_TEAM1/client/app/src/main/res/drawable/ic_naver_login.xml" value="0.2595" />
@@ -20,6 +26,7 @@
         <entry key="..\:/Users/jaino/2022_2_WAP_APP_TEAM1/client/app/src/main/res/layout/fragment_add_place.xml" value="0.21458333333333332" />
         <entry key="..\:/Users/jaino/2022_2_WAP_APP_TEAM1/client/app/src/main/res/layout/fragment_airline_search.xml" value="0.26197916666666665" />
         <entry key="..\:/Users/jaino/2022_2_WAP_APP_TEAM1/client/app/src/main/res/layout/fragment_base.xml" value="0.38645833333333335" />
+        <entry key="..\:/Users/jaino/2022_2_WAP_APP_TEAM1/client/app/src/main/res/layout/fragment_chat.xml" value="0.29739583333333336" />
         <entry key="..\:/Users/jaino/2022_2_WAP_APP_TEAM1/client/app/src/main/res/layout/fragment_draw_up_plan.xml" value="0.33" />
         <entry key="..\:/Users/jaino/2022_2_WAP_APP_TEAM1/client/app/src/main/res/layout/fragment_home.xml" value="0.38645833333333335" />
         <entry key="..\:/Users/jaino/2022_2_WAP_APP_TEAM1/client/app/src/main/res/layout/fragment_make_plan.xml" value="0.33" />
@@ -30,16 +37,20 @@
         <entry key="..\:/Users/jaino/2022_2_WAP_APP_TEAM1/client/app/src/main/res/layout/fragment_sign_up.xml" value="0.31121642969984203" />
         <entry key="..\:/Users/jaino/2022_2_WAP_APP_TEAM1/client/app/src/main/res/layout/fragment_sign_up2.xml" value="0.38645833333333335" />
         <entry key="..\:/Users/jaino/2022_2_WAP_APP_TEAM1/client/app/src/main/res/layout/fragment_write_memo.xml" value="0.38645833333333335" />
+        <entry key="..\:/Users/jaino/2022_2_WAP_APP_TEAM1/client/app/src/main/res/layout/item_chat_receiver.xml" value="0.3578125" />
+        <entry key="..\:/Users/jaino/2022_2_WAP_APP_TEAM1/client/app/src/main/res/layout/item_chat_sender.xml" value="0.3578125" />
         <entry key="..\:/Users/jaino/2022_2_WAP_APP_TEAM1/client/app/src/main/res/layout/item_date_plan.xml" value="0.25" />
         <entry key="..\:/Users/jaino/2022_2_WAP_APP_TEAM1/client/app/src/main/res/layout/item_detail_plan.xml" value="0.20104166666666667" />
         <entry key="..\:/Users/jaino/2022_2_WAP_APP_TEAM1/client/app/src/main/res/layout/item_home_plan.xml" value="0.33" />
         <entry key="..\:/Users/jaino/2022_2_WAP_APP_TEAM1/client/app/src/main/res/layout/item_map_search_recycler.xml" value="0.2786458333333333" />
         <entry key="..\:/Users/jaino/2022_2_WAP_APP_TEAM1/client/app/src/main/res/layout/item_paticipant.xml" value="0.5" />
         <entry key="..\:/Users/jaino/2022_2_WAP_APP_TEAM1/client/app/src/main/res/layout/item_plan.xml" value="0.3046875" />
+        <entry key="..\:/Users/jaino/2022_2_WAP_APP_TEAM1/client/app/src/main/res/layout/item_plan_flight.xml" value="0.22" />
         <entry key="..\:/Users/jaino/2022_2_WAP_APP_TEAM1/client/app/src/main/res/layout/item_plan_memo.xml" value="0.33" />
         <entry key="..\:/Users/jaino/2022_2_WAP_APP_TEAM1/client/app/src/main/res/layout/item_plan_place.xml" value="0.5" />
         <entry key="..\:/Users/jaino/2022_2_WAP_APP_TEAM1/client/app/src/main/res/layout/item_time_plan.xml" value="0.3854166666666667" />
         <entry key="..\:/Users/jaino/2022_2_WAP_APP_TEAM1/client/app/src/main/res/layout/map_layout.xml" value="0.3854166666666667" />
+        <entry key="..\:/Users/jaino/2022_2_WAP_APP_TEAM1/client/app/src/main/res/menu/bottom_bar_menu.xml" value="0.38645833333333335" />
         <entry key="..\:/Users/jaino/2022_2_WAP_APP_TEAM1/client/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.2085" />
         <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1465" />
         <entry key="app/src/main/res/drawable/ic_kakao_login.xml" value="0.1465" />
