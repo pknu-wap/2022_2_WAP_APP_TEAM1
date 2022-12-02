@@ -6,7 +6,7 @@ import com.example.witt.utils.convertIsoToDate
 data class GetPlanResponse (
     val status: Boolean,
     val reason: String,
-    val data : PlanDataResponse,
+    val result : PlanDataResponse,
 )
 
 data class PlanDataResponse(
@@ -26,7 +26,8 @@ data class DetailPlanResponse(
     val OrderIndex: Int,
     val Place: PlanPlaceResponse?,
     val PlanId: Int,
-    val Type: Int
+    val Type: Int,
+    val Flight : PlanFlightResponse?
 )
 
 data class PlanParticipant (
@@ -49,10 +50,19 @@ data class PlanPlaceResponse(
     val RoadAddress: String
 )
 
+data class PlanFlightResponse(
+    val AirlineCode: String,
+    val FlightNum: String,
+    val DepartureTime: String,
+    val ArrivalTime: String,
+    val DepartureAirport: String,
+    val ArrivalAirport: String
+)
+
 fun GetPlanResponse.toGetPlanModel() = GetPlanModel(
     status = status,
     reason = reason,
-    data = data.toPlanDataModel()
+    data = result.toPlanDataModel()
 )
 
 fun PlanDataResponse.toPlanDataModel() = PlanDataModel(
@@ -79,7 +89,8 @@ fun DetailPlanResponse.toDetailPlanModel() = DetailPlanModel(
     orderIndex = OrderIndex,
     place = Place?.toPlanPlaceModel(),
     planId = PlanId,
-    type = Type
+    type = Type,
+    flight = Flight?.toPlanFlightModel()
 )
 
 fun PlanMemoResponse.toPlanMemoModel() = PlanMemoModel(
@@ -94,4 +105,13 @@ fun PlanPlaceResponse.toPlanPlaceModel() = PlanPlaceModel(
     longitude = Longitude ,
     name = Name ,
     roadAddress = RoadAddress
+)
+
+fun PlanFlightResponse.toPlanFlightModel() = PlanFlightModel(
+    airlineCode =  AirlineCode,
+    flightNum =  FlightNum,
+    departureTime =  DepartureTime,
+    arrivalTime =  ArrivalTime,
+    departureAirport =  DepartureAirport,
+    arrivalAirport =  ArrivalAirport
 )

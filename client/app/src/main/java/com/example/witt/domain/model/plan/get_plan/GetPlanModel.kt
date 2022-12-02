@@ -29,7 +29,8 @@ data class DetailPlanModel (
     val orderIndex: Int,
     val place: PlanPlaceModel?,
     val planId: Int,
-    val type: Int
+    val type: Int,
+    val flight: PlanFlightModel?
     )
 
 data class PlanMemoModel (
@@ -44,4 +45,13 @@ data class PlanPlaceModel(
     val longitude: Double,
     val name: String,
     val roadAddress: String
+)
+
+data class PlanFlightModel(
+    val airlineCode: String,
+    val flightNum: String,
+    val departureTime: String,
+    val arrivalTime: String,
+    val departureAirport: String,
+    val arrivalAirport: String
 )
