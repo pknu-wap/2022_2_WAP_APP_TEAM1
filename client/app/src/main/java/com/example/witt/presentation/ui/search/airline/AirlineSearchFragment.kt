@@ -50,7 +50,7 @@ class AirlineSearchFragment: BaseFragment<FragmentAirlineSearchBinding>(R.layout
         val builder = AlertDialog.Builder(requireActivity())
         builder.setTitle("공항을 선택하세요.")
             .setItems(airports
-            ) { dialog, which ->
+            ) { _, which ->
                 it.text = airports[which]
             }
         builder.show()
@@ -76,7 +76,7 @@ class AirlineSearchFragment: BaseFragment<FragmentAirlineSearchBinding>(R.layout
 
 //     넘버 픽커 리스너
     private fun numberPickerListener(numberPicker:NumberPicker){
-        numberPicker.setOnValueChangedListener { picker, oldVal, newVal ->
+        numberPicker.setOnValueChangedListener { _, _, _ ->
 //            Log.d("test", "oldVal : ${oldVal}, newVal : $newVal")
 //            Log.d("test", "picker.displayedValues ${picker.displayedValues[picker.value]}")
         }
