@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.witt.data.model.chat.ChatResponse
+import com.example.witt.data.model.socket.chat.ChatResponse
 import com.example.witt.domain.repository.UserRepository
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder

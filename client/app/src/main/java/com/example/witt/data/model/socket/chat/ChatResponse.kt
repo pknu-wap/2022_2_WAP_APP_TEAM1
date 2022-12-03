@@ -1,4 +1,4 @@
-package com.example.witt.data.model.chat
+package com.example.witt.data.model.socket.chat
 
 data class ChatResponse (
     val TripId: Int,
