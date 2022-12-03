@@ -16,7 +16,7 @@ class DuplicateEmailDataSourceImpl @Inject constructor(
     = withContext(coroutineDispatcher) {
         try {
             val response = duplicateEmailService.duplicateEmailCheck(
-                request = duplicateEmailRequest
+                duplicateEmailRequest.Username
             )
             Result.success(response)
         } catch (e: Exception) {
