@@ -2,7 +2,7 @@ package com.example.witt.presentation.ui.search.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.witt.data.model.search.PlaceModel
+import com.example.witt.data.model.remote.detail_plan.search.PlaceModel
 import com.example.witt.databinding.ItemMapSearchRecyclerBinding
 
 class MapSearchAdapter(

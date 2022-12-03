@@ -1,4 +1,4 @@
-package com.example.witt.data.model.search.flight
+package com.example.witt.data.model.remote.detail_plan.search.flight
 
 data class SearchFlightRequest (
     val flightDate:String,

@@ -1,7 +1,7 @@
-package com.example.witt.data.model.search
+package com.example.witt.data.model.remote.detail_plan.search
 
 import android.os.Parcelable
-import com.example.witt.domain.model.plan.detail_plan.AddPlaceModel
+import com.example.witt.domain.model.remote.detail_plan.place.AddPlaceModel
 import kotlinx.parcelize.Parcelize
 
 // 검색 결과를 담는 클래스

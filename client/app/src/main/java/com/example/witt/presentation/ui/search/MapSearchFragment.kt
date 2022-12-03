@@ -11,10 +11,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.witt.BuildConfig
 import com.example.witt.R
 import com.example.witt.data.api.DetailPlanService
-import com.example.witt.data.model.search.PlaceModel
+import com.example.witt.data.model.remote.detail_plan.search.PlaceModel
 import com.example.witt.databinding.FragmentMapSearchBinding
 import com.example.witt.presentation.base.BaseFragment
-import com.example.witt.data.model.search.ResultSearchKeyword
+import com.example.witt.data.model.remote.detail_plan.search.ResultSearchKeyword
 import com.example.witt.presentation.ui.search.adapter.MapSearchAdapter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

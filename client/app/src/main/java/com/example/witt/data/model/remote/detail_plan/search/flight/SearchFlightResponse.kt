@@ -1,6 +1,6 @@
-package com.example.witt.data.model.search.flight
+package com.example.witt.data.model.remote.detail_plan.search.flight
 
-import com.example.witt.domain.model.flight.SearchFlightModel
+import com.example.witt.domain.model.remote.detail_plan.search.SearchFlightModel
 
 
 data class SearchFlightResponse (

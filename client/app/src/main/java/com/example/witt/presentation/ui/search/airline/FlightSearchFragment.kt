@@ -1,6 +1,5 @@
 package com.example.witt.presentation.ui.search.airline
 
-import android.content.DialogInterface
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -13,8 +12,8 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.witt.data.repository.FlightRepositoryImpl
 import com.example.witt.databinding.FragmentFlightSearchBinding
-import com.example.witt.domain.model.flight.SearchFlightModel
-import com.example.witt.domain.model.flight.SearchFlightRequest
+import com.example.witt.domain.model.remote.detail_plan.search.SearchFlightModel
+import com.example.witt.domain.model.remote.detail_plan.search.SearchFlightRequest
 import com.example.witt.presentation.ui.plan.PlanViewModel
 import com.example.witt.presentation.widget.AddFlightDialog
 import com.example.witt.utils.convertAirline

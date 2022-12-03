@@ -1,6 +1,7 @@
-package com.example.witt.domain.model.flight
+package com.example.witt.domain.model.remote.detail_plan.search
 
-import com.example.witt.data.model.search.flight.Flight
+import com.example.witt.data.model.remote.detail_plan.search.flight.Flight
+import com.example.witt.domain.model.remote.detail_plan.search.flight.AddFlightRequest
 
 
 data class SearchFlightModel(
