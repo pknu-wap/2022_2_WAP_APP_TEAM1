@@ -109,7 +109,7 @@
         android:name="com.example.witt.presentation.ui.chat.ChatFragment"
         android:label="ChatFragment" >
         <action
-            android:id="@+id/action_chatFragment_to_drawUpPlanFragment
+            android:id="@+id/action_chatFragment_to_drawUpPlanFragment"
             app:destination="@id/drawUpPlanFragment" />
     </fragment>
     <fragment
@@ -120,4 +120,12 @@
             android:id="@+id/action_flightSearchFragment_to_drawUpPlanFragment"
             app:destination="@id/drawUpPlanFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/profileEditFragment"
+        android:name="com.example.witt.presentation.ui.profile_edit.ProfileEditFragment"
+        android:label="ProfileEditFragment" />
+    <fragment
+        android:id="@+id/rankFragment"
+        android:name="com.example.witt.presentation.ui.rank.RankFragment"
+        android:label="RankFragment" />
 </navigation>
