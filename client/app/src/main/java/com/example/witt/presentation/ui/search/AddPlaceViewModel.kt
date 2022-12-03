@@ -3,7 +3,7 @@ package com.example.witt.presentation.ui.search
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.witt.domain.model.plan.detail_plan.AddPlaceModel
+import com.example.witt.domain.model.remote.detail_plan.place.AddPlaceModel
 import com.example.witt.domain.repository.DetailPlanRepository
 import com.example.witt.presentation.ui.UiEvent
 import dagger.hilt.android.lifecycle.HiltViewModel

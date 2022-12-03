@@ -1,22 +1,22 @@
 package com.example.witt.data.repository
 
 import com.example.witt.data.mapper.toMakePlanResponseModel
-import com.example.witt.data.model.plan.get_plan.toGetPlanListModel
-import com.example.witt.data.model.plan.get_plan.toGetPlanModel
-import com.example.witt.data.model.plan.join_plan.toJoinPlanModel
-import com.example.witt.data.model.plan.join_plan.toOutPlanModel
-import com.example.witt.data.model.plan.make_plan.request.MakePlanRequest
+import com.example.witt.data.model.remote.plan.get_plan.toGetPlanListModel
+import com.example.witt.data.model.remote.plan.get_plan.toGetPlanModel
+import com.example.witt.data.model.remote.plan.join_plan.toJoinPlanModel
+import com.example.witt.data.model.remote.plan.make_plan.request.MakePlanRequest
+import com.example.witt.data.model.remote.plan.out_plan.toOutPlanModel
 import com.example.witt.data.source.remote.plan.get_plan.GetPlanDataSource
 import com.example.witt.data.source.remote.plan.get_plan.GetPlanListDataSource
 import com.example.witt.data.source.remote.plan.make_plan.MakePlanDataSource
 import com.example.witt.data.source.remote.plan.join_plan.JoinPlanDataSource
 import com.example.witt.data.source.remote.plan.join_plan.OutPlanDataSource
-import com.example.witt.domain.model.plan.get_plan.GetPlanListModel
-import com.example.witt.domain.model.plan.get_plan.GetPlanModel
-import com.example.witt.domain.model.plan.make_plan.MakePlanModel
-import com.example.witt.domain.model.plan.make_plan.MakePlanResponseModel
-import com.example.witt.domain.model.plan.join_plan.JoinPlanModel
-import com.example.witt.domain.model.plan.join_plan.OutPlanModel
+import com.example.witt.domain.model.remote.plan.get_plan.GetPlanListModel
+import com.example.witt.domain.model.remote.plan.get_plan.GetPlanModel
+import com.example.witt.domain.model.remote.plan.make_plan.MakePlanModel
+import com.example.witt.domain.model.remote.plan.make_plan.MakePlanResponseModel
+import com.example.witt.domain.model.remote.plan.join_plan.JoinPlanModel
+import com.example.witt.domain.model.remote.plan.out_plan.OutPlanModel
 import com.example.witt.domain.repository.PlanRepository
 import javax.inject.Inject
 

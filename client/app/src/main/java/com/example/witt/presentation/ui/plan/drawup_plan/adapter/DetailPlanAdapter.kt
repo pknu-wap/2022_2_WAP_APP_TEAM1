@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.witt.databinding.ItemPlanFlightBinding
 import com.example.witt.databinding.ItemPlanMemoBinding
 import com.example.witt.databinding.ItemPlanPlaceBinding
-import com.example.witt.domain.model.plan.get_plan.DetailPlanModel
+import com.example.witt.domain.model.remote.plan.get_plan.DetailPlanModel
 import com.example.witt.presentation.listener.ItemTouchHelperListener
 import com.example.witt.utils.convertIsoToTime
 

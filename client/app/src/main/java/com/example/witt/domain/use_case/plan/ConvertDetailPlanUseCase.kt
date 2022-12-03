@@ -1,8 +1,8 @@
 package com.example.witt.domain.use_case.plan
 
 import com.example.witt.di.DefaultDispatcher
-import com.example.witt.domain.model.plan.adapter.PlanModel
-import com.example.witt.domain.model.plan.get_plan.DetailPlanModel
+import com.example.witt.domain.model.use_case.plan.PlanModel
+import com.example.witt.domain.model.remote.plan.get_plan.DetailPlanModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import java.time.LocalDate

@@ -2,6 +2,7 @@ package com.example.witt.presentation.ui.profile_edit
 
 import android.Manifest
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.View
@@ -10,12 +11,12 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.canhub.cropper.*
 import com.example.witt.R
 import com.example.witt.databinding.FragmentProfileEditBinding
 import com.example.witt.presentation.base.BaseFragment
+import com.example.witt.presentation.ui.plan.PlanActivity
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.normal.TedPermission
 import dagger.hilt.android.AndroidEntryPoint
@@ -90,11 +91,11 @@ class ProfileEditFragment : BaseFragment<FragmentProfileEditBinding>(R.layout.fr
     }
 
     private fun initProfile(){
-        val nickName =  prefs.getString("nickName", null)
-        val profile = prefs.getString("profile", null)
-        initNickNameTextView(nickName)
-        getPathFromRemoteUri(profile)
-        uploadImage(profile)
+        viewModel.profileData.observe(viewLifecycleOwner){
+            binding.nameEditText.setText(it.nickname)
+            binding.phoneNumberEditText.setText(it.phoneNum)
+            uploadImage(it.profileImage)
+        }
     }
 
     private fun initNickNameTextView(nickName: String?){
@@ -162,9 +163,7 @@ class ProfileEditFragment : BaseFragment<FragmentProfileEditBinding>(R.layout.fr
                             Toast.makeText(requireActivity(), event.message, Toast.LENGTH_SHORT).show()
                         }
                         is ProfileEditViewModel.ProfileEditUiEvent.Success -> {
-                            val direction =
-                                ProfileEditFragmentDirections.actionProfileEditFragmentToPlanNav()
-                            findNavController().navigate(direction)
+                            startActivity(Intent(requireActivity(), PlanActivity::class.java))
                         }
                     }
                 }

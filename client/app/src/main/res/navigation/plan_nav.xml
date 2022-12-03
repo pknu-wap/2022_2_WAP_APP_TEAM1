@@ -85,7 +85,7 @@
             app:argType="integer" />
         <argument
             android:name="place"
-            app:argType="com.example.witt.data.model.search.PlaceModel"
+            app:argType="com.example.witt.data.model.remote.detail_plan.search.PlaceModel"
             app:nullable="false"/>
         <action
             android:id="@+id/action_addPlaceFragment_to_drawUpPlanFragment"
@@ -109,7 +109,7 @@
         android:name="com.example.witt.presentation.ui.chat.ChatFragment"
         android:label="ChatFragment" >
         <action
-            android:id="@+id/action_chatFragment_to_drawUpPlanFragment
+            android:id="@+id/action_chatFragment_to_drawUpPlanFragment"
             app:destination="@id/drawUpPlanFragment" />
     </fragment>
     <fragment
@@ -120,4 +120,12 @@
             android:id="@+id/action_flightSearchFragment_to_drawUpPlanFragment"
             app:destination="@id/drawUpPlanFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/profileEditFragment"
+        android:name="com.example.witt.presentation.ui.profile_edit.ProfileEditFragment"
+        android:label="ProfileEditFragment" />
+    <fragment
+        android:id="@+id/rankFragment"
+        android:name="com.example.witt.presentation.ui.rank.RankFragment"
+        android:label="RankFragment" />
 </navigation>

@@ -1,21 +1,21 @@
 package com.example.witt.data.repository
 
 import android.content.SharedPreferences
-import com.example.witt.data.model.auth.request.SignInRequest
-import com.example.witt.data.model.auth.request.SignUpRequest
+import com.example.witt.data.model.remote.signin.request.SignInRequest
+import com.example.witt.data.model.remote.signup.request.SignUpRequest
 import com.example.witt.data.mapper.toSignInModel
 import com.example.witt.data.mapper.toSignUpModel
 import com.example.witt.data.mapper.toSocialSignInModel
 import com.example.witt.data.mapper.toTokenModel
-import com.example.witt.data.model.auth.request.SocialSignInRequest
+import com.example.witt.data.model.remote.signin.request.SocialSignInRequest
 import com.example.witt.data.source.remote.signin.SignInDataSource
 import com.example.witt.data.source.remote.signup.SignUpDataSource
-import com.example.witt.data.source.remote.social_signin.SocialSignInDataSource
-import com.example.witt.data.source.remote.token_signin.TokenSignInDataSource
-import com.example.witt.domain.model.auth.SignInModel
-import com.example.witt.domain.model.auth.SignUpModel
-import com.example.witt.domain.model.auth.SocialSignInModel
-import com.example.witt.domain.model.auth.TokenModel
+import com.example.witt.data.source.remote.signin.social_signin.SocialSignInDataSource
+import com.example.witt.data.source.remote.signin.token_signin.TokenSignInDataSource
+import com.example.witt.domain.model.remote.signin.SignInModel
+import com.example.witt.domain.model.remote.signup.SignUpModel
+import com.example.witt.domain.model.remote.signin.SocialSignInModel
+import com.example.witt.domain.model.remote.signin.TokenModel
 import com.example.witt.domain.repository.AuthRepository
 import javax.inject.Inject
 

@@ -6,9 +6,9 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.witt.databinding.ItemHomePlanBinding
-import com.example.witt.domain.model.plan.PlanStateModel
-import com.example.witt.domain.model.plan.get_plan.GetPlanListResultModel
-import com.example.witt.domain.model.plan.get_plan.toPlanStateModel
+import com.example.witt.domain.model.use_case.plan.PlanStateModel
+import com.example.witt.domain.model.remote.plan.get_plan.GetPlanListResultModel
+import com.example.witt.domain.model.remote.plan.get_plan.toPlanStateModel
 
 class HomePlanAdapter(
     val onPlanCardClick : (PlanStateModel) -> Unit,

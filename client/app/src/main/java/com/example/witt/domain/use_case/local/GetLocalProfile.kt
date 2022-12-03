@@ -1,6 +1,6 @@
 package com.example.witt.domain.use_case.local
 
-import com.example.witt.domain.model.user.UserProfileModel
+import com.example.witt.domain.model.remote.user.UserProfileModel
 import com.example.witt.domain.repository.UserRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject

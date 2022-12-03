@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.witt.data.model.chat.ChatResponse
+import com.example.witt.data.model.socket.chat.ChatResponse
 import com.example.witt.databinding.ItemChatReceiverBinding
 import com.example.witt.databinding.ItemChatSenderBinding
 import com.example.witt.utils.convertIsoToTime

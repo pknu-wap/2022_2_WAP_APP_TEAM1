@@ -3,9 +3,9 @@ package com.example.witt.presentation.ui.home
 import android.content.SharedPreferences
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.witt.domain.model.plan.PlanStateModel
-import com.example.witt.domain.model.plan.get_plan.GetPlanListModel
-import com.example.witt.domain.model.plan.get_plan.toPlanStateModel
+import com.example.witt.domain.model.use_case.plan.PlanStateModel
+import com.example.witt.domain.model.remote.plan.get_plan.GetPlanListModel
+import com.example.witt.domain.model.remote.plan.get_plan.toPlanStateModel
 import com.example.witt.domain.repository.PlanRepository
 import com.example.witt.presentation.ui.UiEvent
 import dagger.hilt.android.lifecycle.HiltViewModel

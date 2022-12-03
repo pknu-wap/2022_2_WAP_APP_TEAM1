@@ -1,9 +1,9 @@
 package com.example.witt.domain.repository
 
-import com.example.witt.domain.model.auth.SignInModel
-import com.example.witt.domain.model.auth.SignUpModel
-import com.example.witt.domain.model.auth.SocialSignInModel
-import com.example.witt.domain.model.auth.TokenModel
+import com.example.witt.domain.model.remote.signin.SignInModel
+import com.example.witt.domain.model.remote.signup.SignUpModel
+import com.example.witt.domain.model.remote.signin.SocialSignInModel
+import com.example.witt.domain.model.remote.signin.TokenModel
 
 interface AuthRepository {
 

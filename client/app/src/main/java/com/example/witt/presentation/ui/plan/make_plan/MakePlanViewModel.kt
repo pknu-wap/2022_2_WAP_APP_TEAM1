@@ -3,8 +3,8 @@ package com.example.witt.presentation.ui.plan.make_plan
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.witt.domain.model.plan.make_plan.MakePlanModel
-import com.example.witt.domain.model.plan.PlanStateModel
+import com.example.witt.domain.model.remote.plan.make_plan.MakePlanModel
+import com.example.witt.domain.model.use_case.plan.PlanStateModel
 import com.example.witt.domain.use_case.remote.MakePlanUseCase
 import com.example.witt.presentation.ui.UiEvent
 import dagger.hilt.android.lifecycle.HiltViewModel

@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.witt.R
 import com.example.witt.databinding.ItemParticipantBinding
-import com.example.witt.domain.model.plan.get_plan.PlanParticipantModel
+import com.example.witt.domain.model.remote.plan.get_plan.PlanParticipantModel
 
 class ParticipantAdapter
     : ListAdapter<PlanParticipantModel, ParticipantAdapter.PlanParticipantViewHolder>(diffutil) {

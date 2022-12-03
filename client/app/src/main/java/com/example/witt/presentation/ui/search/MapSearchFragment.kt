@@ -10,11 +10,11 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.witt.BuildConfig
 import com.example.witt.R
-import com.example.witt.data.api.KakaoAPI
-import com.example.witt.data.model.search.PlaceModel
+import com.example.witt.data.api.DetailPlanService
+import com.example.witt.data.model.remote.detail_plan.search.PlaceModel
 import com.example.witt.databinding.FragmentMapSearchBinding
 import com.example.witt.presentation.base.BaseFragment
-import com.example.witt.data.model.search.ResultSearchKeyword
+import com.example.witt.data.model.remote.detail_plan.search.ResultSearchKeyword
 import com.example.witt.presentation.ui.search.adapter.MapSearchAdapter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -71,7 +71,7 @@ class MapSearchFragment: BaseFragment<FragmentMapSearchBinding>(R.layout.fragmen
             .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-        val api = retrofit.create(KakaoAPI::class.java)
+        val api = retrofit.create(DetailPlanService::class.java)
         val call = api.getSearchKeyword(API_KEY,keyword)
         CoroutineScope(Dispatchers.IO).launch{
             call.enqueue(object : Callback<ResultSearchKeyword> {

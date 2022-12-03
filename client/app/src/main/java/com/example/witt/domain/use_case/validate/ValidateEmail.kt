@@ -1,7 +1,7 @@
 package com.example.witt.domain.use_case.validate
 
 import android.util.Patterns
-import com.example.witt.domain.model.validate.ValidationResult
+import com.example.witt.domain.model.use_case.validate.ValidationResult
 
 class ValidateEmail {
     fun execute(email: String): ValidationResult {

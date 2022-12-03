@@ -20,17 +20,17 @@ class PlanActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_plan)
+        setContentView(binding.root)
 
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.plan_nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
+
         binding.bottomNavigationView.setupWithNavController(navController)
+
     }
 
     override fun onSupportNavigateUp(): Boolean {
         return navController.navigateUp() || super.onSupportNavigateUp()
     }
-
-
 }
