@@ -1,4 +1,4 @@
-package com.example.witt.domain.model.plan.get_plan
+package com.example.witt.domain.model.remote.plan.get_plan
 
 data class GetPlanModel (
     val status: Boolean,

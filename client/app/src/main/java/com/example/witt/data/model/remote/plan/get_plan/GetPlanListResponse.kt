@@ -1,7 +1,7 @@
-package com.example.witt.data.model.plan.get_plan
+package com.example.witt.data.model.remote.plan.get_plan
 
-import com.example.witt.domain.model.plan.get_plan.GetPlanListModel
-import com.example.witt.domain.model.plan.get_plan.GetPlanListResultModel
+import com.example.witt.domain.model.remote.plan.get_plan.GetPlanListModel
+import com.example.witt.domain.model.remote.plan.get_plan.GetPlanListResultModel
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 

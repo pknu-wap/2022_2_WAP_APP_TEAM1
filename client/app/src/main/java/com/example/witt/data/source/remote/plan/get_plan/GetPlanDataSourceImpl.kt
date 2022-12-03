@@ -1,7 +1,7 @@
 package com.example.witt.data.source.remote.plan.get_plan
 
 import com.example.witt.data.api.PlanService
-import com.example.witt.data.model.plan.get_plan.GetPlanResponse
+import com.example.witt.data.model.remote.plan.get_plan.GetPlanResponse
 import com.example.witt.di.IoDispatcher
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext

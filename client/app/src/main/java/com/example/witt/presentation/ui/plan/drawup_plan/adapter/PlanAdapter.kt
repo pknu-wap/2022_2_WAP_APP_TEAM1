@@ -5,8 +5,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.*
 import com.example.witt.databinding.ItemPlanBinding
-import com.example.witt.domain.model.plan.adapter.PlanModel
-import com.example.witt.domain.model.plan.get_plan.DetailPlanModel
+import com.example.witt.domain.model.use_case.plan.PlanModel
+import com.example.witt.domain.model.remote.plan.get_plan.DetailPlanModel
 import com.example.witt.presentation.listener.ItemTouchCallback
 
 class PlanAdapter(

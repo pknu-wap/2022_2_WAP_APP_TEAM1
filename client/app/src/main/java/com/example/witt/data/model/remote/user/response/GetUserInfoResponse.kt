@@ -1,7 +1,7 @@
-package com.example.witt.data.model.user.response
+package com.example.witt.data.model.remote.user.response
 
-import com.example.witt.domain.model.user.GetUserInfoModel
-import com.example.witt.domain.model.user.UserInfoModel
+import com.example.witt.domain.model.remote.user.GetUserInfoModel
+import com.example.witt.domain.model.remote.user.UserInfoModel
 
 data class GetUserInfoResponse (
     val status: Boolean,

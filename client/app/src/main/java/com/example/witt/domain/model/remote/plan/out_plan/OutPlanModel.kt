@@ -1,4 +1,4 @@
-package com.example.witt.domain.model.plan.join_plan
+package com.example.witt.domain.model.remote.plan.out_plan
 
 class OutPlanModel (
     val status: Boolean,

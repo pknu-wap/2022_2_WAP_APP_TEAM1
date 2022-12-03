@@ -1,6 +1,6 @@
 package com.example.witt.data.source.remote.plan.join_plan
 
-import com.example.witt.data.model.plan.join_plan.JoinPlanResponse
+import com.example.witt.data.model.remote.plan.join_plan.JoinPlanResponse
 
 interface JoinPlanDataSource {
 

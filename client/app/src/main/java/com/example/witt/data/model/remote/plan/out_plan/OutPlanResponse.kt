@@ -1,6 +1,6 @@
-package com.example.witt.data.model.plan.join_plan
+package com.example.witt.data.model.remote.plan.out_plan
 
-import com.example.witt.domain.model.plan.join_plan.OutPlanModel
+import com.example.witt.domain.model.remote.plan.out_plan.OutPlanModel
 
 
 data class OutPlanResponse (

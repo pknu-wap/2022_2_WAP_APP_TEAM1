@@ -1,6 +1,6 @@
-package com.example.witt.domain.model.plan.make_plan
+package com.example.witt.data.model.remote.plan.make_plan.request
 
-data class MakePlanModel (
+data class MakePlanRequest (
     val StartDate: String,
     val EndDate: String,
     val Name: String,
