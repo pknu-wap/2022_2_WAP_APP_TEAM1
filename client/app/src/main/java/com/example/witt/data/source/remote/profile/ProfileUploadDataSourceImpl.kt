@@ -1,6 +1,6 @@
 package com.example.witt.data.source.remote.profile
 
-import com.example.witt.data.api.ProfileUploadService
+import com.example.witt.data.api.UserService
 import com.example.witt.data.model.profile.request.ProfileUploadRequest
 import com.example.witt.data.model.profile.response.ProfileUploadResponse
 import com.example.witt.di.IoDispatcher
@@ -13,13 +13,13 @@ import okhttp3.RequestBody.Companion.toRequestBody
 import javax.inject.Inject
 
 class ProfileUploadDataSourceImpl @Inject constructor(
-    private val profileUploadService: ProfileUploadService,
+    private val userService: UserService,
     @IoDispatcher private val coroutineDispatcher: CoroutineDispatcher
 ) : ProfileUploadDataSource{
     override suspend fun uploadProfile(profileUploadRequest: ProfileUploadRequest): Result<ProfileUploadResponse> =
         withContext(coroutineDispatcher){
              try{
-                val response = profileUploadService
+                val response = userService
                     .uploadProfile(
                     profile = MultipartBody.Part
                         .createFormData(
