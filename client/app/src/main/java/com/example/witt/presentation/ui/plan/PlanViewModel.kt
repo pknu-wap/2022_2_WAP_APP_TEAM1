@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.witt.domain.model.plan.PlanStateModel
+import com.example.witt.domain.model.use_case.plan.PlanStateModel
 import kotlinx.coroutines.launch
 
 class PlanViewModel: ViewModel(){
