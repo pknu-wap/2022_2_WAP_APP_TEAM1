@@ -1,21 +1,21 @@
 package com.example.witt.data.mapper
 
-import com.example.witt.data.model.auth.response.SignInResponse
-import com.example.witt.data.model.auth.response.SignUpResponse
-import com.example.witt.data.model.auth.response.SocialSignInResponse
+import com.example.witt.data.model.remote.signin.response.SignInResponse
+import com.example.witt.data.model.remote.signup.response.SignUpResponse
+import com.example.witt.data.model.remote.signin.response.SocialSignInResponse
 import com.example.witt.data.model.local.UserProfile
-import com.example.witt.data.model.plan.make_plan.response.MakePlanResponse
-import com.example.witt.data.model.profile.response.ProfileUploadResponse
-import com.example.witt.data.model.user.response.DuplicateEmailResponse
-import com.example.witt.data.model.user.response.TokenResponse
-import com.example.witt.domain.model.auth.SignInModel
-import com.example.witt.domain.model.auth.SignUpModel
-import com.example.witt.domain.model.auth.SocialSignInModel
-import com.example.witt.domain.model.profile.remote.ProfileUploadModel
-import com.example.witt.domain.model.user.DuplicateEmailModel
-import com.example.witt.domain.model.auth.TokenModel
-import com.example.witt.domain.model.plan.make_plan.MakePlanResponseModel
-import com.example.witt.domain.model.user.UserProfileModel
+import com.example.witt.data.model.remote.plan.make_plan.response.MakePlanResponse
+import com.example.witt.data.model.remote.user.response.ProfileUploadResponse
+import com.example.witt.data.model.remote.user.response.DuplicateEmailResponse
+import com.example.witt.data.model.remote.user.response.TokenResponse
+import com.example.witt.domain.model.remote.signin.SignInModel
+import com.example.witt.domain.model.remote.signup.SignUpModel
+import com.example.witt.domain.model.remote.signin.SocialSignInModel
+import com.example.witt.domain.model.remote.user.ProfileUploadModel
+import com.example.witt.domain.model.remote.signup.DuplicateEmailModel
+import com.example.witt.domain.model.remote.signin.TokenModel
+import com.example.witt.domain.model.remote.plan.make_plan.MakePlanResponseModel
+import com.example.witt.domain.model.remote.user.UserProfileModel
 
 fun SignUpResponse.toSignUpModel() =  SignUpModel(
     status = status,

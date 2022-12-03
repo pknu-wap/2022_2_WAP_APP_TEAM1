@@ -85,7 +85,7 @@
             app:argType="integer" />
         <argument
             android:name="place"
-            app:argType="com.example.witt.data.model.search.PlaceModel"
+            app:argType="com.example.witt.data.model.remote.detail_plan.search.PlaceModel"
             app:nullable="false"/>
         <action
             android:id="@+id/action_addPlaceFragment_to_drawUpPlanFragment"
