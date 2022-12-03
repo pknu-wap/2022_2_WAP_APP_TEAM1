@@ -23,7 +23,7 @@ class ProfileUploadDataSourceImpl @Inject constructor(
                     .uploadProfile(
                     profile = MultipartBody.Part
                         .createFormData(
-                            "profile",
+                            "Image",
                             profileUploadRequest.profile.name,
                             profileUploadRequest.profile.asRequestBody()
                         ),
