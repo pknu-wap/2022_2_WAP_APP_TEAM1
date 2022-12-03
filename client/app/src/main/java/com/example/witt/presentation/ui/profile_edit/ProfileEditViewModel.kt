@@ -4,6 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.witt.domain.model.remote.user.UserInfoModel
+import com.example.witt.domain.repository.UserRepository
 import com.example.witt.domain.use_case.remote.UploadRemoteProfile
 import com.example.witt.domain.use_case.validate.ValidateNickName
 import com.example.witt.domain.use_case.validate.ValidatePhoneNum
@@ -17,6 +19,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ProfileEditViewModel @Inject constructor(
     private val uploadRemoteProfile: UploadRemoteProfile,
+    private val repository : UserRepository
 ): ViewModel() {
 
     private val validateNickName by lazy { ValidateNickName() }
@@ -35,6 +38,22 @@ class ProfileEditViewModel @Inject constructor(
 
     private val profileEditChannel = Channel<ProfileEditUiEvent>()
     val profileEditEvents = profileEditChannel.receiveAsFlow()
+
+    val profileData : MutableLiveData<UserInfoModel> = MutableLiveData()
+
+    init{
+       getUserInfo()
+    }
+
+    private fun getUserInfo(){
+        viewModelScope.launch {
+            repository.getUserInfo().mapCatching { response ->
+                if(response.status){
+                    profileData.value = response.user
+                }
+            }
+        }
+    }
 
     fun onEvent(event: ProfileEditEvent){
         when(event){
