@@ -5,7 +5,7 @@ import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.WindowManager
-import com.example.witt.data.repository.AddFlightRepositoryImpl
+import com.example.witt.data.repository.FlightRepositoryImpl
 import com.example.witt.databinding.DialogSearchFlightBinding
 import com.example.witt.domain.model.flight.SearchFlightModel
 import com.example.witt.domain.model.flight.toAddFlightRequest
@@ -19,7 +19,7 @@ class AddFlightDialog(
     private val onClickCancel: () -> Unit = {}
 ) : Dialog(context) {
 
-    private val repository = AddFlightRepositoryImpl()
+    private val repository = FlightRepositoryImpl()
 
     private val binding by lazy { DialogSearchFlightBinding.inflate(layoutInflater) }
     override fun onCreate(savedInstanceState: Bundle?) {
