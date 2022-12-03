@@ -1,7 +1,7 @@
-package com.example.witt.data.source.remote.token_signin
+package com.example.witt.data.source.remote.signin.token_signin
 
 import com.example.witt.data.api.SignInService
-import com.example.witt.data.model.user.response.TokenResponse
+import com.example.witt.data.model.remote.user.response.TokenResponse
 import com.example.witt.di.IoDispatcher
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
@@ -10,7 +10,7 @@ import javax.inject.Inject
 class TokenSignInDataSourceImpl @Inject constructor(
     private val userService: SignInService,
     @IoDispatcher private val coroutineDispatcher: CoroutineDispatcher
-) : TokenSignInDataSource{
+) : TokenSignInDataSource {
     override suspend fun tokenSignIn(): Result<TokenResponse> =
         withContext(coroutineDispatcher){
             try{

@@ -1,6 +1,6 @@
 package com.example.witt.domain.use_case.remote
 
-import com.example.witt.domain.model.auth.SocialSignInModel
+import com.example.witt.domain.model.remote.signin.SocialSignInModel
 import com.example.witt.domain.repository.AuthRepository
 import javax.inject.Inject
 

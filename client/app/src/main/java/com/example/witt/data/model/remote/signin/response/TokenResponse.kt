@@ -1,4 +1,4 @@
-package com.example.witt.data.model.user.response
+package com.example.witt.data.model.remote.user.response
 
 data class TokenResponse (
     val status: Boolean,

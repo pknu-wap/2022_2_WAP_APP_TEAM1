@@ -1,8 +1,8 @@
-package com.example.witt.data.source.remote.social_signin
+package com.example.witt.data.source.remote.signin.social_signin
 
 import com.example.witt.data.api.SignInService
-import com.example.witt.data.model.auth.request.SocialSignInRequest
-import com.example.witt.data.model.auth.response.SocialSignInResponse
+import com.example.witt.data.model.remote.signin.request.SocialSignInRequest
+import com.example.witt.data.model.remote.signin.response.SocialSignInResponse
 import com.example.witt.di.IoDispatcher
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
