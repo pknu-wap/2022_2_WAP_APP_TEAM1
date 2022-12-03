@@ -1,4 +1,4 @@
-package com.example.witt.data.model.plan.detail_plan.request
+package com.example.witt.data.model.remote.detail_plan.place.request
 
 data class AddPlaceRequest(
     val PlaceId: String,

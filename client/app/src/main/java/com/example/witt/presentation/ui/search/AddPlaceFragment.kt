@@ -10,8 +10,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.witt.R
-import com.example.witt.data.model.search.PlaceModel
-import com.example.witt.data.model.search.toAddPlaceRequest
+import com.example.witt.data.model.remote.detail_plan.search.PlaceModel
+import com.example.witt.data.model.remote.detail_plan.search.toAddPlaceRequest
 import com.example.witt.databinding.FragmentAddPlaceBinding
 import com.example.witt.presentation.base.BaseFragment
 import com.example.witt.presentation.ui.UiEvent

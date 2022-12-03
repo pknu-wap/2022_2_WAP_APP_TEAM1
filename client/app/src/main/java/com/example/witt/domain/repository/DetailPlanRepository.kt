@@ -1,9 +1,9 @@
 package com.example.witt.domain.repository
 
-import com.example.witt.domain.model.plan.detail_plan.AddPlaceModel
-import com.example.witt.domain.model.plan.detail_plan.AddPlaceResponseModel
-import com.example.witt.domain.model.plan.memo.EditMemoModel
-import com.example.witt.domain.model.plan.memo.MakeMemoModel
+import com.example.witt.domain.model.remote.detail_plan.place.AddPlaceModel
+import com.example.witt.domain.model.remote.detail_plan.place.AddPlaceResponseModel
+import com.example.witt.domain.model.remote.detail_plan.memo.EditMemoModel
+import com.example.witt.domain.model.remote.detail_plan.memo.MakeMemoModel
 
 interface DetailPlanRepository {
 

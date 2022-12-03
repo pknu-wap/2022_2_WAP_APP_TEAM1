@@ -1,8 +1,8 @@
-package com.example.witt.data.source.remote.memo
+package com.example.witt.data.source.remote.detail_plan.memo
 
 import com.example.witt.data.api.DetailPlanService
-import com.example.witt.data.model.plan.detail_plan.request.MemoRequest
-import com.example.witt.data.model.plan.memo.EditMemoResponse
+import com.example.witt.data.model.remote.detail_plan.place.request.MemoRequest
+import com.example.witt.data.model.remote.detail_plan.memo.EditMemoResponse
 import com.example.witt.di.IoDispatcher
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext

@@ -4,10 +4,10 @@ import android.content.Context
 import com.example.witt.BuildConfig
 import com.example.witt.data.api.DetailPlanService
 import com.example.witt.data.api.interceptor.AuthInterceptor
-import com.example.witt.data.model.search.flight.toAddFlightResponse
-import com.example.witt.domain.model.flight.AddFlightRequest
-import com.example.witt.domain.model.flight.SearchFlightModel
-import com.example.witt.domain.model.flight.SearchFlightRequest
+import com.example.witt.data.model.remote.detail_plan.search.flight.toAddFlightResponse
+import com.example.witt.domain.model.remote.detail_plan.search.flight.AddFlightRequest
+import com.example.witt.domain.model.remote.detail_plan.search.SearchFlightModel
+import com.example.witt.domain.model.remote.detail_plan.search.SearchFlightRequest
 import com.example.witt.domain.repository.FlightRepository
 import com.gun0912.tedpermission.provider.TedPermissionProvider
 import kotlinx.coroutines.Dispatchers

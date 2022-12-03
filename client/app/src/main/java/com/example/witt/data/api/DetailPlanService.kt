@@ -1,14 +1,14 @@
 package com.example.witt.data.api
 
-import com.example.witt.data.model.plan.detail_plan.request.AddPlaceRequest
-import com.example.witt.data.model.plan.detail_plan.request.MemoRequest
-import com.example.witt.data.model.plan.detail_plan.response.AddPlaceResponse
-import com.example.witt.data.model.plan.memo.EditMemoResponse
-import com.example.witt.data.model.plan.memo.MakeMemoResponse
-import com.example.witt.data.model.search.ResultSearchKeyword
-import com.example.witt.data.model.search.flight.AddFlightResponse
-import com.example.witt.data.model.search.flight.SearchFlightResponse
-import com.example.witt.domain.model.flight.AddFlightRequest
+import com.example.witt.data.model.remote.detail_plan.place.request.AddPlaceRequest
+import com.example.witt.data.model.remote.detail_plan.place.request.MemoRequest
+import com.example.witt.data.model.remote.detail_plan.place.response.AddPlaceResponse
+import com.example.witt.data.model.remote.detail_plan.memo.EditMemoResponse
+import com.example.witt.data.model.remote.detail_plan.memo.MakeMemoResponse
+import com.example.witt.data.model.remote.detail_plan.search.ResultSearchKeyword
+import com.example.witt.data.model.remote.detail_plan.search.flight.AddFlightResponse
+import com.example.witt.data.model.remote.detail_plan.search.flight.SearchFlightResponse
+import com.example.witt.domain.model.remote.detail_plan.search.flight.AddFlightRequest
 import retrofit2.Call
 import retrofit2.http.*
 

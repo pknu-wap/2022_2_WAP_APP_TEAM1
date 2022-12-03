@@ -1,8 +1,8 @@
 package com.example.witt.domain.repository
 
-import com.example.witt.domain.model.flight.AddFlightRequest
-import com.example.witt.domain.model.flight.SearchFlightModel
-import com.example.witt.domain.model.flight.SearchFlightRequest
+import com.example.witt.domain.model.remote.detail_plan.search.flight.AddFlightRequest
+import com.example.witt.domain.model.remote.detail_plan.search.SearchFlightModel
+import com.example.witt.domain.model.remote.detail_plan.search.SearchFlightRequest
 
 interface FlightRepository {
 

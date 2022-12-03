@@ -1,6 +1,6 @@
-package com.example.witt.data.model.plan.detail_plan.response
+package com.example.witt.data.model.remote.detail_plan.place.response
 
-import com.example.witt.domain.model.plan.detail_plan.AddPlaceResponseModel
+import com.example.witt.domain.model.remote.detail_plan.place.AddPlaceResponseModel
 
 data class AddPlaceResponse (
     val status: Boolean,

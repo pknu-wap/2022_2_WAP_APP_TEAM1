@@ -1,4 +1,4 @@
-package com.example.witt.domain.model.plan.memo
+package com.example.witt.domain.model.remote.detail_plan.memo
 
 data class MakeMemoModel (
     val status: Boolean,

@@ -1,6 +1,6 @@
-package com.example.witt.data.model.plan.memo
+package com.example.witt.data.model.remote.detail_plan.memo
 
-import com.example.witt.domain.model.plan.memo.MakeMemoModel
+import com.example.witt.domain.model.remote.detail_plan.memo.MakeMemoModel
 
 data class MakeMemoResponse (
     val status: Boolean,

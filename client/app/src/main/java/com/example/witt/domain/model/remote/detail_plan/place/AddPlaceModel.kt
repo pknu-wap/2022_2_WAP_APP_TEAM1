@@ -1,6 +1,6 @@
-package com.example.witt.domain.model.plan.detail_plan
+package com.example.witt.domain.model.remote.detail_plan.place
 
-import com.example.witt.data.model.plan.detail_plan.request.AddPlaceRequest
+import com.example.witt.data.model.remote.detail_plan.place.request.AddPlaceRequest
 
 data class AddPlaceModel (
     val placeId: String,
