@@ -67,28 +67,9 @@ object ApiModule {
 
     @Provides
     @Singleton
-    fun providesFlightSearchService(
+    fun providesUserService(
         retrofit: Retrofit
-    ): FlightSearchService = retrofit.create(FlightSearchService::class.java)
-
-    @Provides
-    @Singleton
-    fun providesDuplicateEmailService(
-        retrofit: Retrofit
-    ): DuplicateEmailService = retrofit.create(DuplicateEmailService::class.java)
-
-    @Provides
-    @Singleton
-    fun providesTokenService(
-        retrofit: Retrofit
-    ): TokenSignInService = retrofit.create(TokenSignInService::class.java)
-
-
-    @Provides
-    @Singleton
-    fun providesProfileUploadService(
-        retrofit: Retrofit
-    ):ProfileUploadService = retrofit.create(ProfileUploadService::class.java)
+    ):UserService = retrofit.create(UserService::class.java)
 
 
     @Provides
@@ -99,38 +80,14 @@ object ApiModule {
 
     @Provides
     @Singleton
-    fun provideSocialSignInService(
-        retrofit: Retrofit
-    ): SocialSignInService = retrofit.create(SocialSignInService::class.java)
-
-    @Provides
-    @Singleton
     fun provideMakePlanService(
         retrofit: Retrofit
     ): PlanService = retrofit.create(PlanService::class.java)
 
     @Provides
     @Singleton
-    fun provideGetPlanListService(
-        retrofit: Retrofit
-    ): GetPlanService = retrofit.create(GetPlanService::class.java)
-
-    @Provides
-    @Singleton
-    fun provideMakeMemoService(
-        retrofit: Retrofit
-    ): PlanMemoService = retrofit.create(PlanMemoService::class.java)
-
-    @Provides
-    @Singleton
     fun provideDetailPlanService(
         retrofit: Retrofit
     ): DetailPlanService = retrofit.create(DetailPlanService::class.java)
-
-    @Provides
-    @Singleton
-    fun provideAddFlightService(
-        retrofit: Retrofit
-    ): AddFlightService = retrofit.create(AddFlightService::class.java)
 
 }
