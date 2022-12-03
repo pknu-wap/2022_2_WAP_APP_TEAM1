@@ -30,6 +30,7 @@
     - SharedPreference
     - DataBinding
 - Retrofit2 & OkHttp3 & Moshi
+- Socket IO
 - Glide
 - Material Components
 - Canhub ImageCropper
