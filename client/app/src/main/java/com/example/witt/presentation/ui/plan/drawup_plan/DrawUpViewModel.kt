@@ -3,9 +3,9 @@ package com.example.witt.presentation.ui.plan.drawup_plan
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.witt.domain.model.plan.adapter.PlanModel
-import com.example.witt.domain.model.plan.PlanStateModel
-import com.example.witt.domain.model.plan.get_plan.PlanDataModel
+import com.example.witt.domain.model.use_case.plan.PlanModel
+import com.example.witt.domain.model.use_case.plan.PlanStateModel
+import com.example.witt.domain.model.remote.plan.get_plan.PlanDataModel
 import com.example.witt.domain.repository.PlanRepository
 import com.example.witt.domain.use_case.plan.ConvertDetailPlanUseCase
 import com.example.witt.presentation.ui.UiEvent
