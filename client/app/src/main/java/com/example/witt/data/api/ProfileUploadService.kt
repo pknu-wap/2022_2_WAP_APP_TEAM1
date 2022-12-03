@@ -9,7 +9,7 @@ import retrofit2.http.*
 interface ProfileUploadService {
 
     @Multipart
-    @POST("/api/user/me")
+    @PATCH("/api/user/me")
     suspend fun uploadProfile(
         @Part profile: MultipartBody.Part,
         @Part("Nickname") Nickname : RequestBody,
