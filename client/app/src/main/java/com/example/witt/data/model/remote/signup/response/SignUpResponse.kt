@@ -1,4 +1,4 @@
-package com.example.witt.data.model.auth.response
+package com.example.witt.data.model.remote.signup.response
 
 data class SignUpResponse (
     val status: Boolean,

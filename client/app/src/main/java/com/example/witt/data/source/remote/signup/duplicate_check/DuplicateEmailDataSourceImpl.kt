@@ -1,8 +1,8 @@
-package com.example.witt.data.source.remote.duplicate_check
+package com.example.witt.data.source.remote.signup.duplicate_check
 
 import com.example.witt.data.api.SignUpService
-import com.example.witt.data.model.user.request.DuplicateEmailRequest
-import com.example.witt.data.model.user.response.DuplicateEmailResponse
+import com.example.witt.data.model.remote.user.request.DuplicateEmailRequest
+import com.example.witt.data.model.remote.user.response.DuplicateEmailResponse
 import com.example.witt.di.IoDispatcher
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext

@@ -1,4 +1,4 @@
-package com.example.witt.data.model.user.request
+package com.example.witt.data.model.remote.user.request
 
 data class DuplicateEmailRequest (
     val Username: String

@@ -1,8 +1,8 @@
 package com.example.witt.data.api
 
-import com.example.witt.data.model.auth.request.SignUpRequest
-import com.example.witt.data.model.auth.response.SignUpResponse
-import com.example.witt.data.model.user.response.DuplicateEmailResponse
+import com.example.witt.data.model.remote.signup.request.SignUpRequest
+import com.example.witt.data.model.remote.signup.response.SignUpResponse
+import com.example.witt.data.model.remote.user.response.DuplicateEmailResponse
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
