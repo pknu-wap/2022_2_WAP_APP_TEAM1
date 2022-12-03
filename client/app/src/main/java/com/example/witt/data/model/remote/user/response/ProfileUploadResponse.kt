@@ -1,4 +1,4 @@
-package com.example.witt.data.model.profile.response
+package com.example.witt.data.model.remote.user.response
 
 data class ProfileUploadResponse (
     val status: Boolean,

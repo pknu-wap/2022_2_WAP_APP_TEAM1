@@ -1,7 +1,7 @@
 package com.example.witt.data.api
 
-import com.example.witt.data.model.profile.response.ProfileUploadResponse
-import com.example.witt.data.model.user.response.GetUserInfoResponse
+import com.example.witt.data.model.remote.user.response.ProfileUploadResponse
+import com.example.witt.data.model.remote.user.response.GetUserInfoResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.http.*

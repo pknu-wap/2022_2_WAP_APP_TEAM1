@@ -1,4 +1,4 @@
-package com.example.witt.data.model.profile.request
+package com.example.witt.data.model.remote.user.request
 
 import java.io.File
 

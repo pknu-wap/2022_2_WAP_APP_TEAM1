@@ -1,4 +1,4 @@
-package com.example.witt.domain.model.user
+package com.example.witt.domain.model.remote.user
 
 data class UserProfileModel(
     val userName: String,

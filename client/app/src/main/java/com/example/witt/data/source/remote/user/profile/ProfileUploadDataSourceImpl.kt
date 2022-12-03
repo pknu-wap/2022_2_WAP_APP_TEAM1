@@ -1,8 +1,8 @@
-package com.example.witt.data.source.remote.profile
+package com.example.witt.data.source.remote.user.profile
 
 import com.example.witt.data.api.UserService
-import com.example.witt.data.model.profile.request.ProfileUploadRequest
-import com.example.witt.data.model.profile.response.ProfileUploadResponse
+import com.example.witt.data.model.remote.user.request.ProfileUploadRequest
+import com.example.witt.data.model.remote.user.response.ProfileUploadResponse
 import com.example.witt.di.IoDispatcher
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext

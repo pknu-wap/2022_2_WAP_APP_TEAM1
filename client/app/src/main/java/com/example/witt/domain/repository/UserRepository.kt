@@ -1,9 +1,9 @@
 package com.example.witt.domain.repository
 
-import com.example.witt.domain.model.profile.remote.ProfileUploadModel
-import com.example.witt.domain.model.user.DuplicateEmailModel
-import com.example.witt.domain.model.user.GetUserInfoModel
-import com.example.witt.domain.model.user.UserProfileModel
+import com.example.witt.domain.model.remote.user.ProfileUploadModel
+import com.example.witt.domain.model.remote.signup.DuplicateEmailModel
+import com.example.witt.domain.model.remote.user.GetUserInfoModel
+import com.example.witt.domain.model.remote.user.UserProfileModel
 import kotlinx.coroutines.flow.Flow
 import java.io.File
 
