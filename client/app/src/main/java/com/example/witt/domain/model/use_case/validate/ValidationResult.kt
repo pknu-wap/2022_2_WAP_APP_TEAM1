@@ -1,4 +1,4 @@
-package com.example.witt.domain.model.validate
+package com.example.witt.domain.model.use_case.validate
 
 data class ValidationResult (
     val successful : Boolean,
