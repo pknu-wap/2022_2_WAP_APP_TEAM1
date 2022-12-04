@@ -14,22 +14,22 @@ import javax.inject.Inject
 class ProfileDataSourceImpl @Inject constructor(
     private val profileDao: ProfileDao,
     @IoDispatcher private val coroutineDispatcher: CoroutineDispatcher
-): ProfileDataSource{
+) : ProfileDataSource {
 
     override fun getProfile(): Flow<Result<UserProfile>> =
-        profileDao.getProfile().map{ profile ->
+        profileDao.getProfile().map { profile ->
             Result.success(profile)
         }.catch { e ->
             emit(Result.failure(e))
         }.flowOn(coroutineDispatcher)
 
-    override suspend fun setProfile(userProfile: UserProfile) : Result<Unit> =
-        withContext(coroutineDispatcher){
-         try {
-            Result.success(profileDao.setProfile(userProfile))
-        }catch(e: Exception){
-            e.printStackTrace()
-            Result.failure(e)
+    override suspend fun setProfile(userProfile: UserProfile): Result<Unit> =
+        withContext(coroutineDispatcher) {
+            try {
+                Result.success(profileDao.setProfile(userProfile))
+            } catch (e: Exception) {
+                e.printStackTrace()
+                Result.failure(e)
+            }
         }
-    }
 }

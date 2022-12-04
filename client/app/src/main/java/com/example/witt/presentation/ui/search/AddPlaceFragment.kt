@@ -24,7 +24,7 @@ import net.daum.mf.map.api.MapPoint
 import net.daum.mf.map.api.MapView
 
 @AndroidEntryPoint
-class AddPlaceFragment: BaseFragment<FragmentAddPlaceBinding>(R.layout.fragment_add_place){
+class AddPlaceFragment : BaseFragment<FragmentAddPlaceBinding>(R.layout.fragment_add_place) {
 
     private val args: AddPlaceFragmentArgs by navArgs()
     private val viewModel: AddPlaceViewModel by viewModels()
@@ -38,15 +38,15 @@ class AddPlaceFragment: BaseFragment<FragmentAddPlaceBinding>(R.layout.fragment_
         initView()
     }
 
-    private fun observeData(){
-        planViewModel.planState.observe(viewLifecycleOwner){
+    private fun observeData() {
+        planViewModel.planState.observe(viewLifecycleOwner) {
             viewModel.setInfo(it.TripId, args.day)
         }
 
         viewModel.addPlaceEvent.flowWithLifecycle(viewLifecycleOwner.lifecycle)
             .onEach {
-                when(it){
-                    is UiEvent.Success ->{
+                when (it) {
+                    is UiEvent.Success -> {
                         removeMap()
                         val direction = AddPlaceFragmentDirections
                             .actionAddPlaceFragmentToDrawUpPlanFragment()
@@ -57,10 +57,9 @@ class AddPlaceFragment: BaseFragment<FragmentAddPlaceBinding>(R.layout.fragment_
                     }
                 }
             }.launchIn(viewLifecycleOwner.lifecycleScope)
-
     }
 
-    private fun initView(){
+    private fun initView() {
         binding.addPlaceButton.setOnClickListener {
             viewModel.addPlace(args.place.toAddPlaceRequest())
         }
@@ -71,16 +70,16 @@ class AddPlaceFragment: BaseFragment<FragmentAddPlaceBinding>(R.layout.fragment_
         val xPosition = place.x.toDouble()
         val yPosition = place.y.toDouble()
 
-        //initMapView
+        // initMapView
         binding.mapView.addView(mapView)
-        with(mapView){
+        with(mapView) {
             setMapCenterPoint(MapPoint.mapPointWithGeoCoord(yPosition, xPosition), true)
             setZoomLevel(1, true)
         }
 
-        //init Marker
+        // init Marker
         val marker = MapPOIItem()
-        with(marker){
+        with(marker) {
             itemName = place.place_name
             tag = 0
             mapPoint = MapPoint.mapPointWithGeoCoord(yPosition, xPosition)
@@ -90,8 +89,7 @@ class AddPlaceFragment: BaseFragment<FragmentAddPlaceBinding>(R.layout.fragment_
         mapView.addPOIItem(marker)
     }
 
-    private fun removeMap(){
+    private fun removeMap() {
         binding.mapView.removeView(mapView)
     }
-
 }

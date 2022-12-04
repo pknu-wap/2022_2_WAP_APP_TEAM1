@@ -3,9 +3,9 @@ package com.example.witt.presentation.ui.plan.drawup_plan
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.witt.domain.model.remote.plan.get_plan.PlanDataModel
 import com.example.witt.domain.model.use_case.plan.PlanModel
 import com.example.witt.domain.model.use_case.plan.PlanStateModel
-import com.example.witt.domain.model.remote.plan.get_plan.PlanDataModel
 import com.example.witt.domain.repository.PlanRepository
 import com.example.witt.domain.use_case.plan.ConvertDetailPlanUseCase
 import com.example.witt.presentation.ui.UiEvent
@@ -24,41 +24,43 @@ class DrawUpViewModel @Inject constructor(
     private val convertDetailPlanUseCase: ConvertDetailPlanUseCase
 ) : ViewModel() {
 
-    private val planStateData : MutableLiveData<PlanStateModel> = MutableLiveData()
+    private val planStateData: MutableLiveData<PlanStateModel> = MutableLiveData()
 
     private val _drawUpPlanEvent = MutableSharedFlow<UiEvent<Unit>>()
-    val drawUpPlanEvent : SharedFlow<UiEvent<Unit>> get() = _drawUpPlanEvent
+    val drawUpPlanEvent: SharedFlow<UiEvent<Unit>> get() = _drawUpPlanEvent
 
-    private val _drawUpPlanData : MutableStateFlow<UiState<List<PlanModel>>> = MutableStateFlow(UiState.Init)
-    val drawUpPlanData : StateFlow<UiState<List<PlanModel>>> get() = _drawUpPlanData
+    private val _drawUpPlanData: MutableStateFlow<UiState<List<PlanModel>>> = MutableStateFlow(UiState.Init)
+    val drawUpPlanData: StateFlow<UiState<List<PlanModel>>> get() = _drawUpPlanData
 
     private val _planData: MutableStateFlow<UiState<PlanDataModel>> = MutableStateFlow(UiState.Init)
-    val planData : StateFlow<UiState<PlanDataModel>> get() = _planData
+    val planData: StateFlow<UiState<PlanDataModel>> get() = _planData
 
-    fun getDetailPlan(plan: PlanStateModel){
+    fun getDetailPlan(plan: PlanStateModel) {
         viewModelScope.launch {
             planStateData.value = plan
             planRepository.getPlan(plan.TripId).mapCatching { response ->
-                if(response.status){
-                    _drawUpPlanData.emit(UiState.Success(
-                        convertDetailPlanUseCase(plan.StartDate, plan.EndDate, response.data.plans)
-                    ))
+                if (response.status) {
+                    _drawUpPlanData.emit(
+                        UiState.Success(
+                            convertDetailPlanUseCase(plan.StartDate, plan.EndDate, response.data.plans)
+                        )
+                    )
                     _planData.emit(UiState.Success(response.data))
-                }else{
+                } else {
                     _drawUpPlanEvent.emit(UiEvent.Failure(response.reason))
                 }
-            }.onFailure { e->
+            }.onFailure { e ->
                 e.printStackTrace()
             }
         }
     }
 
-    fun outPlan(){
+    fun outPlan() {
         viewModelScope.launch {
             planRepository.outPlan(requireNotNull(planStateData.value?.TripId)).mapCatching {
-                if(it.status){
+                if (it.status) {
                     _drawUpPlanEvent.emit(UiEvent.Success(Unit))
-                }else{
+                } else {
                     _drawUpPlanEvent.emit(UiEvent.Failure("일정에 참가하지 못하였습니다."))
                 }
             }.onFailure {
@@ -67,19 +69,21 @@ class DrawUpViewModel @Inject constructor(
         }
     }
 
-    //planState가 mapping 된 후 부터 사용 가능
-    fun refreshPlan(){
+    // planState가 mapping 된 후 부터 사용 가능
+    fun refreshPlan() {
         viewModelScope.launch {
             planRepository.getPlan(requireNotNull(planStateData.value?.TripId)).mapCatching { response ->
-                if(response.status){
-                    _drawUpPlanData.emit(UiState.Success(
-                        convertDetailPlanUseCase(response.data.startDate, response.data.endDate, response.data.plans)
-                    ))
+                if (response.status) {
+                    _drawUpPlanData.emit(
+                        UiState.Success(
+                            convertDetailPlanUseCase(response.data.startDate, response.data.endDate, response.data.plans)
+                        )
+                    )
                     _planData.emit(UiState.Success(response.data))
-                }else{
+                } else {
                     _drawUpPlanEvent.emit(UiEvent.Failure(response.reason))
                 }
-            }.onFailure { e->
+            }.onFailure { e ->
                 e.printStackTrace()
             }
         }

@@ -1,6 +1,6 @@
 package com.example.witt.domain.model.remote.plan.get_plan
 
-data class GetPlanModel (
+data class GetPlanModel(
     val status: Boolean,
     val reason: String,
     val data: PlanDataModel,
@@ -18,12 +18,12 @@ data class PlanDataModel(
 )
 
 data class PlanParticipantModel(
-    val userId : String,
-    val nickName : String,
-    val profileImage : String
+    val userId: String,
+    val nickName: String,
+    val profileImage: String
 )
 
-data class DetailPlanModel (
+data class DetailPlanModel(
     val day: Int,
     val memo: PlanMemoModel?,
     val orderIndex: Int,
@@ -31,13 +31,13 @@ data class DetailPlanModel (
     val planId: Int,
     val type: Int,
     val flight: PlanFlightModel?
-    )
+)
 
-data class PlanMemoModel (
-    val content : String,
+data class PlanMemoModel(
+    val content: String,
     val created_At: String,
     val updated_At: String
-    )
+)
 
 data class PlanPlaceModel(
     val category: String,

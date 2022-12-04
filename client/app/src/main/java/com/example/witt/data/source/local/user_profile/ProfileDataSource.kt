@@ -7,5 +7,5 @@ interface ProfileDataSource {
 
     fun getProfile(): Flow<Result<UserProfile>>
 
-    suspend fun setProfile(userProfile: UserProfile) : Result<Unit>
+    suspend fun setProfile(userProfile: UserProfile): Result<Unit>
 }

@@ -11,9 +11,9 @@ import javax.inject.Inject
 class MakePlanDataSourceImpl @Inject constructor(
     private val planService: PlanService,
     @IoDispatcher private val coroutineDispatcher: CoroutineDispatcher
-): MakePlanDataSource {
+) : MakePlanDataSource {
     override suspend fun makePlan(makePlanRequest: MakePlanRequest): Result<MakePlanResponse> =
-        withContext(coroutineDispatcher){
+        withContext(coroutineDispatcher) {
             runCatching {
                 planService.makePlan(
                     request = makePlanRequest

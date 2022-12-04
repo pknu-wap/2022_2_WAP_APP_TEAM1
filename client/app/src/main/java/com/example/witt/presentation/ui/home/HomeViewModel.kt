@@ -3,9 +3,9 @@ package com.example.witt.presentation.ui.home
 import android.content.SharedPreferences
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.witt.domain.model.use_case.plan.PlanStateModel
 import com.example.witt.domain.model.remote.plan.get_plan.GetPlanListModel
 import com.example.witt.domain.model.remote.plan.get_plan.toPlanStateModel
+import com.example.witt.domain.model.use_case.plan.PlanStateModel
 import com.example.witt.domain.repository.PlanRepository
 import com.example.witt.presentation.ui.UiEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -19,8 +19,8 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val planRepository: PlanRepository,
-    private val prefs : SharedPreferences
-): ViewModel() {
+    private val prefs: SharedPreferences
+) : ViewModel() {
 
     private val _planList = MutableStateFlow(GetPlanListModel(false, "", listOf()))
     val planList: StateFlow<GetPlanListModel> get() = _planList
@@ -28,14 +28,14 @@ class HomeViewModel @Inject constructor(
     private val _joinPlanUiEvent = MutableSharedFlow<UiEvent<PlanStateModel>>()
     val joinPlanUiEvent: SharedFlow<UiEvent<PlanStateModel>> get() = _joinPlanUiEvent
 
-    private val _homeEvent : MutableSharedFlow<UiEvent<Unit>> = MutableSharedFlow()
-    val homeEvent : SharedFlow<UiEvent<Unit>> get() = _homeEvent
+    private val _homeEvent: MutableSharedFlow<UiEvent<Unit>> = MutableSharedFlow()
+    val homeEvent: SharedFlow<UiEvent<Unit>> get() = _homeEvent
 
-    init{
+    init {
         getPlanList()
     }
 
-    fun getPlanList(){
+    fun getPlanList() {
         viewModelScope.launch {
             planRepository.getPlanList().mapCatching {
                 _planList.emit(it)
@@ -45,12 +45,12 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun removePlan(tripId: Int){
+    fun removePlan(tripId: Int) {
         viewModelScope.launch {
             planRepository.outPlan(tripId).mapCatching { response ->
-                if(response.status){
+                if (response.status) {
                     getPlanList()
-                }else{
+                } else {
                     _homeEvent.emit(UiEvent.Failure(response.reason))
                 }
             }.onFailure {
@@ -59,12 +59,12 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun joinPlan(tripId: Int){
+    fun joinPlan(tripId: Int) {
         viewModelScope.launch {
             planRepository.joinPlan(tripId).mapCatching {
-                if(it.status){
+                if (it.status) {
                     getJoinPlan()
-                }else{
+                } else {
                     _joinPlanUiEvent.emit(UiEvent.Failure("일정에 참가하지 못하였습니다."))
                 }
             }.onFailure {
@@ -73,13 +73,13 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private fun getJoinPlan(){
+    private fun getJoinPlan() {
         viewModelScope.launch {
             planRepository.getPlanList().mapCatching { response ->
-                if(response.status){
+                if (response.status) {
                     rejectPlan()
                     _joinPlanUiEvent.emit(UiEvent.Success(response.result.last().toPlanStateModel()))
-                }else{
+                } else {
                     _joinPlanUiEvent.emit(UiEvent.Failure(response.reason))
                 }
             }.onFailure {
@@ -88,7 +88,7 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun rejectPlan(){
+    fun rejectPlan() {
         viewModelScope.launch {
             prefs.edit()
                 .remove("tripId")

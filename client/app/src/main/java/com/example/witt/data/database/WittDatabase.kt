@@ -9,8 +9,7 @@ import com.example.witt.data.model.local.UserProfile
     version = 1,
     exportSchema = false
 )
-abstract class WittDatabase : RoomDatabase(){
+abstract class WittDatabase : RoomDatabase() {
 
-    abstract val profileDao : ProfileDao
-
+    abstract val profileDao: ProfileDao
 }

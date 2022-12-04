@@ -18,10 +18,10 @@ import javax.inject.Inject
 @HiltViewModel
 class MakePlanViewModel @Inject constructor(
     private val makePlanUseCase: MakePlanUseCase,
-): ViewModel() {
+) : ViewModel() {
 
     private val _planDestination: MutableStateFlow<String> = MutableStateFlow("완료")
-    val planDestination : StateFlow<String> get() = _planDestination
+    val planDestination: StateFlow<String> get() = _planDestination
 
     private val _makePlanEvent = MutableSharedFlow<UiEvent<PlanStateModel>>()
     val makePlanEvent: SharedFlow<UiEvent<PlanStateModel>> get() = _makePlanEvent
@@ -32,7 +32,7 @@ class MakePlanViewModel @Inject constructor(
         _planDestination.value = destination
     }
 
-    fun submitPlan(startDate: String, endDate: String){
+    fun submitPlan(startDate: String, endDate: String) {
         viewModelScope.launch {
             makePlanUseCase(
                 MakePlanModel(
@@ -42,15 +42,19 @@ class MakePlanViewModel @Inject constructor(
                     Region = _planDestination.value
                 )
             ).mapCatching { response ->
-                if(response.status){
-                    _makePlanEvent.emit(UiEvent.Success(PlanStateModel(
-                        TripId = response.TripId,
-                        StartDate = startDate,
-                        EndDate = endDate,
-                        Name = requireNotNull(inputPlanName.value),
-                        Region = _planDestination.value
-                    )))
-                }else{
+                if (response.status) {
+                    _makePlanEvent.emit(
+                        UiEvent.Success(
+                            PlanStateModel(
+                                TripId = response.TripId,
+                                StartDate = startDate,
+                                EndDate = endDate,
+                                Name = requireNotNull(inputPlanName.value),
+                                Region = _planDestination.value
+                            )
+                        )
+                    )
+                } else {
                     _makePlanEvent.emit(UiEvent.Failure(response.reason))
                 }
             }

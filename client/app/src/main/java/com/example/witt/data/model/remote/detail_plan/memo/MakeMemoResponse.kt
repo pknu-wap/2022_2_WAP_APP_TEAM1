@@ -2,7 +2,7 @@ package com.example.witt.data.model.remote.detail_plan.memo
 
 import com.example.witt.domain.model.remote.detail_plan.memo.MakeMemoModel
 
-data class MakeMemoResponse (
+data class MakeMemoResponse(
     val status: Boolean,
     val reason: String
 )

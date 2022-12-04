@@ -5,13 +5,13 @@ import com.example.witt.domain.model.use_case.validate.ValidationResult
 
 class ValidateEmail {
     fun execute(email: String): ValidationResult {
-        if(email.isBlank()){
+        if (email.isBlank()) {
             return ValidationResult(
                 successful = false,
                 errorMessage = "이메일을 입력해주세요."
             )
         }
-        if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             return ValidationResult(
                 successful = false,
                 errorMessage = "이메일 형식을 확인해주세요."

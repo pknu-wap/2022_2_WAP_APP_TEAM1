@@ -6,10 +6,9 @@ import com.example.witt.R
 import com.example.witt.databinding.FragmentRankBinding
 import com.example.witt.presentation.base.BaseFragment
 
-class RankFragment : BaseFragment<FragmentRankBinding>(R.layout.fragment_rank){
+class RankFragment : BaseFragment<FragmentRankBinding>(R.layout.fragment_rank) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
     }
 }

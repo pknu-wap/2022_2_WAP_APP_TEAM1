@@ -5,9 +5,9 @@ import com.example.witt.BuildConfig
 import com.example.witt.data.api.DetailPlanService
 import com.example.witt.data.api.interceptor.AuthInterceptor
 import com.example.witt.data.model.remote.detail_plan.search.flight.toAddFlightResponse
-import com.example.witt.domain.model.remote.detail_plan.search.flight.AddFlightRequest
 import com.example.witt.domain.model.remote.detail_plan.search.SearchFlightModel
 import com.example.witt.domain.model.remote.detail_plan.search.SearchFlightRequest
+import com.example.witt.domain.model.remote.detail_plan.search.flight.AddFlightRequestModel
 import com.example.witt.domain.repository.FlightRepository
 import com.gun0912.tedpermission.provider.TedPermissionProvider
 import kotlinx.coroutines.Dispatchers
@@ -17,8 +17,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
-
-class FlightRepositoryImpl:FlightRepository {
+class FlightRepositoryImpl : FlightRepository {
 
     override suspend fun findFlight(searchFlightRequest: SearchFlightRequest): Result<SearchFlightModel> =
         withContext(Dispatchers.IO) {
@@ -29,7 +28,7 @@ class FlightRepositoryImpl:FlightRepository {
                     .addConverterFactory(MoshiConverterFactory.create())
                     .build()
                 val api = retrofit.create(DetailPlanService::class.java)
-                val result = api.searchFlight(searchFlightRequest.flightDate,searchFlightRequest.airlineCode,searchFlightRequest.flightNum)
+                val result = api.searchFlight(searchFlightRequest.flightDate, searchFlightRequest.airlineCode, searchFlightRequest.flightNum)
                 return@withContext Result.success(result.toAddFlightResponse())
             } catch (e: Exception) {
                 e.stackTrace
@@ -37,9 +36,13 @@ class FlightRepositoryImpl:FlightRepository {
             }
         }
 
-    private val authInterceptor = AuthInterceptor(TedPermissionProvider.context.getSharedPreferences("pref",
-        Context.MODE_PRIVATE))
-    override suspend fun addFlight(tripId:Int, addFlightRequest: AddFlightRequest): Result<Boolean> =
+    private val authInterceptor = AuthInterceptor(
+        TedPermissionProvider.context.getSharedPreferences(
+            "pref",
+            Context.MODE_PRIVATE
+        )
+    )
+    override suspend fun addFlight(tripId: Int, addFlightRequest: AddFlightRequestModel): Result<Boolean> =
         withContext(Dispatchers.IO) {
             try {
                 val okHttpClient = OkHttpClient.Builder()

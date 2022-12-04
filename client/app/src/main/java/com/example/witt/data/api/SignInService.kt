@@ -17,12 +17,10 @@ interface SignInService {
     ): SignInResponse
 
     @GET("/api/user/me")
-    suspend fun tokenSignIn(
-    ): TokenResponse
+    suspend fun tokenSignIn(): TokenResponse
 
     @POST("/api/user/me")
     suspend fun signIn(
         @Body request: SocialSignInRequest
     ): SocialSignInResponse
-
 }

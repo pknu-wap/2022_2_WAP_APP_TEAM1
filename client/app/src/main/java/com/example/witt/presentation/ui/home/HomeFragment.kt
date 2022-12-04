@@ -41,7 +41,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
     }
 
     private val viewModel: HomeViewModel by viewModels()
-    private val planViewModel : PlanViewModel by activityViewModels()
+    private val planViewModel: PlanViewModel by activityViewModels()
 
     private lateinit var homePlanAdapter: HomePlanAdapter
 
@@ -60,7 +60,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
         viewModel.getPlanList()
     }
 
-    private fun observeData(){
+    private fun observeData() {
 
         viewModel.planList.flowWithLifecycle(viewLifecycleOwner.lifecycle)
             .onEach {
@@ -69,39 +69,38 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
 
         viewModel.homeEvent.flowWithLifecycle(viewLifecycleOwner.lifecycle)
             .onEach {
-                when(it){
-                    is UiEvent.Success ->{ }
-                    is UiEvent.Failure ->{
+                when (it) {
+                    is UiEvent.Success -> { }
+                    is UiEvent.Failure -> {
                         Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
                     }
                 }
             }.launchIn(viewLifecycleOwner.lifecycleScope)
 
-        //joinPlan
+        // joinPlan
         viewModel.joinPlanUiEvent.flowWithLifecycle(viewLifecycleOwner.lifecycle)
             .onEach {
-                when(it){
-                    //joinPlanResult
-                    is UiEvent.Success ->{
+                when (it) {
+                    // joinPlanResult
+                    is UiEvent.Success -> {
                         planViewModel.setPlanState(it.data)
                         val direction =
                             HomeFragmentDirections.actionHomeFragmentToDrawUpPlanFragment()
                         findNavController().navigate(direction)
                     }
-                    is UiEvent.Failure ->{
+                    is UiEvent.Failure -> {
                         Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
                     }
                 }
             }.launchIn(viewLifecycleOwner.lifecycleScope)
-
     }
 
-    private fun initAdapter(){
+    private fun initAdapter() {
         homePlanAdapter = HomePlanAdapter(
             onPlanCardClick = {
                 planViewModel.setPlanState(it)
                 val direction =
-                HomeFragmentDirections.actionHomeFragmentToDrawUpPlanFragment()
+                    HomeFragmentDirections.actionHomeFragmentToDrawUpPlanFragment()
                 findNavController().navigate(direction)
             },
             // confirm dialog 확인 후 삭제
@@ -119,16 +118,16 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
         binding.homePlanRecyclerView.adapter = homePlanAdapter
     }
 
-    private fun initButton(){
+    private fun initButton() {
         binding.goToMakePlanButton.setOnClickListener {
             dateRangePicker.show(requireActivity().supportFragmentManager, "datePicker")
         }
     }
 
     private fun initDateRangePicker() {
-        //백스택 후 재사용시 navigate 오류 발생
+        // 백스택 후 재사용시 navigate 오류 발생
         dateRangePicker.addOnPositiveButtonClickListener {
-            if(findNavController().currentDestination?.id == R.id.homeFragment) {
+            if (findNavController().currentDestination?.id == R.id.homeFragment) {
                 val direction =
                     HomeFragmentDirections.actionHomeFragmentToMakePlanFragment(it.first, it.second)
                 findNavController().navigate(direction)
@@ -136,7 +135,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
         }
     }
 
-    private fun checkJoinPlan(){
+    private fun checkJoinPlan() {
         val prefs = requireActivity().getSharedPreferences("prefs", MODE_PRIVATE)
         val tripId = prefs.getString("tripId", null) ?: return
         val tripName = prefs.getString("tripName", null) ?: return
@@ -144,7 +143,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
         showJoinPlanDialog(tripId, tripName, tripDate)
     }
 
-    private fun showJoinPlanDialog(tripId: String, tripName: String, tripDate: String){
+    private fun showJoinPlanDialog(tripId: String, tripName: String, tripDate: String) {
         JoinPlanDialog(
             requireActivity(), tripName, tripDate,
             onClickCancel = {
@@ -155,5 +154,4 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
             }
         ).show()
     }
-
 }

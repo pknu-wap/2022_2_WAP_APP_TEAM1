@@ -1,19 +1,19 @@
 package com.example.witt.data.repository
 
-import com.example.witt.data.model.remote.user.request.DuplicateEmailRequest
 import com.example.witt.data.mapper.toDuplicateEmailModel
 import com.example.witt.data.mapper.toProfileUploadModel
 import com.example.witt.data.mapper.toUserProfileModel
 import com.example.witt.data.model.local.UserProfile
+import com.example.witt.data.model.remote.user.request.DuplicateEmailRequest
 import com.example.witt.data.model.remote.user.request.ProfileUploadRequest
 import com.example.witt.data.model.remote.user.response.toGetUserInfoModel
 import com.example.witt.data.source.local.user_profile.ProfileDataSource
 import com.example.witt.data.source.remote.signup.duplicate_check.DuplicateEmailDataSource
-import com.example.witt.data.source.remote.user.profile.ProfileUploadDataSource
 import com.example.witt.data.source.remote.user.GetUserInfoDataSource
-import com.example.witt.domain.model.remote.user.ProfileUploadModel
+import com.example.witt.data.source.remote.user.profile.ProfileUploadDataSource
 import com.example.witt.domain.model.remote.signup.DuplicateEmailModel
 import com.example.witt.domain.model.remote.user.GetUserInfoModel
+import com.example.witt.domain.model.remote.user.ProfileUploadModel
 import com.example.witt.domain.model.remote.user.UserProfileModel
 import com.example.witt.domain.repository.UserRepository
 import kotlinx.coroutines.flow.Flow
@@ -26,7 +26,7 @@ class UserRepositoryImpl @Inject constructor(
     private val profileDataSource: ProfileDataSource,
     private val profileUploadDataSource: ProfileUploadDataSource,
     private val getUserInfoDataSource: GetUserInfoDataSource
-):UserRepository {
+) : UserRepository {
     override suspend fun duplicateEmail(email: String): Result<DuplicateEmailModel> {
         return duplicateEmailDataSource.duplicateEmailCheck(DuplicateEmailRequest(email))
             .mapCatching { response ->

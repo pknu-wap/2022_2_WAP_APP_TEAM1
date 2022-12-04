@@ -8,21 +8,20 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-
-class SignUpDataSourceImpl @Inject constructor (
+class SignUpDataSourceImpl @Inject constructor(
     private val signUpService: SignUpService,
     @IoDispatcher private val coroutineDispatcher: CoroutineDispatcher
-): SignUpDataSource{
+) : SignUpDataSource {
     override suspend fun signUp(signUpRequest: SignUpRequest): Result<SignUpResponse> =
-        withContext(coroutineDispatcher){
-            try{
+        withContext(coroutineDispatcher) {
+            try {
                 val response = signUpService.signUp(
                     signUpRequest
                 )
                 Result.success(response)
-            }catch(e: Exception){
+            } catch (e: Exception) {
                 e.printStackTrace()
                 Result.failure(e)
             }
-    }
+        }
 }

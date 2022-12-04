@@ -15,25 +15,25 @@ import javax.inject.Inject
 class ProfileUploadDataSourceImpl @Inject constructor(
     private val userService: UserService,
     @IoDispatcher private val coroutineDispatcher: CoroutineDispatcher
-) : ProfileUploadDataSource{
+) : ProfileUploadDataSource {
     override suspend fun uploadProfile(profileUploadRequest: ProfileUploadRequest): Result<ProfileUploadResponse> =
-        withContext(coroutineDispatcher){
-             try{
+        withContext(coroutineDispatcher) {
+            try {
                 val response = userService
                     .uploadProfile(
-                    profile = MultipartBody.Part
-                        .createFormData(
-                            "Image",
-                            profileUploadRequest.profile.name,
-                            profileUploadRequest.profile.asRequestBody()
-                        ),
-                    Nickname =  profileUploadRequest.Nickname.toRequestBody("text/plain".toMediaTypeOrNull()),
-                    PhoneNum =  profileUploadRequest.PhoneNum.toRequestBody("text/plain".toMediaTypeOrNull())
-                )
+                        profile = MultipartBody.Part
+                            .createFormData(
+                                "Image",
+                                profileUploadRequest.profile.name,
+                                profileUploadRequest.profile.asRequestBody()
+                            ),
+                        Nickname = profileUploadRequest.Nickname.toRequestBody("text/plain".toMediaTypeOrNull()),
+                        PhoneNum = profileUploadRequest.PhoneNum.toRequestBody("text/plain".toMediaTypeOrNull())
+                    )
                 Result.success(response)
-            }catch(e: Exception){
+            } catch (e: Exception) {
                 e.printStackTrace()
                 Result.failure(e)
             }
-    }
+        }
 }

@@ -4,7 +4,11 @@ import android.app.Application
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
 import com.example.witt.BuildConfig
-import com.example.witt.data.api.*
+import com.example.witt.data.api.DetailPlanService
+import com.example.witt.data.api.PlanService
+import com.example.witt.data.api.SignInService
+import com.example.witt.data.api.SignUpService
+import com.example.witt.data.api.UserService
 import com.example.witt.data.api.interceptor.AuthInterceptor
 import dagger.Module
 import dagger.Provides
@@ -56,8 +60,8 @@ object ApiModule {
     @Singleton
     fun provideSignInService(
         retrofit: Retrofit
-    ): SignInService
-        = retrofit.create(SignInService::class.java)
+    ): SignInService =
+        retrofit.create(SignInService::class.java)
 
     @Provides
     @Singleton
@@ -69,8 +73,7 @@ object ApiModule {
     @Singleton
     fun providesUserService(
         retrofit: Retrofit
-    ):UserService = retrofit.create(UserService::class.java)
-
+    ): UserService = retrofit.create(UserService::class.java)
 
     @Provides
     @Singleton
@@ -89,5 +92,4 @@ object ApiModule {
     fun provideDetailPlanService(
         retrofit: Retrofit
     ): DetailPlanService = retrofit.create(DetailPlanService::class.java)
-
 }

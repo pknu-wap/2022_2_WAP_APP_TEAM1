@@ -10,9 +10,9 @@ import com.example.witt.databinding.ItemChatReceiverBinding
 import com.example.witt.databinding.ItemChatSenderBinding
 import com.example.witt.utils.convertIsoToTime
 
-class ChatAdapter : ListAdapter<ChatResponse, RecyclerView.ViewHolder>(diffutil){
+class ChatAdapter : ListAdapter<ChatResponse, RecyclerView.ViewHolder>(diffutil) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder = when(viewType){
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder = when (viewType) {
         SEND -> {
             val binding = ItemChatSenderBinding.inflate(LayoutInflater.from(parent.context), parent, false)
             SentMessageHolder(binding)
@@ -24,7 +24,7 @@ class ChatAdapter : ListAdapter<ChatResponse, RecyclerView.ViewHolder>(diffutil)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        when(holder){
+        when (holder) {
             is ChatAdapter.SentMessageHolder -> {
                 holder.bind(currentList[position])
             }
@@ -35,16 +35,16 @@ class ChatAdapter : ListAdapter<ChatResponse, RecyclerView.ViewHolder>(diffutil)
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if(currentList[position].isWrittenByMe){
+        return if (currentList[position].isWrittenByMe) {
             SEND
-        }else{
+        } else {
             RECEIVE
         }
     }
 
-    inner class ReceivedMessageHolder(private val binding: ItemChatReceiverBinding) : RecyclerView.ViewHolder(binding.root){
-        fun bind(item: ChatResponse){
-            with(binding){
+    inner class ReceivedMessageHolder(private val binding: ItemChatReceiverBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(item: ChatResponse) {
+            with(binding) {
                 recevierTimeStampTextView.text = item.createdAt.convertIsoToTime()
                 recevierMessageTextView.text = item.Content
                 receiverNameTextView.text = item.Nickname
@@ -52,19 +52,19 @@ class ChatAdapter : ListAdapter<ChatResponse, RecyclerView.ViewHolder>(diffutil)
         }
     }
 
-    inner class SentMessageHolder(private val binding: ItemChatSenderBinding): RecyclerView.ViewHolder(binding.root){
-        fun bind(item: ChatResponse){
-            with(binding){
+    inner class SentMessageHolder(private val binding: ItemChatSenderBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(item: ChatResponse) {
+            with(binding) {
                 senderTimeStampTextView.text = item.createdAt.convertIsoToTime()
                 senderMessageTextView.text = item.Content
             }
         }
     }
 
-    companion object{
+    companion object {
         const val RECEIVE = 0
         const val SEND = 1
-        val diffutil = object : DiffUtil.ItemCallback<ChatResponse>(){
+        val diffutil = object : DiffUtil.ItemCallback<ChatResponse>() {
             override fun areItemsTheSame(oldItem: ChatResponse, newItem: ChatResponse): Boolean {
                 return oldItem == newItem
             }

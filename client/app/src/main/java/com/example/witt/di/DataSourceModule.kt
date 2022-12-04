@@ -2,8 +2,6 @@ package com.example.witt.di
 
 import com.example.witt.data.source.local.user_profile.ProfileDataSource
 import com.example.witt.data.source.local.user_profile.ProfileDataSourceImpl
-import com.example.witt.data.source.remote.signup.duplicate_check.DuplicateEmailDataSource
-import com.example.witt.data.source.remote.signup.duplicate_check.DuplicateEmailDataSourceImpl
 import com.example.witt.data.source.remote.detail_plan.memo.EditMemoDataSource
 import com.example.witt.data.source.remote.detail_plan.memo.EditMemoDataSourceImpl
 import com.example.witt.data.source.remote.detail_plan.memo.MakeMemoDataSource
@@ -14,24 +12,26 @@ import com.example.witt.data.source.remote.plan.get_plan.GetPlanDataSource
 import com.example.witt.data.source.remote.plan.get_plan.GetPlanDataSourceImpl
 import com.example.witt.data.source.remote.plan.get_plan.GetPlanListDataSource
 import com.example.witt.data.source.remote.plan.get_plan.GetPlanListDataSourceImpl
-import com.example.witt.data.source.remote.plan.make_plan.MakePlanDataSource
-import com.example.witt.data.source.remote.plan.make_plan.MakePlanDataSourceImpl
 import com.example.witt.data.source.remote.plan.join_plan.JoinPlanDataSource
 import com.example.witt.data.source.remote.plan.join_plan.JoinPlanDataSourceImpl
 import com.example.witt.data.source.remote.plan.join_plan.OutPlanDataSource
 import com.example.witt.data.source.remote.plan.join_plan.OutPlanDataSourceImpl
-import com.example.witt.data.source.remote.user.profile.ProfileUploadDataSource
-import com.example.witt.data.source.remote.user.profile.ProfileUploadDataSourceImpl
+import com.example.witt.data.source.remote.plan.make_plan.MakePlanDataSource
+import com.example.witt.data.source.remote.plan.make_plan.MakePlanDataSourceImpl
 import com.example.witt.data.source.remote.signin.SignInDataSource
 import com.example.witt.data.source.remote.signin.SignInDataSourceImpl
-import com.example.witt.data.source.remote.signup.SignUpDataSource
-import com.example.witt.data.source.remote.signup.SignUpDataSourceImpl
 import com.example.witt.data.source.remote.signin.social_signin.SocialSignInDataSource
 import com.example.witt.data.source.remote.signin.social_signin.SocialSignInDataSourceImpl
 import com.example.witt.data.source.remote.signin.token_signin.TokenSignInDataSource
 import com.example.witt.data.source.remote.signin.token_signin.TokenSignInDataSourceImpl
+import com.example.witt.data.source.remote.signup.SignUpDataSource
+import com.example.witt.data.source.remote.signup.SignUpDataSourceImpl
+import com.example.witt.data.source.remote.signup.duplicate_check.DuplicateEmailDataSource
+import com.example.witt.data.source.remote.signup.duplicate_check.DuplicateEmailDataSourceImpl
 import com.example.witt.data.source.remote.user.GetUserInfoDataSource
 import com.example.witt.data.source.remote.user.GetUserInfoDataSourceImpl
+import com.example.witt.data.source.remote.user.profile.ProfileUploadDataSource
+import com.example.witt.data.source.remote.user.profile.ProfileUploadDataSourceImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -53,7 +53,6 @@ abstract class DataSourceModule {
     abstract fun provideSignInDataSource(
         signInDataSourceImpl: SignInDataSourceImpl
     ): SignInDataSource
-
 
     @Binds
     @Singleton
@@ -115,7 +114,6 @@ abstract class DataSourceModule {
         editMemoDataSourceImpl: EditMemoDataSourceImpl
     ): EditMemoDataSource
 
-
     @Binds
     @Singleton
     abstract fun provideJoinPlanDataSource(
@@ -131,9 +129,8 @@ abstract class DataSourceModule {
     @Binds
     @Singleton
     abstract fun provideAddPlaceDataSource(
-        addPlaceDataSourceImpl : AddPlaceDataSourceImpl
+        addPlaceDataSourceImpl: AddPlaceDataSourceImpl
     ): AddPlaceDataSource
-
 
     @Binds
     @Singleton

@@ -15,5 +15,4 @@ interface ProfileDao {
 
     @Query("SELECT * FROM userProfile")
     fun getProfile(): Flow<UserProfile>
-
 }

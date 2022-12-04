@@ -12,21 +12,21 @@ import com.example.witt.presentation.listener.ItemTouchHelperListener
 import com.example.witt.utils.convertIsoToTime
 
 class DetailPlanAdapter(
-    val memoClick : (DetailPlanModel) -> Unit
-) : RecyclerView.Adapter<RecyclerView.ViewHolder>(), ItemTouchHelperListener{
+    val memoClick: (DetailPlanModel) -> Unit
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>(), ItemTouchHelperListener {
 
     val planContentData = mutableListOf<DetailPlanModel>()
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) : RecyclerView.ViewHolder = when(viewType){
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder = when (viewType) {
         TYPE_MEMO -> {
             val binding = ItemPlanMemoBinding.inflate(LayoutInflater.from(parent.context), parent, false)
             PlanMemoViewHolder(binding)
         }
-        TYPE_PLACE ->{
+        TYPE_PLACE -> {
             val binding = ItemPlanPlaceBinding.inflate(LayoutInflater.from(parent.context), parent, false)
             PlanPlaceViewHolder(binding)
         }
-        else ->{
+        else -> {
             val binding = ItemPlanFlightBinding.inflate(LayoutInflater.from(parent.context), parent, false)
             PlanFlightViewHolder(binding)
         }
@@ -36,27 +36,27 @@ class DetailPlanAdapter(
         planContentData[position].type
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-       when(holder){
-           is PlanMemoViewHolder -> {
-               holder.bind(planContentData[position])
-           }
-           is PlanPlaceViewHolder -> {
-               holder.bind(planContentData[position])
-           }
-           is PlanFlightViewHolder -> {
-               holder.bind(planContentData[position])
-           }
-       }
+        when (holder) {
+            is PlanMemoViewHolder -> {
+                holder.bind(planContentData[position])
+            }
+            is PlanPlaceViewHolder -> {
+                holder.bind(planContentData[position])
+            }
+            is PlanFlightViewHolder -> {
+                holder.bind(planContentData[position])
+            }
+        }
     }
 
     override fun getItemCount(): Int {
         return planContentData.size
     }
 
-    //todo refactor code
-    //ItemTouchHelperListener
-    override fun onItemMove(from: Int, to: Int) : Boolean{
-        if(planContentData.size <= from){
+    // todo refactor code
+    // ItemTouchHelperListener
+    override fun onItemMove(from: Int, to: Int): Boolean {
+        if (planContentData.size <= from) {
             return false
         }
         val item = planContentData[from]
@@ -66,38 +66,38 @@ class DetailPlanAdapter(
         return true
     }
 
-    inner class PlanMemoViewHolder(private val binding: ItemPlanMemoBinding)
-        : RecyclerView.ViewHolder(binding.root){
-        fun bind(item: DetailPlanModel){
+    inner class PlanMemoViewHolder(private val binding: ItemPlanMemoBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        fun bind(item: DetailPlanModel) {
             binding.item = item.memo
-            binding.timePlanCardView.setOnClickListener{
+            binding.timePlanCardView.setOnClickListener {
                 memoClick(item)
             }
         }
     }
 
-    inner class PlanPlaceViewHolder(private val binding : ItemPlanPlaceBinding)
-        : RecyclerView.ViewHolder(binding.root){
-            fun bind(item: DetailPlanModel){
-                binding.item = item.place
-                binding.placeNumberTextView.text = item.orderIndex.toString()
-            }
+    inner class PlanPlaceViewHolder(private val binding: ItemPlanPlaceBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        fun bind(item: DetailPlanModel) {
+            binding.item = item.place
+            binding.placeNumberTextView.text = item.orderIndex.toString()
         }
+    }
 
     @SuppressLint("SetTextI18n")
-    inner class PlanFlightViewHolder(private val binding: ItemPlanFlightBinding)
-        : RecyclerView.ViewHolder(binding.root){
-            fun bind(item: DetailPlanModel){
-                item.flight?.let{
-                    binding.flightTimeTextView.text =
-                        it.departureAirport + " " + it.departureTime.convertIsoToTime() + " - " + it.arrivalAirport + " " +
-                                it.arrivalTime.convertIsoToTime()
-                    binding.flightAirlineTextView.text =
-                        it.airlineCode + it.flightNum
-                }
+    inner class PlanFlightViewHolder(private val binding: ItemPlanFlightBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        fun bind(item: DetailPlanModel) {
+            item.flight?.let {
+                binding.flightTimeTextView.text =
+                    it.departureAirport + " " + it.departureTime.convertIsoToTime() + " - " + it.arrivalAirport + " " +
+                    it.arrivalTime.convertIsoToTime()
+                binding.flightAirlineTextView.text =
+                    it.airlineCode + it.flightNum
             }
         }
-    companion object{
+    }
+    companion object {
         const val TYPE_PLACE = 0
         const val TYPE_MEMO = 1
     }

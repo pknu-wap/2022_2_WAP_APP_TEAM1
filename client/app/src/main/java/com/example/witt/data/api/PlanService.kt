@@ -6,13 +6,16 @@ import com.example.witt.data.model.remote.plan.join_plan.JoinPlanResponse
 import com.example.witt.data.model.remote.plan.make_plan.request.MakePlanRequest
 import com.example.witt.data.model.remote.plan.make_plan.response.MakePlanResponse
 import com.example.witt.data.model.remote.plan.out_plan.OutPlanResponse
-import retrofit2.http.*
+import retrofit2.http.Body
+import retrofit2.http.DELETE
+import retrofit2.http.GET
+import retrofit2.http.PUT
+import retrofit2.http.Path
 
 interface PlanService {
 
     @GET("/api/trip")
-    suspend fun getPlanList(
-    ): GetPlanListResponse
+    suspend fun getPlanList(): GetPlanListResponse
 
     @GET("/api/trip/{planId}")
     suspend fun getPlan(
@@ -22,16 +25,15 @@ interface PlanService {
     @PUT("/api/trip")
     suspend fun makePlan(
         @Body request: MakePlanRequest
-    ):MakePlanResponse
+    ): MakePlanResponse
 
     @DELETE("/api/trip/{tripId}")
     suspend fun outPlan(
-        @Path ("tripId") tripId: Int
+        @Path("tripId") tripId: Int
     ): OutPlanResponse
 
     @PUT("/api/trip/{tripId}/participants")
     suspend fun joinPlan(
-        @Path ("tripId") tripId: Int
+        @Path("tripId") tripId: Int
     ): JoinPlanResponse
-
 }

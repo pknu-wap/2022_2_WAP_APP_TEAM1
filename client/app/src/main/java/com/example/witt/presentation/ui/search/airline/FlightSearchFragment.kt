@@ -3,17 +3,17 @@ package com.example.witt.presentation.ui.search.airline
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import com.example.witt.R
-import com.example.witt.presentation.base.BaseFragment
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import com.example.witt.R
 import com.example.witt.data.repository.FlightRepositoryImpl
 import com.example.witt.databinding.FragmentFlightSearchBinding
 import com.example.witt.domain.model.remote.detail_plan.search.SearchFlightModel
 import com.example.witt.domain.model.remote.detail_plan.search.SearchFlightRequest
+import com.example.witt.presentation.base.BaseFragment
 import com.example.witt.presentation.ui.plan.PlanViewModel
 import com.example.witt.presentation.widget.AddFlightDialog
 import com.example.witt.utils.convertAirline
@@ -46,7 +46,7 @@ class FlightSearchFragment :
         }
     }
 
-    //Date 리스트 생성
+    // Date 리스트 생성
     private fun tripDateRange(sd: LocalDate, ed: LocalDate): Array<String> {
         var dateRange = mutableListOf<String>()
         var date = sd
@@ -57,7 +57,7 @@ class FlightSearchFragment :
         return dateRange.toTypedArray()
     }
 
-    //항공사 선택 dialog 초기화
+    // 항공사 선택 dialog 초기화
     private fun initAirline() {
         binding.airline.setOnClickListener {
             showAirlineDialog(it as TextView)
@@ -76,8 +76,7 @@ class FlightSearchFragment :
         builder.show()
     }
 
-
-    //Date 선택 dialog 초기화
+    // Date 선택 dialog 초기화
     private fun initDate(dateRange: Array<String>) {
         binding.date.setOnClickListener {
             showDateDialog(it as TextView, dateRange)
@@ -106,7 +105,6 @@ class FlightSearchFragment :
                         }
                     }
                 }.onFailure {
-
                 }
             }
         }
@@ -122,7 +120,6 @@ class FlightSearchFragment :
         return result
     }
 
-
     private fun showInsertDialog(
         result: SearchFlightModel
     ) {
@@ -135,7 +132,6 @@ class FlightSearchFragment :
                 findNavController().navigate(direction)
             },
             onClickCancel = {
-
             }
         ).show()
     }

@@ -9,16 +9,16 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class AddPlaceDataSourceImpl @Inject constructor(
-    private val service : DetailPlanService,
+    private val service: DetailPlanService,
     @IoDispatcher private val coroutineDispatcher: CoroutineDispatcher
-): AddPlaceDataSource {
+) : AddPlaceDataSource {
 
-    override suspend fun addPlace(tripId: Int, dayId: Int, request: AddPlaceRequest): Result<AddPlaceResponse>
-    = withContext(coroutineDispatcher){
-        runCatching {
-            service.addPlace(tripId, dayId, request)
-        }.onFailure { e->
-            e.printStackTrace()
+    override suspend fun addPlace(tripId: Int, dayId: Int, request: AddPlaceRequest): Result<AddPlaceResponse> =
+        withContext(coroutineDispatcher) {
+            runCatching {
+                service.addPlace(tripId, dayId, request)
+            }.onFailure { e ->
+                e.printStackTrace()
+            }
         }
-    }
 }

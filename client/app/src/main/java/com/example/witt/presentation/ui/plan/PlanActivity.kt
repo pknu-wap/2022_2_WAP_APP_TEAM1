@@ -14,9 +14,9 @@ import dagger.hilt.android.AndroidEntryPoint
 class PlanActivity : AppCompatActivity() {
 
     private lateinit var navController: NavController
-    private val binding by lazy{ ActivityPlanBinding.inflate(layoutInflater)}
+    private val binding by lazy { ActivityPlanBinding.inflate(layoutInflater) }
 
-    private val viewModel : PlanViewModel by viewModels()
+    private val viewModel: PlanViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,7 +27,6 @@ class PlanActivity : AppCompatActivity() {
         navController = navHostFragment.navController
 
         binding.bottomNavigationView.setupWithNavController(navController)
-
     }
 
     override fun onSupportNavigateUp(): Boolean {

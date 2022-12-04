@@ -4,6 +4,5 @@ import com.example.witt.data.model.remote.detail_plan.memo.EditMemoResponse
 
 interface EditMemoDataSource {
 
-    suspend fun editMemo(tripId: Int, planId: Int,  content : String) : Result<EditMemoResponse>
-
+    suspend fun editMemo(tripId: Int, planId: Int, content: String): Result<EditMemoResponse>
 }

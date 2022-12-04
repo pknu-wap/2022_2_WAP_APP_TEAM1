@@ -4,7 +4,7 @@ import java.io.File
 
 sealed class ProfileEditEvent {
 
-    object SubmitProfile: ProfileEditEvent()
+    object SubmitProfile : ProfileEditEvent()
 
     data class SubmitProfileImage(val profileImage: File) : ProfileEditEvent()
 

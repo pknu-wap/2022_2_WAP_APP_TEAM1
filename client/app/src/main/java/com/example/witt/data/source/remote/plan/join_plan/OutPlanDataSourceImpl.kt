@@ -8,16 +8,16 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class OutPlanDataSourceImpl @Inject constructor(
-    private val service : PlanService,
+    private val service: PlanService,
     @IoDispatcher private val coroutineDispatcher: CoroutineDispatcher
-): OutPlanDataSource{
+) : OutPlanDataSource {
 
-    override suspend fun outPlan(tripId: Int): Result<OutPlanResponse>
-    = withContext(coroutineDispatcher){
-        runCatching {
-            service.outPlan(tripId)
-        }.onFailure { e->
-            e.printStackTrace()
+    override suspend fun outPlan(tripId: Int): Result<OutPlanResponse> =
+        withContext(coroutineDispatcher) {
+            runCatching {
+                service.outPlan(tripId)
+            }.onFailure { e ->
+                e.printStackTrace()
+            }
         }
-    }
 }

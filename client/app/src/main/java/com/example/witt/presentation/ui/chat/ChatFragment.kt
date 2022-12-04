@@ -16,35 +16,34 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class ChatFragment : BaseFragment<FragmentChatBinding>(R.layout.fragment_chat) {
 
-    private val viewModel : ChatViewModel by viewModels()
+    private val viewModel: ChatViewModel by viewModels()
     private val planViewModel: PlanViewModel by activityViewModels()
 
-    private lateinit var chatAdapter : ChatAdapter
+    private lateinit var chatAdapter: ChatAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
 
         observeData()
         initViews()
     }
 
-    private fun observeData(){
-        planViewModel.planState.observe(viewLifecycleOwner){
+    private fun observeData() {
+        planViewModel.planState.observe(viewLifecycleOwner) {
             viewModel.connectServer(it.TripId)
         }
 
-        viewModel.chatData.observe(viewLifecycleOwner){
+        viewModel.chatData.observe(viewLifecycleOwner) {
             chatAdapter.submitList(it)
         }
     }
 
-    private fun initViews(){
-        binding.addChatButton.setOnClickListener{
+    private fun initViews() {
+        binding.addChatButton.setOnClickListener {
             viewModel.sendChat(binding.addChatsEditText.text.toString())
             binding.addChatsEditText.setText("")
         }
-        binding.chatToDrawUpButton.setOnClickListener{
+        binding.chatToDrawUpButton.setOnClickListener {
             val direction = ChatFragmentDirections.actionChatFragmentToDrawUpPlanFragment()
             findNavController().navigate(direction)
         }
@@ -57,5 +56,4 @@ class ChatFragment : BaseFragment<FragmentChatBinding>(R.layout.fragment_chat) {
         super.onDestroy()
         viewModel.leaveChat()
     }
-
 }

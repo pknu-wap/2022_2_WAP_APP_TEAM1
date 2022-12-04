@@ -10,10 +10,10 @@ import javax.inject.Inject
 
 class SocialSignInDataSourceImpl @Inject constructor(
     private val socialSignInService: SignInService,
-     @IoDispatcher private val coroutineDispatcher: CoroutineDispatcher
-) : SocialSignInDataSource{
+    @IoDispatcher private val coroutineDispatcher: CoroutineDispatcher
+) : SocialSignInDataSource {
     override suspend fun signIn(socialSignInRequest: SocialSignInRequest): Result<SocialSignInResponse> =
-        withContext(coroutineDispatcher){
+        withContext(coroutineDispatcher) {
             runCatching {
                 val response = socialSignInService.signIn(socialSignInRequest)
                 response

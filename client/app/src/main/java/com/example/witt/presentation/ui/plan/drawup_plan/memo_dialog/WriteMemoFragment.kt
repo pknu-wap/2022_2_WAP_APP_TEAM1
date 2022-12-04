@@ -22,16 +22,20 @@ import kotlinx.coroutines.flow.onEach
 
 @AndroidEntryPoint
 class WriteMemoFragment(
-    val onClick : () -> Unit
-): DialogFragment() {
+    val onClick: () -> Unit
+) : DialogFragment() {
 
     private var _binding: FragmentWriteMemoBinding? = null
     val binding get() = _binding ?: throw IllegalStateException()
 
-    private val viewModel : WriteMemoViewModel by viewModels()
+    private val viewModel: WriteMemoViewModel by viewModels()
     private val planViewModel by activityViewModels<PlanViewModel>()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         _binding = DataBindingUtil.inflate(inflater, R.layout.fragment_write_memo, container, false)
 
         return binding.root
@@ -43,16 +47,15 @@ class WriteMemoFragment(
 
         initViews()
         observeData()
-
     }
 
     override fun onResume() {
         super.onResume()
-        //dialog 가로 세로 비율 설정
+        // dialog 가로 세로 비율 설정
         context?.dialogFragmentResize(this, width = 0.9f, height = 0.6f)
     }
 
-    private fun initViews(){
+    private fun initViews() {
 
         val memoText = arguments?.getString("memo") ?: ""
         val dayId = arguments?.getInt("day", -1)
@@ -60,11 +63,10 @@ class WriteMemoFragment(
 
         viewModel.setMemoInfo(memoText, dayId, planId)
 
-        binding.WriteMemoButton.setOnClickListener{
+        binding.WriteMemoButton.setOnClickListener {
             viewModel.submitMemo()
         }
-        binding.cancelMemoButton.setOnClickListener{ dismiss() }
-
+        binding.cancelMemoButton.setOnClickListener { dismiss() }
     }
 
     private fun observeData() {
@@ -76,8 +78,8 @@ class WriteMemoFragment(
 
         viewModel.writeMemoEvent.flowWithLifecycle(viewLifecycleOwner.lifecycle)
             .onEach { event ->
-                when(event){
-                    is UiEvent.Success ->{
+                when (event) {
+                    is UiEvent.Success -> {
                         onClick()
                         dismiss()
                     }

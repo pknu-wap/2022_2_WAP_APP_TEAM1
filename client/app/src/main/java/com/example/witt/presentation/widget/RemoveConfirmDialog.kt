@@ -10,7 +10,7 @@ class RemoveConfirmDialog(
     context: Context,
     private val onClickRemove: () -> Unit = {},
     private val onClickCancel: () -> Unit = {}
-) :Dialog(context){
+) : Dialog(context) {
 
     private val binding by lazy { DialogRemoveConfirmBinding.inflate(layoutInflater) }
 
@@ -18,7 +18,7 @@ class RemoveConfirmDialog(
         super.onCreate(savedInstanceState)
         this.setContentView(binding.root)
 
-        binding.dialogRemoveButton.setOnClickListener{
+        binding.dialogRemoveButton.setOnClickListener {
             onClickRemove()
             dismiss()
         }

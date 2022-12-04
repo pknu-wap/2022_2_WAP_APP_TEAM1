@@ -9,12 +9,15 @@ import com.example.witt.data.repository.FlightRepositoryImpl
 import com.example.witt.databinding.DialogSearchFlightBinding
 import com.example.witt.domain.model.remote.detail_plan.search.SearchFlightModel
 import com.example.witt.domain.model.remote.detail_plan.search.toAddFlightRequest
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class AddFlightDialog(
     context: Context,
     private val result: SearchFlightModel,
-    private val tripId:Int,
+    private val tripId: Int,
     private val onClickApprove: () -> Unit = {},
     private val onClickCancel: () -> Unit = {}
 ) : Dialog(context) {
@@ -30,7 +33,7 @@ class AddFlightDialog(
         binding.dialogApproveButton.setOnClickListener {
             CoroutineScope(Dispatchers.IO).launch {
                 addFlightRepo()
-                withContext(Dispatchers.Main){
+                withContext(Dispatchers.Main) {
                     onClickApprove()
                 }
             }
@@ -46,7 +49,7 @@ class AddFlightDialog(
         )
     }
 
-    private fun initText(result: SearchFlightModel){
+    private fun initText(result: SearchFlightModel) {
         binding.departureAirline.text = result.Flight.flyFrom
         binding.ariveAirline.text = result.Flight.flyTo
         binding.flightNum.text = result.Flight.flightNo.toString()
@@ -54,11 +57,10 @@ class AddFlightDialog(
         binding.departureTime.text = result.Flight.departure
         binding.ariveTime.text = result.Flight.arrival
     }
-    private suspend fun addFlightRepo(){
+    private suspend fun addFlightRepo() {
         val result = repository.addFlight(tripId, result.Flight.toAddFlightRequest())
-        Log.d("test",result.toString() )
+        Log.d("test", result.toString())
     }
-    private fun onClickCancel (){
-
+    private fun onClickCancel() {
     }
 }
