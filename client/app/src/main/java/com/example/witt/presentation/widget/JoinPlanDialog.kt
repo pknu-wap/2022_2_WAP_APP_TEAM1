@@ -12,7 +12,7 @@ class JoinPlanDialog(
     private val tripDate: String,
     private val onClickJoin: () -> Unit = {},
     private val onClickCancel: () -> Unit = {}
-) : Dialog(context){
+) : Dialog(context) {
 
     private val binding by lazy { DialogJoinPlanBinding.inflate(layoutInflater) }
 
@@ -20,7 +20,7 @@ class JoinPlanDialog(
         super.onCreate(savedInstanceState)
         this.setContentView(binding.root)
 
-        binding.dialogJoinButton.setOnClickListener{
+        binding.dialogJoinButton.setOnClickListener {
             onClickJoin()
             dismiss()
         }

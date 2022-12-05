@@ -8,15 +8,15 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class JoinPlanDataSourceImpl @Inject constructor(
-    private val service : PlanService,
+    private val service: PlanService,
     @IoDispatcher private val coroutineDispatcher: CoroutineDispatcher
-): JoinPlanDataSource {
-    override suspend fun joinPlan(tripId: Int): Result<JoinPlanResponse>
-    = withContext(coroutineDispatcher){
-        runCatching {
-            service.joinPlan(tripId)
-        }.onFailure { e->
-            e.printStackTrace()
+) : JoinPlanDataSource {
+    override suspend fun joinPlan(tripId: Int): Result<JoinPlanResponse> =
+        withContext(coroutineDispatcher) {
+            runCatching {
+                service.joinPlan(tripId)
+            }.onFailure { e ->
+                e.printStackTrace()
+            }
         }
-    }
 }

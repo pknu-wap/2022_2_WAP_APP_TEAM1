@@ -8,6 +8,6 @@ import javax.inject.Inject
 class MakePlanUseCase @Inject constructor(
     private val repository: PlanRepository
 ) {
-    suspend operator fun invoke(makePlanModel: MakePlanModel) : Result<MakePlanResponseModel> =
+    suspend operator fun invoke(makePlanModel: MakePlanModel): Result<MakePlanResponseModel> =
         repository.makePlan(makePlanModel)
 }

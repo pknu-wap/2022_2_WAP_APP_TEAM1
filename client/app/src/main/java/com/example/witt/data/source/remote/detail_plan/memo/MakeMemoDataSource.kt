@@ -4,6 +4,5 @@ import com.example.witt.data.model.remote.detail_plan.memo.MakeMemoResponse
 
 interface MakeMemoDataSource {
 
-    suspend fun makeMemo(tripId : Int, day: Int, content: String) : Result<MakeMemoResponse>
-
+    suspend fun makeMemo(tripId: Int, day: Int, content: String): Result<MakeMemoResponse>
 }

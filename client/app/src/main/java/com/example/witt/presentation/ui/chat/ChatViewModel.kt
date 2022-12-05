@@ -17,22 +17,24 @@ import javax.inject.Inject
 @HiltViewModel
 class ChatViewModel @Inject constructor(
     private val userRepository: UserRepository,
-    private val socket : Socket
-): ViewModel() {
+    private val socket: Socket
+) : ViewModel() {
 
     private val chatList = mutableListOf<ChatResponse>()
     private val gson by lazy { Gson() }
 
-    private val _chatData : MutableLiveData<List<ChatResponse>> = MutableLiveData(emptyList())
-    val chatData : LiveData<List<ChatResponse>> get() = _chatData
+    private val _chatData: MutableLiveData<List<ChatResponse>> = MutableLiveData(emptyList())
+    val chatData: LiveData<List<ChatResponse>> get() = _chatData
 
     fun connectServer(tripId: Int) {
         viewModelScope.launch {
             userRepository.getUserInfo().mapCatching { response ->
-                socket.on("evtJoin"){ args->
+                socket.on("evtJoin") { args ->
                     viewModelScope.launch {
-                        val data = GsonBuilder().create().fromJson(args[0].toString(),
-                            Array<ChatResponse>::class.java).toList()
+                        val data = GsonBuilder().create().fromJson(
+                            args[0].toString(),
+                            Array<ChatResponse>::class.java
+                        ).toList()
                         data.forEach {
                             chatList.add(it)
                         }
@@ -40,7 +42,7 @@ class ChatViewModel @Inject constructor(
                     }
                 }
 
-                socket.on("evtMessage"){ args ->
+                socket.on("evtMessage") { args ->
                     viewModelScope.launch {
                         chatList.add(gson.fromJson(args[0].toString(), ChatResponse::class.java))
                         _chatData.value = chatList
@@ -52,20 +54,19 @@ class ChatViewModel @Inject constructor(
                 joinJson.put("TripId", tripId)
                 joinJson.put("UserId", response.user.userId)
                 socket.emit("join", joinJson)
-
-            }.onFailure { e->
+            }.onFailure { e ->
                 e.printStackTrace()
             }
         }
     }
 
-    fun sendChat(chat: String){
+    fun sendChat(chat: String) {
         val chatJson = JSONObject()
         chatJson.put("Content", chat)
         socket.emit("addMessage", chatJson)
     }
 
-    fun leaveChat(){
+    fun leaveChat() {
         socket.emit("leave")
     }
 }

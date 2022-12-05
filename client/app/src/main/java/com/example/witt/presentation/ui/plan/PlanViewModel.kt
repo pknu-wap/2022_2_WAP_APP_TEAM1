@@ -7,13 +7,13 @@ import androidx.lifecycle.viewModelScope
 import com.example.witt.domain.model.use_case.plan.PlanStateModel
 import kotlinx.coroutines.launch
 
-class PlanViewModel: ViewModel(){
+class PlanViewModel : ViewModel() {
 
-    //dataBinding
-    private val _planState : MutableLiveData<PlanStateModel> = MutableLiveData()
-    val planState : LiveData<PlanStateModel> get() = _planState
+    // dataBinding
+    private val _planState: MutableLiveData<PlanStateModel> = MutableLiveData()
+    val planState: LiveData<PlanStateModel> get() = _planState
 
-    fun setPlanState(planItem: PlanStateModel){
+    fun setPlanState(planItem: PlanStateModel) {
         viewModelScope.launch {
             _planState.value = planItem
         }

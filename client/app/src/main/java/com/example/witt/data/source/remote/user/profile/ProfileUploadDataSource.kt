@@ -5,6 +5,5 @@ import com.example.witt.data.model.remote.user.response.ProfileUploadResponse
 
 interface ProfileUploadDataSource {
 
-    suspend fun uploadProfile(profileUploadRequest: ProfileUploadRequest) : Result<ProfileUploadResponse>
-
+    suspend fun uploadProfile(profileUploadRequest: ProfileUploadRequest): Result<ProfileUploadResponse>
 }

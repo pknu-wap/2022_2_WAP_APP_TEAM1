@@ -19,5 +19,4 @@ interface SignUpService {
     suspend fun duplicateEmailCheck(
         @Query("Username") Username: String
     ): DuplicateEmailResponse
-
 }

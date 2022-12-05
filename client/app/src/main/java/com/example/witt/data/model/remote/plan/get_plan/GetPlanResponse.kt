@@ -1,12 +1,18 @@
 package com.example.witt.data.model.remote.plan.get_plan
 
-import com.example.witt.domain.model.remote.plan.get_plan.*
+import com.example.witt.domain.model.remote.plan.get_plan.DetailPlanModel
+import com.example.witt.domain.model.remote.plan.get_plan.GetPlanModel
+import com.example.witt.domain.model.remote.plan.get_plan.PlanDataModel
+import com.example.witt.domain.model.remote.plan.get_plan.PlanFlightModel
+import com.example.witt.domain.model.remote.plan.get_plan.PlanMemoModel
+import com.example.witt.domain.model.remote.plan.get_plan.PlanParticipantModel
+import com.example.witt.domain.model.remote.plan.get_plan.PlanPlaceModel
 import com.example.witt.utils.convertIsoToDate
 
-data class GetPlanResponse (
+data class GetPlanResponse(
     val status: Boolean,
     val reason: String,
-    val result : PlanDataResponse,
+    val result: PlanDataResponse,
 )
 
 data class PlanDataResponse(
@@ -27,17 +33,17 @@ data class DetailPlanResponse(
     val Place: PlanPlaceResponse?,
     val PlanId: Int,
     val Type: Int,
-    val Flight : PlanFlightResponse?
+    val Flight: PlanFlightResponse?
 )
 
-data class PlanParticipant (
-    val UserId : String,
-    val Nickname : String,
-    val ProfileImage : String
-    )
+data class PlanParticipant(
+    val UserId: String,
+    val Nickname: String,
+    val ProfileImage: String
+)
 
 data class PlanMemoResponse(
-    val Content : String,
+    val Content: String,
     val Created_At: String,
     val Updated_At: String
 )
@@ -82,7 +88,6 @@ fun PlanParticipant.toPlanParticipantsModel() = PlanParticipantModel(
     profileImage = ProfileImage
 )
 
-
 fun DetailPlanResponse.toDetailPlanModel() = DetailPlanModel(
     day = Day,
     memo = Memo?.toPlanMemoModel(),
@@ -100,18 +105,18 @@ fun PlanMemoResponse.toPlanMemoModel() = PlanMemoModel(
 )
 
 fun PlanPlaceResponse.toPlanPlaceModel() = PlanPlaceModel(
-    category = Category ,
-    latitude = Latitude ,
-    longitude = Longitude ,
-    name = Name ,
+    category = Category,
+    latitude = Latitude,
+    longitude = Longitude,
+    name = Name,
     roadAddress = RoadAddress
 )
 
 fun PlanFlightResponse.toPlanFlightModel() = PlanFlightModel(
-    airlineCode =  AirlineCode,
-    flightNum =  FlightNum,
-    departureTime =  DepartureTime,
-    arrivalTime =  ArrivalTime,
-    departureAirport =  DepartureAirport,
-    arrivalAirport =  ArrivalAirport
+    airlineCode = AirlineCode,
+    flightNum = FlightNum,
+    departureTime = DepartureTime,
+    arrivalTime = ArrivalTime,
+    departureAirport = DepartureAirport,
+    arrivalAirport = ArrivalAirport
 )

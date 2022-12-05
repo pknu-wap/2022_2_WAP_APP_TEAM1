@@ -14,78 +14,78 @@ import javax.inject.Inject
 @HiltViewModel
 class WriteMemoViewModel @Inject constructor(
     private val repository: DetailPlanRepository
-): ViewModel() {
+) : ViewModel() {
 
-    //dataBinding
-    val inputMemo : MutableLiveData<String> = MutableLiveData()
+    // dataBinding
+    val inputMemo: MutableLiveData<String> = MutableLiveData()
 
     private val _writeMemoEvent = MutableSharedFlow<UiEvent<Unit>>()
     val writeMemoEvent: SharedFlow<UiEvent<Unit>> get() = _writeMemoEvent
 
-    private val tripId : MutableLiveData<Int> = MutableLiveData()
+    private val tripId: MutableLiveData<Int> = MutableLiveData()
 
-    private val planId : MutableLiveData<Int> = MutableLiveData()
+    private val planId: MutableLiveData<Int> = MutableLiveData()
 
-    private val dayId : MutableLiveData<Int> = MutableLiveData()
+    private val dayId: MutableLiveData<Int> = MutableLiveData()
 
-    fun setTripId(memoTripId: Int){
+    fun setTripId(memoTripId: Int) {
         tripId.value = memoTripId
     }
 
-    fun setMemoInfo(memo: String, memoDay: Int?, memoPlanId: Int?){
+    fun setMemoInfo(memo: String, memoDay: Int?, memoPlanId: Int?) {
         inputMemo.value = memo
-        memoDay?.let { dayId.value = it}
+        memoDay?.let { dayId.value = it }
         memoPlanId?.let { planId.value = it }
     }
 
-    fun submitMemo(){
-        //planId를 가지면 edit, 아니면 add
-        if(planId.value != -1){
+    fun submitMemo() {
+        // planId를 가지면 edit, 아니면 add
+        if (planId.value != -1) {
             editMemo()
-        }else{
+        } else {
             addMemo()
         }
     }
 
-    private fun addMemo(){
+    private fun addMemo() {
         viewModelScope.launch {
-            if(!inputMemo.value.isNullOrEmpty()){
+            if (!inputMemo.value.isNullOrEmpty()) {
                 repository.makeMemo(
                     tripId = requireNotNull(tripId.value),
                     day = requireNotNull(dayId.value),
                     content = requireNotNull(inputMemo.value)
                 ).mapCatching {
-                    if(it.status){
+                    if (it.status) {
                         _writeMemoEvent.emit(UiEvent.Success(Unit))
-                    }else{
+                    } else {
                         _writeMemoEvent.emit(UiEvent.Failure(it.reason))
                     }
                 }.onFailure {
                     _writeMemoEvent.emit(UiEvent.Failure("네트워크를 확인해주세요."))
                 }
-            }else{
+            } else {
                 _writeMemoEvent.emit(UiEvent.Failure("내용을 확인해주세요."))
             }
         }
     }
 
-    private fun editMemo(){
+    private fun editMemo() {
         viewModelScope.launch {
-            if(!inputMemo.value.isNullOrEmpty()){
+            if (!inputMemo.value.isNullOrEmpty()) {
                 repository.editMemo(
                     tripId = requireNotNull(tripId.value),
                     planId = requireNotNull(planId.value),
                     Content = requireNotNull(inputMemo.value)
-                    ).mapCatching {
-                    if(it.status){
+                ).mapCatching {
+                    if (it.status) {
                         _writeMemoEvent.emit(UiEvent.Success(Unit))
-                    }else{
+                    } else {
                         _writeMemoEvent.emit(UiEvent.Failure(it.reason))
                     }
                 }.onFailure {
                     _writeMemoEvent.emit(UiEvent.Failure("네트워크를 확인해주세요."))
                 }
-            }else{
+            } else {
                 _writeMemoEvent.emit(UiEvent.Failure("내용을 확인해주세요."))
             }
         }

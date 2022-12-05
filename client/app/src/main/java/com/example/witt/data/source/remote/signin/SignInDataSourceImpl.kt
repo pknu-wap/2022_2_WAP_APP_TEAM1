@@ -9,9 +9,9 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class SignInDataSourceImpl @Inject constructor(
-    private val service : SignInService,
+    private val service: SignInService,
     @IoDispatcher private val coroutineDispatcher: CoroutineDispatcher
-): SignInDataSource {
+) : SignInDataSource {
     override suspend fun signIn(signInRequest: SignInRequest): Result<SignInResponse> =
         withContext(coroutineDispatcher) {
             try {

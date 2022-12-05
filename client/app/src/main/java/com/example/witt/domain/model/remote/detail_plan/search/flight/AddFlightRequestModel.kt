@@ -1,6 +1,6 @@
-package com.example.witt.data.model.remote.detail_plan.search.flight
+package com.example.witt.domain.model.remote.detail_plan.search.flight
 
-data class AddFlightRequest(
+data class AddFlightRequestModel(
     val AirlineCode: String,
     val FlightNum: Int,
     val DepartureTime: String,

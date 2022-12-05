@@ -23,13 +23,12 @@ import com.navercorp.nid.profile.data.NidProfileResponse
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
-
 @AndroidEntryPoint
 class SignInFragment : BaseFragment<FragmentSignInBinding>(R.layout.fragment_sign_in) {
 
-    private val viewModel : SignInViewModel by viewModels()
+    private val viewModel: SignInViewModel by viewModels()
     private val userApiClient = UserApiClient.instance
-    private val prefs: SharedPreferences by lazy { requireContext().getSharedPreferences("prefs", Context.MODE_PRIVATE)}
+    private val prefs: SharedPreferences by lazy { requireContext().getSharedPreferences("prefs", Context.MODE_PRIVATE) }
 
     private val kakaoSignInCallback: (OAuthToken?, Throwable?) -> Unit = { token, _ ->
         if (token != null) {
@@ -38,8 +37,7 @@ class SignInFragment : BaseFragment<FragmentSignInBinding>(R.layout.fragment_sig
                 if (error != null) {
                     Toast.makeText(requireContext(), "카카오계정 사용자 정보 가져오기 실패", Toast.LENGTH_SHORT).show()
                 } else if (user != null) {
-                    Toast.makeText(requireContext(), "카카오계정 사용자 정보 가져오기 성공 = " + user.kakaoAccount?.email
-                        , Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "카카오계정 사용자 정보 가져오기 성공 = " + user.kakaoAccount?.email, Toast.LENGTH_SHORT).show()
                     val oauthId = user.id.toString()
                     val profile = user.kakaoAccount?.profile?.thumbnailImageUrl
                     val nickName = user.kakaoAccount?.profile?.nickname
@@ -56,7 +54,7 @@ class SignInFragment : BaseFragment<FragmentSignInBinding>(R.layout.fragment_sig
         override fun onSuccess() {
             NidOAuthLogin().callProfileApi(object : NidProfileCallback<NidProfileResponse> {
                 override fun onSuccess(result: NidProfileResponse) {
-                    result.profile?.let{ user ->
+                    result.profile?.let { user ->
                         val oauthId = user.id.toString()
                         val profile = user.profileImage
                         val nickName = user.nickname
@@ -84,24 +82,23 @@ class SignInFragment : BaseFragment<FragmentSignInBinding>(R.layout.fragment_sig
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //dataBinding viewModel
+        // dataBinding viewModel
         binding.viewModel = viewModel
 
-        //token 검사
-        //viewModel.onEvent(SignInEvent.CheckToken)
+        // token 검사
+        // viewModel.onEvent(SignInEvent.CheckToken)
 
         initSignInUpButton()
         initKakaoButton()
         initNaverButton()
         initChannel()
-
     }
-    private fun initSignInUpButton(){
+    private fun initSignInUpButton() {
         binding.signInButton.setOnClickListener {
             viewModel.onEvent(SignInEvent.Submit)
         }
 
-        binding.goToSignUpButton.setOnClickListener{
+        binding.goToSignUpButton.setOnClickListener {
             val direction = SignInFragmentDirections.actionSignInFragmentToSignUpFragment()
             findNavController().navigate(direction)
         }
@@ -123,34 +120,34 @@ class SignInFragment : BaseFragment<FragmentSignInBinding>(R.layout.fragment_sig
         }
     }
 
-    private fun initNaverButton(){
+    private fun initNaverButton() {
         binding.naverSignInButton.setOnClickListener {
             NaverIdLoginSDK.authenticate(requireActivity(), naverSignInCallback)
         }
     }
 
-    private fun initDataStore(nickName: String, profile: String){
+    private fun initDataStore(nickName: String, profile: String) {
         prefs.edit()
             .putString("profile", profile)
             .putString("nickName", nickName)
             .apply()
     }
 
-    private fun initChannel(){
-        lifecycleScope.launch{
+    private fun initChannel() {
+        lifecycleScope.launch {
             viewModel.signInEvents.collect { event ->
-                when(event){
-                    is SignInViewModel.SignInUiEvent.Success ->{ //프로필 있는 상태에서 로그인 성공시 홈으로
+                when (event) {
+                    is SignInViewModel.SignInUiEvent.Success -> { // 프로필 있는 상태에서 로그인 성공시 홈으로
                         startActivity(Intent(requireActivity(), PlanActivity::class.java))
                     }
-                    is SignInViewModel.SignInUiEvent.Failure ->{ //실패시 Toast 메세지
+                    is SignInViewModel.SignInUiEvent.Failure -> { // 실패시 Toast 메세지
                         Toast.makeText(activity, event.message, Toast.LENGTH_SHORT).show()
                     }
-                    is SignInViewModel.SignInUiEvent.SuccessSocialLogin ->{ //프로필 없는 상태에서 소셜 로그인 성공
+                    is SignInViewModel.SignInUiEvent.SuccessSocialLogin -> { // 프로필 없는 상태에서 소셜 로그인 성공
                         val direction = SignInFragmentDirections.actionSignInFragmentToProfileEditFragment()
                         findNavController().navigate(direction)
                     }
-                    is SignInViewModel.SignInUiEvent.HasNoProfile ->{ //프로필 없는 상태에서 이메일 로그인 성공
+                    is SignInViewModel.SignInUiEvent.HasNoProfile -> { // 프로필 없는 상태에서 이메일 로그인 성공
                         val direction = SignInFragmentDirections.actionSignInFragmentToProfileEditFragment()
                         findNavController().navigate(direction)
                     }

@@ -23,7 +23,6 @@ fun Context.dialogFragmentResize(dialogFragment: DialogFragment, width: Float, h
         val x = (size.x * width).toInt()
         val y = (size.y * height).toInt()
         window?.setLayout(x, y)
-
     } else {
 
         val rect = windowManager.currentWindowMetrics.bounds

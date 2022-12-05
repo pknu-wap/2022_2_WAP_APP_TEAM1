@@ -10,16 +10,22 @@ import com.example.witt.R
 import com.example.witt.databinding.ItemParticipantBinding
 import com.example.witt.domain.model.remote.plan.get_plan.PlanParticipantModel
 
-class ParticipantAdapter
-    : ListAdapter<PlanParticipantModel, ParticipantAdapter.PlanParticipantViewHolder>(diffutil) {
+class ParticipantAdapter :
+    ListAdapter<PlanParticipantModel, ParticipantAdapter.PlanParticipantViewHolder>(diffutil) {
 
-    companion object{
-        val diffutil = object : DiffUtil.ItemCallback<PlanParticipantModel>(){
-            override fun areItemsTheSame(oldItem: PlanParticipantModel, newItem: PlanParticipantModel): Boolean {
+    companion object {
+        val diffutil = object : DiffUtil.ItemCallback<PlanParticipantModel>() {
+            override fun areItemsTheSame(
+                oldItem: PlanParticipantModel,
+                newItem: PlanParticipantModel
+            ): Boolean {
                 return oldItem == newItem
             }
 
-            override fun areContentsTheSame(oldItem: PlanParticipantModel, newItem: PlanParticipantModel): Boolean {
+            override fun areContentsTheSame(
+                oldItem: PlanParticipantModel,
+                newItem: PlanParticipantModel
+            ): Boolean {
                 return oldItem == newItem
             }
         }
@@ -33,9 +39,9 @@ class ParticipantAdapter
         holder.bind(currentList[position])
     }
 
-    inner class PlanParticipantViewHolder(private val binding: ItemParticipantBinding)
-    : RecyclerView.ViewHolder(binding.root){
-        fun bind(item: PlanParticipantModel){
+    inner class PlanParticipantViewHolder(private val binding: ItemParticipantBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        fun bind(item: PlanParticipantModel) {
             binding.itemParticipantName.text = item.nickName
             Glide.with(binding.itemParticipantImage)
                 .load(item.profileImage)

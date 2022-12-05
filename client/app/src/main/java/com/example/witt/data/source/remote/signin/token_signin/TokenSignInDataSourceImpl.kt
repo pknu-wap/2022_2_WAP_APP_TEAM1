@@ -12,15 +12,15 @@ class TokenSignInDataSourceImpl @Inject constructor(
     @IoDispatcher private val coroutineDispatcher: CoroutineDispatcher
 ) : TokenSignInDataSource {
     override suspend fun tokenSignIn(): Result<TokenResponse> =
-        withContext(coroutineDispatcher){
-            try{
+        withContext(coroutineDispatcher) {
+            try {
                 val response = userService.tokenSignIn()
-                if(response.status){
+                if (response.status) {
                     Result.success(response)
-                }else{
+                } else {
                     Result.success(userService.tokenSignIn())
                 }
-            }catch(e: Exception){
+            } catch (e: Exception) {
                 e.printStackTrace()
                 Result.failure(e)
             }

@@ -4,11 +4,11 @@ import com.example.witt.domain.model.use_case.plan.PlanStateModel
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
-data class GetPlanListModel (
-    val status : Boolean,
+data class GetPlanListModel(
+    val status: Boolean,
     val reason: String,
     val result: List<GetPlanListResultModel>
-        )
+)
 
 data class GetPlanListResultModel(
     val TripId: Int,

@@ -4,5 +4,5 @@ import com.example.witt.data.model.remote.signin.request.SocialSignInRequest
 import com.example.witt.data.model.remote.signin.response.SocialSignInResponse
 
 interface SocialSignInDataSource {
-    suspend fun signIn(socialSignInRequest: SocialSignInRequest) : Result<SocialSignInResponse>
+    suspend fun signIn(socialSignInRequest: SocialSignInRequest): Result<SocialSignInResponse>
 }

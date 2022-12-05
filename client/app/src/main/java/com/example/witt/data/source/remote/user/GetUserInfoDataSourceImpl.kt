@@ -10,13 +10,13 @@ import javax.inject.Inject
 class GetUserInfoDataSourceImpl @Inject constructor(
     private val service: UserService,
     @IoDispatcher private val coroutineDispatcher: CoroutineDispatcher
-): GetUserInfoDataSource{
-    override suspend fun getUserInfo(): Result<GetUserInfoResponse>
-    = withContext(coroutineDispatcher){
-        runCatching {
-            service.getUserInfo()
-        }.onFailure { e ->
-            e.printStackTrace()
+) : GetUserInfoDataSource {
+    override suspend fun getUserInfo(): Result<GetUserInfoResponse> =
+        withContext(coroutineDispatcher) {
+            runCatching {
+                service.getUserInfo()
+            }.onFailure { e ->
+                e.printStackTrace()
+            }
         }
-    }
 }

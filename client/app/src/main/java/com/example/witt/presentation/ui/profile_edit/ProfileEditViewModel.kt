@@ -19,71 +19,71 @@ import javax.inject.Inject
 @HiltViewModel
 class ProfileEditViewModel @Inject constructor(
     private val uploadRemoteProfile: UploadRemoteProfile,
-    private val repository : UserRepository
-): ViewModel() {
+    private val repository: UserRepository
+) : ViewModel() {
 
     private val validateNickName by lazy { ValidateNickName() }
     private val validatePhoneNum by lazy { ValidatePhoneNum() }
 
-    val inputName : MutableLiveData<String> = MutableLiveData()
-    val inputPhoneNumber : MutableLiveData<String> = MutableLiveData()
+    val inputName: MutableLiveData<String> = MutableLiveData()
+    val inputPhoneNumber: MutableLiveData<String> = MutableLiveData()
 
     private val profileImage: MutableLiveData<File> = MutableLiveData()
 
-    private val _errorNickName : MutableLiveData<String> = MutableLiveData()
-    val errorNickName : LiveData<String> get() = _errorNickName
+    private val _errorNickName: MutableLiveData<String> = MutableLiveData()
+    val errorNickName: LiveData<String> get() = _errorNickName
 
-    private val _errorPhoneNum : MutableLiveData<String> = MutableLiveData()
-    val errorPhoneNum : LiveData<String> get() = _errorPhoneNum
+    private val _errorPhoneNum: MutableLiveData<String> = MutableLiveData()
+    val errorPhoneNum: LiveData<String> get() = _errorPhoneNum
 
     private val profileEditChannel = Channel<ProfileEditUiEvent>()
     val profileEditEvents = profileEditChannel.receiveAsFlow()
 
-    val profileData : MutableLiveData<UserInfoModel> = MutableLiveData()
+    val profileData: MutableLiveData<UserInfoModel> = MutableLiveData()
 
-    init{
-       getUserInfo()
+    init {
+        getUserInfo()
     }
 
-    private fun getUserInfo(){
+    private fun getUserInfo() {
         viewModelScope.launch {
             repository.getUserInfo().mapCatching { response ->
-                if(response.status){
+                if (response.status) {
                     profileData.value = response.user
                 }
             }
         }
     }
 
-    fun onEvent(event: ProfileEditEvent){
-        when(event){
-            is ProfileEditEvent.SubmitProfile ->{
+    fun onEvent(event: ProfileEditEvent) {
+        when (event) {
+            is ProfileEditEvent.SubmitProfile -> {
                 validateData()
             }
-            is ProfileEditEvent.SubmitProfileImage ->{
+            is ProfileEditEvent.SubmitProfileImage -> {
                 profileImage.postValue(event.profileImage)
             }
-            is ProfileEditEvent.SubmitNickName ->{
+            is ProfileEditEvent.SubmitNickName -> {
                 inputName.value = event.nickName
             }
         }
     }
 
-    private fun validateData(){
+    private fun validateData() {
         val nickNameResult = validateNickName.execute(inputName.value ?: "")
         val phoneNumResult = validatePhoneNum.execute(inputPhoneNumber.value ?: "")
 
         val hasError = listOf(
             nickNameResult,
             phoneNumResult
-        ).any{
+        ).any {
             !it.successful
         }
-        if(hasError){
+        if (hasError) {
             nickNameResult.errorMessage?.let { errorMessage ->
                 _errorNickName.value = errorMessage
             }
-            phoneNumResult.errorMessage?.let{ errorMessage ->
+            phoneNumResult.errorMessage?.let { errorMessage ->
                 _errorPhoneNum.value = errorMessage
             }
             return
@@ -91,13 +91,15 @@ class ProfileEditViewModel @Inject constructor(
         submitProfile()
     }
 
-    private fun submitProfile(){
+    private fun submitProfile() {
         viewModelScope.launch {
             profileImage.value?.let { profile ->
                 val response =
-                    uploadRemoteProfile(profile,
+                    uploadRemoteProfile(
+                        profile,
                         inputName.value ?: "",
-                        inputPhoneNumber.value ?: "")
+                        inputPhoneNumber.value ?: ""
+                    )
 
                 response.mapCatching {
                     if (it.status) {
@@ -110,12 +112,10 @@ class ProfileEditViewModel @Inject constructor(
                 }
             } ?: profileEditChannel.trySend(ProfileEditUiEvent.Failure("사진을 재선택해주세요."))
         }
-
     }
 
-
-    sealed class ProfileEditUiEvent{
-        data class Failure(val message: String?): ProfileEditUiEvent()
-        object Success: ProfileEditUiEvent()
+    sealed class ProfileEditUiEvent {
+        data class Failure(val message: String?) : ProfileEditUiEvent()
+        object Success : ProfileEditUiEvent()
     }
 }

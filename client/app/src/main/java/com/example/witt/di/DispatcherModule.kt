@@ -25,7 +25,7 @@ object DispatcherModule {
     fun providesMainDispatcher(): CoroutineDispatcher = Dispatchers.Main
 }
 
-//dispatchermodule 패키지 각각의 annotation 클래스
+// dispatchermodule 패키지 각각의 annotation 클래스
 
 @Retention(AnnotationRetention.BINARY)
 @Qualifier

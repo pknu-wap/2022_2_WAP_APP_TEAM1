@@ -1,6 +1,6 @@
 package com.example.witt.domain.model.remote.detail_plan.memo
 
-data class MakeMemoModel (
+data class MakeMemoModel(
     val status: Boolean,
     val reason: String
-    )
+)

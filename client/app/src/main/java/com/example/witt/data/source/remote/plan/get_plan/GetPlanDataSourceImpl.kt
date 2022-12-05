@@ -10,13 +10,13 @@ import javax.inject.Inject
 class GetPlanDataSourceImpl @Inject constructor(
     private val getPlanService: PlanService,
     @IoDispatcher private val coroutineDispatcher: CoroutineDispatcher
-): GetPlanDataSource {
-    override suspend fun getPlan(planId: Int): Result<GetPlanResponse>
-    = withContext(coroutineDispatcher){
-        runCatching {
-            getPlanService.getPlan(planId)
-        }.onFailure { e->
-            e.printStackTrace()
+) : GetPlanDataSource {
+    override suspend fun getPlan(planId: Int): Result<GetPlanResponse> =
+        withContext(coroutineDispatcher) {
+            runCatching {
+                getPlanService.getPlan(planId)
+            }.onFailure { e ->
+                e.printStackTrace()
+            }
         }
-    }
 }

@@ -14,22 +14,21 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class SignUpFragment : BaseFragment<FragmentSignUpBinding>(R.layout.fragment_sign_up) {
 
-    private val viewModel : SignUpViewModel by viewModels()
+    private val viewModel: SignUpViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //dataBinding viewModel
+        // dataBinding viewModel
         binding.viewModel = viewModel
 
         initButton()
         initError()
         initChannel()
-
     }
 
-    private fun initButton(){
-        binding.signUpButton.setOnClickListener{
+    private fun initButton() {
+        binding.signUpButton.setOnClickListener {
             viewModel.onEvent(SignUpEvent.Submit)
         }
         binding.duplicateEmailButton.setOnClickListener {
@@ -37,30 +36,30 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(R.layout.fragment_sig
         }
     }
 
-    private fun initError(){
-        viewModel.errorEmail.observe(viewLifecycleOwner){ errorMessage ->
+    private fun initError() {
+        viewModel.errorEmail.observe(viewLifecycleOwner) { errorMessage ->
             binding.emailEditTextView.error = errorMessage
         }
-        viewModel.errorPassword.observe(viewLifecycleOwner){ errorMessage->
+        viewModel.errorPassword.observe(viewLifecycleOwner) { errorMessage ->
             binding.passwordEditText.error = errorMessage
         }
-        viewModel.errorRepeatedPassword.observe(viewLifecycleOwner){ errorMessage ->
+        viewModel.errorRepeatedPassword.observe(viewLifecycleOwner) { errorMessage ->
             binding.repeatedPasswordEditText.error = errorMessage
         }
     }
 
-    private fun initChannel(){
-        lifecycleScope.launch{
-            viewModel.signUpEvents.collect{ event ->
-                when(event){
+    private fun initChannel() {
+        lifecycleScope.launch {
+            viewModel.signUpEvents.collect { event ->
+                when (event) {
                     is SignUpViewModel.SignUpUiEvent.Success -> {
                         val direction = SignUpFragmentDirections.actionSignUpFragmentToSignInFragment()
                         findNavController().navigate(direction)
                     }
-                    is SignUpViewModel.SignUpUiEvent.Failure ->{
+                    is SignUpViewModel.SignUpUiEvent.Failure -> {
                         Toast.makeText(requireActivity(), event.message, Toast.LENGTH_SHORT).show()
                     }
-                    is SignUpViewModel.SignUpUiEvent.DuplicateChecked ->{
+                    is SignUpViewModel.SignUpUiEvent.DuplicateChecked -> {
                         Toast.makeText(requireActivity(), "사용 가능한 이메일입니다.", Toast.LENGTH_SHORT).show()
                     }
                 }

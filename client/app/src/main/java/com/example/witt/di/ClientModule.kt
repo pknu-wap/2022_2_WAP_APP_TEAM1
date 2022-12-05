@@ -18,5 +18,4 @@ object ClientModule {
     fun providesChatSocket(): Socket {
         return IO.socket(BuildConfig.host_domain_socket)
     }
-
 }

@@ -7,6 +7,6 @@ import javax.inject.Inject
 class SocialSignIn @Inject constructor(
     private val authRepository: AuthRepository
 ) {
-    suspend operator fun invoke(accountType: Int, OauthId: String): Result<SocialSignInModel>
-    = authRepository.socialSignIn(accountType, OauthId)
+    suspend operator fun invoke(accountType: Int, OauthId: String): Result<SocialSignInModel> =
+        authRepository.socialSignIn(accountType, OauthId)
 }

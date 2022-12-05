@@ -1,9 +1,9 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'kotlin-parcelize'
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
-    id 'kotlin-parcelize'
     id 'androidx.navigation.safeargs.kotlin'
 }
 
@@ -31,7 +31,6 @@ android {
         buildConfigField "String", "apiUrl",properties['api_url']
         buildConfigField "String", "host_domain", properties['host_domain']
         buildConfigField "String", "host_domain_socket", properties['host_domain_socket']
-
 
         resValue "string", "kakao_oauth_host", properties['kakao_oauth_host']
         resValue "string", "kakao_native_app_key", properties["kakao_native_app_key"]
@@ -98,7 +97,6 @@ dependencies {
 
     //glide
     implementation 'com.github.bumptech.glide:glide:4.14.1'
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.14.1'
 
     //circle imageView
     implementation 'de.hdodenhof:circleimageview:3.1.0'

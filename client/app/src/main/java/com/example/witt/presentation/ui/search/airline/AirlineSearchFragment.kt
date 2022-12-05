@@ -3,15 +3,15 @@ package com.example.witt.presentation.ui.search.airline
 import android.os.Bundle
 import android.view.View
 import android.widget.NumberPicker
+import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import com.example.witt.R
 import com.example.witt.databinding.FragmentAirlineSearchBinding
 import com.example.witt.presentation.base.BaseFragment
-import com.google.android.material.datepicker.MaterialDatePicker
-import android.widget.TextView
-import androidx.appcompat.app.AlertDialog
 import com.example.witt.utils.convertTimestampToDate
+import com.google.android.material.datepicker.MaterialDatePicker
 
-class AirlineSearchFragment: BaseFragment<FragmentAirlineSearchBinding>(R.layout.fragment_airline_search){
+class AirlineSearchFragment : BaseFragment<FragmentAirlineSearchBinding>(R.layout.fragment_airline_search) {
 
     private val datePicker by lazy {
         MaterialDatePicker.Builder.datePicker()
@@ -27,14 +27,14 @@ class AirlineSearchFragment: BaseFragment<FragmentAirlineSearchBinding>(R.layout
         initNumberPickers()
     }
 
-    private fun initButton(){
+    private fun initButton() {
         binding.datePeriod.setOnClickListener {
             datePicker.show(requireActivity().supportFragmentManager, "datePicker")
         }
-        binding.airportStart.setOnClickListener{
+        binding.airportStart.setOnClickListener {
             showDialog(it as TextView)
         }
-        binding.airportArive.setOnClickListener{
+        binding.airportArive.setOnClickListener {
             showDialog(it as TextView)
         }
     }
@@ -45,28 +45,30 @@ class AirlineSearchFragment: BaseFragment<FragmentAirlineSearchBinding>(R.layout
         }
     }
 
-    private fun showDialog(it: TextView){
+    private fun showDialog(it: TextView) {
         val airports = resources.getStringArray(R.array.airline_array)
         val builder = AlertDialog.Builder(requireActivity())
         builder.setTitle("공항을 선택하세요.")
-            .setItems(airports
+            .setItems(
+                airports
             ) { _, which ->
                 it.text = airports[which]
             }
         builder.show()
     }
 
-    private fun initNumberPickers(){
+    private fun initNumberPickers() {
         val numberPickers = arrayListOf(
-            binding.adultNumberPicker, binding.childNumberPicker, binding.babyNumberPicker)
+            binding.adultNumberPicker, binding.childNumberPicker, binding.babyNumberPicker
+        )
         for (index in numberPickers.indices) {
             initNumberPicker(numberPickers[index])
         }
     }
 
     // 넘버 픽커 초기화
-    private fun initNumberPicker(numberPicker: NumberPicker){
-        with(numberPicker){
+    private fun initNumberPicker(numberPicker: NumberPicker) {
+        with(numberPicker) {
             minValue = 0
             maxValue = 9
             wrapSelectorWheel = false
@@ -75,11 +77,10 @@ class AirlineSearchFragment: BaseFragment<FragmentAirlineSearchBinding>(R.layout
     }
 
 //     넘버 픽커 리스너
-    private fun numberPickerListener(numberPicker:NumberPicker){
+    private fun numberPickerListener(numberPicker: NumberPicker) {
         numberPicker.setOnValueChangedListener { _, _, _ ->
 //            Log.d("test", "oldVal : ${oldVal}, newVal : $newVal")
 //            Log.d("test", "picker.displayedValues ${picker.displayedValues[picker.value]}")
         }
     }
-
 }

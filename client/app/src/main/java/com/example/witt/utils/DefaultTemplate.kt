@@ -1,11 +1,14 @@
 package com.example.witt.utils
 
 import com.example.witt.domain.model.use_case.plan.PlanStateModel
-import com.kakao.sdk.template.model.*
+import com.kakao.sdk.template.model.Button
+import com.kakao.sdk.template.model.Content
+import com.kakao.sdk.template.model.FeedTemplate
+import com.kakao.sdk.template.model.Link
 
 object DefaultTemplate {
 
-    fun createTemplate(plan: PlanStateModel): FeedTemplate{
+    fun createTemplate(plan: PlanStateModel): FeedTemplate {
         return FeedTemplate(
             content = Content(
                 title = "'${plan.Name}' 여행에 초대합니다!",

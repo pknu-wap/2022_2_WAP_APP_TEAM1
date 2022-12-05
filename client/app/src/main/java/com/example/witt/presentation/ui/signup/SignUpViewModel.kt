@@ -19,7 +19,7 @@ import javax.inject.Inject
 class SignUpViewModel @Inject constructor(
     private val signUp: SignUpEmailPassword,
     private val duplicateEmail: DuplicateEmail
-): ViewModel(){
+) : ViewModel() {
 
     private val validateEmail by lazy { ValidateEmail() }
     private val validatePassword by lazy { ValidatePassword() }
@@ -28,35 +28,34 @@ class SignUpViewModel @Inject constructor(
     private val signUpEventChannel = Channel<SignUpUiEvent>()
     val signUpEvents = signUpEventChannel.receiveAsFlow()
 
-    //dataBinding 으로 값 가져오기, 더 좋은 방법이 없을까?
-    val inputEmail : MutableLiveData<String> = MutableLiveData()
-    val inputPassword : MutableLiveData<String> = MutableLiveData()
-    val inputRepeatedPassword : MutableLiveData<String> = MutableLiveData()
-    //이메일 중복 체크
-    private val duplicateCheckedState : MutableLiveData<Boolean> = MutableLiveData()
+    // dataBinding 으로 값 가져오기, 더 좋은 방법이 없을까?
+    val inputEmail: MutableLiveData<String> = MutableLiveData()
+    val inputPassword: MutableLiveData<String> = MutableLiveData()
+    val inputRepeatedPassword: MutableLiveData<String> = MutableLiveData()
+    // 이메일 중복 체크
+    private val duplicateCheckedState: MutableLiveData<Boolean> = MutableLiveData()
 
-    private val _errorEmail : MutableLiveData<String> = MutableLiveData()
-    val errorEmail : LiveData<String> get() = _errorEmail
+    private val _errorEmail: MutableLiveData<String> = MutableLiveData()
+    val errorEmail: LiveData<String> get() = _errorEmail
 
-    private val _errorPassword : MutableLiveData<String> = MutableLiveData()
+    private val _errorPassword: MutableLiveData<String> = MutableLiveData()
     val errorPassword: LiveData<String> get() = _errorPassword
 
-    private val _errorRepeatedPassword : MutableLiveData<String> = MutableLiveData()
+    private val _errorRepeatedPassword: MutableLiveData<String> = MutableLiveData()
     val errorRepeatedPassword: LiveData<String> get() = _errorRepeatedPassword
 
-
-    fun onEvent(event: SignUpEvent){
-        when(event){
-            is SignUpEvent.Submit ->{
+    fun onEvent(event: SignUpEvent) {
+        when (event) {
+            is SignUpEvent.Submit -> {
                 validateData()
             }
-            is SignUpEvent.DuplicateEmail ->{
+            is SignUpEvent.DuplicateEmail -> {
                 duplicateCheckData()
             }
         }
     }
 
-    private fun validateData(){
+    private fun validateData() {
         val emailResult = validateEmail.execute(inputEmail.value ?: "")
         val passwordResult = validatePassword.execute(inputPassword.value ?: "")
         val repeatedPasswordResult = validateRepeatedPassword.execute(inputPassword.value ?: "", inputRepeatedPassword.value ?: "")
@@ -65,17 +64,17 @@ class SignUpViewModel @Inject constructor(
             emailResult,
             passwordResult,
             repeatedPasswordResult
-        ).any{
+        ).any {
             !it.successful
         }
-        if(hasError){
+        if (hasError) {
             emailResult.errorMessage?.let { errorMessage ->
                 _errorEmail.value = errorMessage
             }
-            passwordResult.errorMessage?.let{ errorMessage ->
+            passwordResult.errorMessage?.let { errorMessage ->
                 _errorPassword.value = errorMessage
             }
-            repeatedPasswordResult.errorMessage?.let{ errorMessage ->
+            repeatedPasswordResult.errorMessage?.let { errorMessage ->
                 _errorRepeatedPassword.value = errorMessage
             }
             return
@@ -83,8 +82,8 @@ class SignUpViewModel @Inject constructor(
         submitData()
     }
 
-    private fun submitData(){
-        if(duplicateCheckedState.value == true) {
+    private fun submitData() {
+        if (duplicateCheckedState.value == true) {
             viewModelScope.launch {
                 val result = signUp(
                     email = inputEmail.value ?: "",
@@ -100,21 +99,21 @@ class SignUpViewModel @Inject constructor(
                     signUpEventChannel.trySend(SignUpUiEvent.Failure("네트워크 문제가 발생하였습니다."))
                 }
             }
-        }else{
+        } else {
             signUpEventChannel.trySend(SignUpUiEvent.Failure("이메일 중복을 확인해주세요."))
         }
     }
 
-    private fun duplicateCheckData(){
+    private fun duplicateCheckData() {
         viewModelScope.launch {
             val result = duplicateEmail(
                 email = inputEmail.value ?: ""
             )
             result.mapCatching {
-                if(it.status){
+                if (it.status) {
                     signUpEventChannel.trySend(SignUpUiEvent.DuplicateChecked(it.reason))
                     duplicateCheckedState.value = true
-                }else{
+                } else {
                     signUpEventChannel.trySend(SignUpUiEvent.Failure(it.reason))
                 }
             }.onFailure {
@@ -123,15 +122,15 @@ class SignUpViewModel @Inject constructor(
         }
     }
 
-    //이메일 변경시 다시 체크해야됨
+    // 이메일 변경시 다시 체크해야됨
     @Suppress("UNUSED_PARAMETER")
-    fun onTextChanged(s: CharSequence, start :Int, before : Int, count: Int){
+    fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
         duplicateCheckedState.value = false
     }
 
-    sealed class SignUpUiEvent{
-        data class Failure(val message: String?): SignUpUiEvent()
-        data class DuplicateChecked(val message: String?): SignUpUiEvent()
-        object Success: SignUpUiEvent()
+    sealed class SignUpUiEvent {
+        data class Failure(val message: String?) : SignUpUiEvent()
+        data class DuplicateChecked(val message: String?) : SignUpUiEvent()
+        object Success : SignUpUiEvent()
     }
 }

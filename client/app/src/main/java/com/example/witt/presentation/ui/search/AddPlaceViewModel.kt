@@ -15,32 +15,32 @@ import javax.inject.Inject
 @HiltViewModel
 class AddPlaceViewModel @Inject constructor(
     private val repository: DetailPlanRepository
-): ViewModel() {
+) : ViewModel() {
 
     private val _addPlaceEvent = MutableSharedFlow<UiEvent<Unit>>()
     val addPlaceEvent: SharedFlow<UiEvent<Unit>> get() = _addPlaceEvent
 
-    private val dayId : MutableLiveData<Int> = MutableLiveData()
+    private val dayId: MutableLiveData<Int> = MutableLiveData()
 
-    private val tripId : MutableLiveData<Int> = MutableLiveData()
+    private val tripId: MutableLiveData<Int> = MutableLiveData()
 
-    fun setInfo(dayId: Int, tripId: Int){
+    fun setInfo(dayId: Int, tripId: Int) {
         this.dayId.value = dayId
         this.tripId.value = tripId
     }
 
-    fun addPlace(place: AddPlaceModel){
+    fun addPlace(place: AddPlaceModel) {
         viewModelScope.launch {
             repository.addPlace(requireNotNull(dayId.value), requireNotNull(tripId.value), place)
                 .mapCatching { response ->
-                    if(response.status){
+                    if (response.status) {
                         _addPlaceEvent.emit(UiEvent.Success(Unit))
-                    }else{
+                    } else {
                         _addPlaceEvent.emit(UiEvent.Failure(response.reason))
                     }
-            }.onFailure {
-                 _addPlaceEvent.emit(UiEvent.Failure("네트워크를 확인해주세요."))
-            }
+                }.onFailure {
+                    _addPlaceEvent.emit(UiEvent.Failure("네트워크를 확인해주세요."))
+                }
         }
     }
 }

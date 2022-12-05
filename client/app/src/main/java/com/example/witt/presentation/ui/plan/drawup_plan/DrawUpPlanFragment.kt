@@ -20,8 +20,6 @@ import com.example.witt.presentation.ui.UiState
 import com.example.witt.presentation.ui.plan.PlanViewModel
 import com.example.witt.presentation.ui.plan.drawup_plan.adapter.ParticipantAdapter
 import com.example.witt.presentation.ui.plan.drawup_plan.adapter.PlanAdapter
-import net.daum.mf.map.api.MapPOIItem
-import net.daum.mf.map.api.MapPoint
 import com.example.witt.presentation.ui.plan.drawup_plan.memo_dialog.WriteMemoFragment
 import com.example.witt.presentation.widget.RemoveConfirmDialog
 import com.example.witt.utils.DefaultTemplate
@@ -29,10 +27,12 @@ import com.example.witt.utils.convertCoordinates
 import com.kakao.sdk.common.util.KakaoCustomTabsClient
 import com.kakao.sdk.share.ShareClient
 import com.kakao.sdk.share.WebSharerClient
-import com.kakao.sdk.template.model.*
+import com.kakao.sdk.template.model.FeedTemplate
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import net.daum.mf.map.api.MapPOIItem
+import net.daum.mf.map.api.MapPoint
 import net.daum.mf.map.api.MapView
 
 @AndroidEntryPoint
@@ -50,12 +50,11 @@ class DrawUpPlanFragment : BaseFragment<FragmentDrawUpPlanBinding>(R.layout.frag
         initButton()
         initAdapter()
         observeData()
-
     }
 
     private fun initButton() {
         binding.sharePlanButton.setOnClickListener {
-            //todo refactor
+            // todo refactor
             planViewModel.planState.value?.let {
                 sendKakaoLink(requireContext(), DefaultTemplate.createTemplate(it))
             } ?: Toast.makeText(
@@ -79,7 +78,7 @@ class DrawUpPlanFragment : BaseFragment<FragmentDrawUpPlanBinding>(R.layout.frag
             findNavController().navigate(direction)
         }
 
-        binding.goChatButton.setOnClickListener{
+        binding.goChatButton.setOnClickListener {
             val direction = DrawUpPlanFragmentDirections.actionDrawUpPlanFragmentToChatFragment()
             findNavController().navigate(direction)
         }
@@ -87,10 +86,10 @@ class DrawUpPlanFragment : BaseFragment<FragmentDrawUpPlanBinding>(R.layout.frag
 
     private fun observeData() {
         binding.viewModel = planViewModel
-        //planViewModel에서 데이터 가져오기
+        // planViewModel에서 데이터 가져오기
         planViewModel.planState.observe(viewLifecycleOwner) {
             viewModel.getDetailPlan(it)
-            //initMap(it.Region)
+            // initMap(it.Region)
         }
 
         viewModel.drawUpPlanEvent.flowWithLifecycle(viewLifecycleOwner.lifecycle)
@@ -107,7 +106,6 @@ class DrawUpPlanFragment : BaseFragment<FragmentDrawUpPlanBinding>(R.layout.frag
                 }
             }.launchIn(viewLifecycleOwner.lifecycleScope)
 
-
         viewModel.drawUpPlanData.flowWithLifecycle(viewLifecycleOwner.lifecycle)
             .onEach {
                 when (it) {
@@ -119,12 +117,12 @@ class DrawUpPlanFragment : BaseFragment<FragmentDrawUpPlanBinding>(R.layout.frag
                 }
             }.launchIn(viewLifecycleOwner.lifecycleScope)
 
-        //여기서 Map 작업 및 다른 작업 하시면 됩니다~
+        // 여기서 Map 작업 및 다른 작업 하시면 됩니다~
         viewModel.planData.flowWithLifecycle(viewLifecycleOwner.lifecycle)
             .onEach {
-                when(it){
+                when (it) {
                     is UiState.Success -> {
-                        it.data.participants?.let{ participantList ->
+                        it.data.participants?.let { participantList ->
                             participantAdapter.submitList(participantList)
                         }
                     }
@@ -138,7 +136,7 @@ class DrawUpPlanFragment : BaseFragment<FragmentDrawUpPlanBinding>(R.layout.frag
 
         planAdapter = PlanAdapter(
             context = requireContext(),
-            memoClick = {  showMemoDialog(it.day, it.planId, it.memo?.content) },
+            memoClick = { showMemoDialog(it.day, it.planId, it.memo?.content) },
 
             memoButtonClick = { day ->
                 showMemoDialog(day, null, null)
@@ -150,7 +148,7 @@ class DrawUpPlanFragment : BaseFragment<FragmentDrawUpPlanBinding>(R.layout.frag
         )
         participantAdapter = ParticipantAdapter()
 
-        with(binding){
+        with(binding) {
             participantRecyclerView.layoutManager = LinearLayoutManager(requireContext())
             participantRecyclerView.adapter = participantAdapter
             datePlanRecyclerView.layoutManager = LinearLayoutManager(requireContext())
@@ -189,12 +187,12 @@ class DrawUpPlanFragment : BaseFragment<FragmentDrawUpPlanBinding>(R.layout.frag
             setZoomLevel(7, true)
             val marker = MapPOIItem()
             with(marker) {
-                itemName = destination //머커에 표시되는 이름
+                itemName = destination // 머커에 표시되는 이름
                 tag = 0
                 mapPoint = MapPoint.mapPointWithGeoCoord(
                     destinationCoordinate.first,
                     destinationCoordinate.second
-                ) //마커 위치
+                ) // 마커 위치
                 markerType = MapPOIItem.MarkerType.BluePin // 기본으로 제공하는 BluePin 마커 모양.
                 selectedMarkerType =
                     MapPOIItem.MarkerType.RedPin // 마커를 클릭했을때, 기본으로 제공하는 RedPin 마커 모양.

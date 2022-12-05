@@ -7,7 +7,7 @@ import javax.inject.Inject
 
 class GetLocalProfile @Inject constructor(
     private val userRepository: UserRepository
-){
-    operator fun invoke() : Flow<Result<UserProfileModel>> =
+) {
+    operator fun invoke(): Flow<Result<UserProfileModel>> =
         userRepository.getProfile()
 }

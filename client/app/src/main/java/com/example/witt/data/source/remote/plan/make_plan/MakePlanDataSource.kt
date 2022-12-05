@@ -6,5 +6,4 @@ import com.example.witt.data.model.remote.plan.make_plan.response.MakePlanRespon
 interface MakePlanDataSource {
 
     suspend fun makePlan(makePlanRequest: MakePlanRequest): Result<MakePlanResponse>
-
 }
