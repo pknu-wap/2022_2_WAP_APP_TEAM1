@@ -5,7 +5,7 @@
     <data>
         <variable
             name="item"
-            type="com.example.witt.domain.model.use_case.plan.PlanStateModel" />
+            type="com.example.witt.domain.model.remote.plan.get_plan.GetPlanListResultModel" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
