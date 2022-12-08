@@ -13,6 +13,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.witt.R
 import com.example.witt.databinding.FragmentHomeBinding
+import com.example.witt.domain.model.remote.plan.get_plan.toPlanStateModel
 import com.example.witt.presentation.base.BaseFragment
 import com.example.witt.presentation.ui.UiEvent
 import com.example.witt.presentation.ui.home.adapter.HomePlanAdapter
@@ -98,7 +99,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
     private fun initAdapter() {
         homePlanAdapter = HomePlanAdapter(
             onPlanCardClick = {
-                planViewModel.setPlanState(it)
+                planViewModel.setPlanState(it.toPlanStateModel())
                 val direction =
                     HomeFragmentDirections.actionHomeFragmentToDrawUpPlanFragment()
                 findNavController().navigate(direction)
