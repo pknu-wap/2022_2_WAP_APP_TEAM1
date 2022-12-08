@@ -12,7 +12,7 @@ import javax.inject.Inject
 class ConvertDetailPlanUseCase @Inject constructor(
     @DefaultDispatcher private val coroutineDispatcher: CoroutineDispatcher
 ) {
-    suspend operator fun invoke(startDate: String, endDate: String, data: List<DetailPlanModel>): List<PlanModel> =
+    suspend operator fun invoke(startDate: String, endDate: String, data: List<DetailPlanModel>?): List<PlanModel> =
         withContext(coroutineDispatcher) {
             var sd = LocalDate.parse(startDate, DateTimeFormatter.ofPattern("yyyy.MM.dd"))
             val ed = LocalDate.parse(endDate, DateTimeFormatter.ofPattern("yyyy.MM.dd"))
@@ -21,10 +21,11 @@ class ConvertDetailPlanUseCase @Inject constructor(
 
             var i = 1
             while (sd <= ed) {
-                result.add(PlanModel("Day $i", sd.toString(), data.filter { it.day == i }))
+                result.add(PlanModel("Day $i", sd.toString(), data?.filter { it.day == i }))
                 sd = sd.plusDays(1)
                 i += 1
             }
             result
         }
 }
+

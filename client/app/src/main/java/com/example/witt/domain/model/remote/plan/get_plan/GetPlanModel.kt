@@ -11,7 +11,7 @@ data class PlanDataModel(
     val name: String,
     val ownerId: String,
     val participants: List<PlanParticipantModel>?,
-    val plans: List<DetailPlanModel>,
+    val plans: List<DetailPlanModel>?,
     val region: String,
     val startDate: String,
     val tripId: Int
