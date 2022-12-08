@@ -1,5 +1,6 @@
 package com.example.witt.data.model.remote.user.response
 
+import com.example.witt.BuildConfig
 import com.example.witt.domain.model.remote.user.GetUserInfoModel
 import com.example.witt.domain.model.remote.user.UserInfoModel
 
@@ -32,5 +33,5 @@ fun UserInfoResponse.toUserInfoModel() = UserInfoModel(
     password = Password,
     phoneNum = PhoneNum,
     nickname = Nickname,
-    profileImage = ProfileImage
+    profileImage = BuildConfig.host_domain+"data/"+ProfileImage
 )
