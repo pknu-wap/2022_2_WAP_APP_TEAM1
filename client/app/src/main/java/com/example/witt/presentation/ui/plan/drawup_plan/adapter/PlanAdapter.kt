@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.witt.databinding.ItemPlanBinding
+import com.example.witt.databinding.ItemPlanDayBinding
 import com.example.witt.domain.model.remote.plan.get_plan.DetailPlanModel
 import com.example.witt.domain.model.use_case.plan.PlanModel
 import com.example.witt.presentation.listener.ItemTouchCallback
@@ -34,7 +34,7 @@ class PlanAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlanDateViewHolder {
         return PlanDateViewHolder(
-            ItemPlanBinding.inflate(
+            ItemPlanDayBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent, false
             ),
@@ -47,7 +47,7 @@ class PlanAdapter(
     }
 
     inner class PlanDateViewHolder(
-        private val binding: ItemPlanBinding,
+        private val binding: ItemPlanDayBinding,
         private val memoClick: (DetailPlanModel) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(dayPlanItem: PlanModel, pos: Int) {
@@ -58,7 +58,9 @@ class PlanAdapter(
             val helper = ItemTouchHelper(itemTouchHelperCallback)
 
             adapter.planContentData.clear()
-            adapter.planContentData.addAll(dayPlanItem.detailPlan)
+            dayPlanItem.detailPlan?.let{
+                adapter.planContentData.addAll(it)
+            }
 
             with(binding) {
                 item = dayPlanItem

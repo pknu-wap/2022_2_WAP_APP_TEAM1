@@ -20,7 +20,7 @@ data class PlanDataResponse(
     val Name: String,
     val OwnerId: String,
     val Participants: List<PlanParticipant>?,
-    val Plans: List<DetailPlanResponse>,
+    val Plans: List<DetailPlanResponse>?,
     val Region: String,
     val StartDate: String,
     val TripId: Int
@@ -76,7 +76,7 @@ fun PlanDataResponse.toPlanDataModel() = PlanDataModel(
     name = Name,
     ownerId = OwnerId,
     participants = Participants?.map { it.toPlanParticipantsModel() },
-    plans = Plans.map { it.toDetailPlanModel() },
+    plans = Plans?.map { it.toDetailPlanModel() },
     region = Region,
     startDate = StartDate.convertIsoToDate(),
     tripId = TripId,

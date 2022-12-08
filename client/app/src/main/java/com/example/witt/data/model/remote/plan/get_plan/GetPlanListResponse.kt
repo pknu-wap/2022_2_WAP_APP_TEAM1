@@ -2,8 +2,7 @@ package com.example.witt.data.model.remote.plan.get_plan
 
 import com.example.witt.domain.model.remote.plan.get_plan.GetPlanListModel
 import com.example.witt.domain.model.remote.plan.get_plan.GetPlanListResultModel
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
+import com.example.witt.utils.convertIsoToDate
 
 data class GetPlanListResponse(
     val status: Boolean,
@@ -28,8 +27,8 @@ fun GetPlanListResponse.toGetPlanListModel() = GetPlanListModel(
 
 fun GetPlanListResultResponse.toGetPlanListResultModel() = GetPlanListResultModel(
     TripId = TripId,
-    StartDate = LocalDateTime.parse(StartDate, DateTimeFormatter.ISO_DATE_TIME),
-    EndDate = LocalDateTime.parse(EndDate, DateTimeFormatter.ISO_DATE_TIME),
+    StartDate = StartDate.convertIsoToDate(),
+    EndDate = EndDate.convertIsoToDate(),
     Name = Name,
     Region = Region
 )

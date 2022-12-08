@@ -1,8 +1,6 @@
 package com.example.witt.presentation.ui.signin
 
-import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -28,7 +26,6 @@ class SignInFragment : BaseFragment<FragmentSignInBinding>(R.layout.fragment_sig
 
     private val viewModel: SignInViewModel by viewModels()
     private val userApiClient = UserApiClient.instance
-    private val prefs: SharedPreferences by lazy { requireContext().getSharedPreferences("prefs", Context.MODE_PRIVATE) }
 
     private val kakaoSignInCallback: (OAuthToken?, Throwable?) -> Unit = { token, _ ->
         if (token != null) {
@@ -39,9 +36,6 @@ class SignInFragment : BaseFragment<FragmentSignInBinding>(R.layout.fragment_sig
                 } else if (user != null) {
                     Toast.makeText(requireContext(), "카카오계정 사용자 정보 가져오기 성공 = " + user.kakaoAccount?.email, Toast.LENGTH_SHORT).show()
                     val oauthId = user.id.toString()
-                    val profile = user.kakaoAccount?.profile?.thumbnailImageUrl
-                    val nickName = user.kakaoAccount?.profile?.nickname
-                    initDataStore(nickName ?: "", profile ?: "")
                     viewModel.onEvent(SignInEvent.KakaoSignIn(oauthId))
                 }
             }
@@ -56,9 +50,6 @@ class SignInFragment : BaseFragment<FragmentSignInBinding>(R.layout.fragment_sig
                 override fun onSuccess(result: NidProfileResponse) {
                     result.profile?.let { user ->
                         val oauthId = user.id.toString()
-                        val profile = user.profileImage
-                        val nickName = user.nickname
-                        initDataStore(nickName ?: "", profile ?: "")
                         viewModel.onEvent(SignInEvent.NaverSignIn(oauthId))
                     }
                 }
@@ -124,13 +115,6 @@ class SignInFragment : BaseFragment<FragmentSignInBinding>(R.layout.fragment_sig
         binding.naverSignInButton.setOnClickListener {
             NaverIdLoginSDK.authenticate(requireActivity(), naverSignInCallback)
         }
-    }
-
-    private fun initDataStore(nickName: String, profile: String) {
-        prefs.edit()
-            .putString("profile", profile)
-            .putString("nickName", nickName)
-            .apply()
     }
 
     private fun initChannel() {

@@ -1,9 +1,7 @@
 package com.example.witt.presentation.ui.profile_edit
 
 import android.Manifest
-import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -26,20 +24,18 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.File
-import java.net.URL
 
 @AndroidEntryPoint
 class ProfileEditFragment : BaseFragment<FragmentProfileEditBinding>(R.layout.fragment_profile_edit) {
 
     private val viewModel: ProfileEditViewModel by viewModels()
-    private val prefs: SharedPreferences by lazy { requireContext().getSharedPreferences("prefs", Context.MODE_PRIVATE) }
 
     // image cropping
     private val cropImage = registerForActivityResult(CropImageContract()) { result ->
         if (result.isSuccessful) {
             val imageUri = result.getUriFilePath(requireContext())
+            uploadImage(result.uriContent?.toString())
             getPathFromLocalUri(imageUri)
-            uploadImage(imageUri)
         } else {
             Toast.makeText(requireContext(), result.error.toString(), Toast.LENGTH_SHORT).show()
         }
@@ -101,35 +97,7 @@ class ProfileEditFragment : BaseFragment<FragmentProfileEditBinding>(R.layout.fr
         }
     }
 
-    private fun initNickNameTextView(nickName: String?) {
-        nickName?.let {
-            binding.nameEditText.setText(nickName)
-            viewModel.onEvent(ProfileEditEvent.SubmitNickName(nickName))
-        }
-    }
-
-    private fun getPathFromRemoteUri(imageUrl: String?) {
-        CoroutineScope(Dispatchers.IO).launch {
-            runCatching {
-                val file = File(requireContext().cacheDir, "profile.jpg")
-                if (!imageUrl.isNullOrBlank()) { // 프로필 이미지가 등록되어 있는 경우
-                    val url = URL(imageUrl)
-                    val stream = url.openStream()
-                    file.outputStream().use {
-                        stream.copyTo(it)
-                    }
-                } else {
-                    file.outputStream().use { // 아닌 경우
-                        requireContext().assets.open("default_profile.jpg").copyTo(it) // assets의 기본 이미지 저장후 가져오기
-                    }
-                }
-                viewModel.onEvent(ProfileEditEvent.SubmitProfileImage(file))
-            }
-        }
-    }
-
     private fun getPathFromLocalUri(imageUri: String?) {
-        // uri이 두가지, 하나는 인터넷의 uri, 하나는 내 파일 속 uri
         CoroutineScope(Dispatchers.IO).launch {
             runCatching { // createNewFile, 에셋 열기에서 exception 발생가능성 있음.
                 val file = File(requireActivity().cacheDir, "profile.jpg")

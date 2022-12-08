@@ -7,11 +7,9 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.witt.databinding.ItemHomePlanBinding
 import com.example.witt.domain.model.remote.plan.get_plan.GetPlanListResultModel
-import com.example.witt.domain.model.remote.plan.get_plan.toPlanStateModel
-import com.example.witt.domain.model.use_case.plan.PlanStateModel
 
 class HomePlanAdapter(
-    val onPlanCardClick: (PlanStateModel) -> Unit,
+    val onPlanCardClick: (GetPlanListResultModel) -> Unit,
     val onRemoveButtonClick: (Int) -> Unit
 ) : ListAdapter<GetPlanListResultModel, HomePlanAdapter.HomePlanAdapter>(diffutil) {
 
@@ -44,11 +42,11 @@ class HomePlanAdapter(
     inner class HomePlanAdapter(private val binding: ItemHomePlanBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: GetPlanListResultModel) {
-            binding.item = item.toPlanStateModel()
+            binding.item = item
 
             binding.homePlanCardView.setOnClickListener {
                 onPlanCardClick(
-                    item.toPlanStateModel()
+                    item
                 )
             }
 
