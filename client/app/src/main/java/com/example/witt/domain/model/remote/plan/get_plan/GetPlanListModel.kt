@@ -1,7 +1,6 @@
 package com.example.witt.domain.model.remote.plan.get_plan
 
 import com.example.witt.domain.model.use_case.plan.PlanStateModel
-import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 data class GetPlanListModel(
@@ -12,8 +11,8 @@ data class GetPlanListModel(
 
 data class GetPlanListResultModel(
     val TripId: Int,
-    val StartDate: LocalDateTime,
-    val EndDate: LocalDateTime,
+    val StartDate: String,
+    val EndDate: String,
     val Name: String,
     val Region: String
 )
