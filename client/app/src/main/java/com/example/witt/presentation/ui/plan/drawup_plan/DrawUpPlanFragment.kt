@@ -14,6 +14,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.witt.R
 import com.example.witt.databinding.FragmentDrawUpPlanBinding
+import com.example.witt.domain.model.use_case.plan.PlaceInfo
 import com.example.witt.presentation.base.BaseFragment
 import com.example.witt.presentation.ui.UiEvent
 import com.example.witt.presentation.ui.UiState
@@ -43,11 +44,13 @@ class DrawUpPlanFragment : BaseFragment<FragmentDrawUpPlanBinding>(R.layout.frag
 
     private val planViewModel by activityViewModels<PlanViewModel>()
     private val viewModel: DrawUpViewModel by viewModels()
+    private lateinit var mapView: MapView
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         initButton()
+        initMap()
         initAdapter()
         observeData()
     }
@@ -89,7 +92,9 @@ class DrawUpPlanFragment : BaseFragment<FragmentDrawUpPlanBinding>(R.layout.frag
         // planViewModel에서 데이터 가져오기
         planViewModel.planState.observe(viewLifecycleOwner) {
             viewModel.getDetailPlan(it)
-            // initMap(it.Region)
+            // default 좌표 설정
+            val coordinate = it.Region.convertCoordinates()
+            setMarker(listOf(PlaceInfo(it.Region, coordinate.first, coordinate.second)))
         }
 
         viewModel.drawUpPlanEvent.flowWithLifecycle(viewLifecycleOwner.lifecycle)
@@ -125,6 +130,13 @@ class DrawUpPlanFragment : BaseFragment<FragmentDrawUpPlanBinding>(R.layout.frag
                         it.data.participants?.let { participantList ->
                             participantAdapter.submitList(participantList)
                         }
+                        val data : MutableList<PlaceInfo> = mutableListOf()
+                        it.data.plans?.forEach{ plan ->
+                            plan.place?.let{ place ->
+                                data.add(PlaceInfo(place.name, place.latitude, place.longitude))
+                            }
+                        }
+                        if(data.isNotEmpty()){ setMarker(data) }
                     }
                     is UiState.Failure -> {}
                     is UiState.Init -> {}
@@ -133,18 +145,22 @@ class DrawUpPlanFragment : BaseFragment<FragmentDrawUpPlanBinding>(R.layout.frag
     }
 
     private fun initAdapter() {
-
         planAdapter = PlanAdapter(
             context = requireContext(),
             memoClick = { showMemoDialog(it.day, it.planId, it.memo?.content) },
-
+            placeClick = {
+                it.place?.let{ place ->
+                    val mapPoint = MapPoint.mapPointWithGeoCoord(place.latitude, place.longitude)
+                    mapView.setMapCenterPoint(mapPoint, true)
+                }
+            },
             memoButtonClick = { day ->
                 showMemoDialog(day, null, null)
             },
             placeButtonClick = { day ->
                 val direction = DrawUpPlanFragmentDirections.actionDrawUpPlanFragmentToMapSearchFragment(day)
                 findNavController().navigate(direction)
-            }
+            },
         )
         participantAdapter = ParticipantAdapter()
 
@@ -172,33 +188,30 @@ class DrawUpPlanFragment : BaseFragment<FragmentDrawUpPlanBinding>(R.layout.frag
         memoDialog.show(requireActivity().supportFragmentManager, "MEMO")
     }
 
-    private fun initMap(destination: String) {
-        val mapView = MapView(requireActivity())
-        val destinationCoordinate = destination.convertCoordinates()
-        with(mapView) {
-            binding.mapView.addView(this)
-            setMapCenterPoint(
-                MapPoint.mapPointWithGeoCoord(
-                    destinationCoordinate.first,
-                    destinationCoordinate.second
-                ),
-                true
-            )
-            setZoomLevel(7, true)
+    private fun initMap() {
+        mapView = MapView(requireActivity())
+        binding.mapView.addView(mapView)
+    }
+
+    private fun setMarker(placeInfo: List<PlaceInfo>){
+        mapView.removeAllPOIItems()
+        placeInfo.forEach{ place ->
             val marker = MapPOIItem()
             with(marker) {
-                itemName = destination // 머커에 표시되는 이름
+                itemName = place.name // 머커에 표시되는 이름
                 tag = 0
                 mapPoint = MapPoint.mapPointWithGeoCoord(
-                    destinationCoordinate.first,
-                    destinationCoordinate.second
+                    place.latitude,
+                    place.longitude
                 ) // 마커 위치
                 markerType = MapPOIItem.MarkerType.BluePin // 기본으로 제공하는 BluePin 마커 모양.
                 selectedMarkerType =
                     MapPOIItem.MarkerType.RedPin // 마커를 클릭했을때, 기본으로 제공하는 RedPin 마커 모양.
             }
-            addPOIItem(marker)
+            mapView.addPOIItem(marker)
         }
+        val mapPoint = MapPoint.mapPointWithGeoCoord(placeInfo.first().latitude, placeInfo.first().longitude)
+        mapView.setMapCenterPoint(mapPoint, true)
     }
 
     private fun sendKakaoLink(context: Context, defaultFeed: FeedTemplate) {
