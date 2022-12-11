@@ -8,21 +8,18 @@
             name="viewModel"
             type="com.example.witt.presentation.ui.plan.PlanViewModel" />
     </data>
-
     <androidx.constraintlayout.motion.widget.MotionLayout
         android:id="@+id/motionLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layoutDescription="@xml/fragment_draw_up_plan_scene"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:context=".presentation.ui.plan.make_plan.MakePlanFragment" >
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/mapView"
             android:layout_width="match_parent"
             android:layout_height="200dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tripInfo">
 
@@ -32,7 +29,10 @@
             android:id="@+id/tripInfo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            >
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/share_plan_button"
@@ -155,14 +155,37 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/plan_drag_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/background_gray"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tripInfo">
+
+            <ImageView
+                android:id="@+id/horizontal_bar_imageView"
+                android:layout_width="100dp"
+                android:layout_height="20dp"
+                android:scaleType="fitXY"
+                android:background="@color/background_gray"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/horizontal_bar" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/date_plan_recyclerView"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tripInfo" />
+            app:layout_constraintTop_toBottomOf="@id/plan_drag_view">
+
+        </androidx.recyclerview.widget.RecyclerView>
 
     </androidx.constraintlayout.motion.widget.MotionLayout>
 </layout>
