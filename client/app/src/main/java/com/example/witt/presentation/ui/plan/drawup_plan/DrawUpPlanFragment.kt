@@ -34,6 +34,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import net.daum.mf.map.api.MapPOIItem
 import net.daum.mf.map.api.MapPoint
+import net.daum.mf.map.api.MapPolyline
 import net.daum.mf.map.api.MapView
 
 @AndroidEntryPoint
@@ -136,7 +137,10 @@ class DrawUpPlanFragment : BaseFragment<FragmentDrawUpPlanBinding>(R.layout.frag
                                 data.add(PlaceInfo(place.name, place.latitude, place.longitude))
                             }
                         }
-                        if(data.isNotEmpty()){ setMarker(data) }
+                        if(data.isNotEmpty()){
+                            setMarker(data)
+                            setPolyLine(data)
+                        }
                     }
                     is UiState.Failure -> {}
                     is UiState.Init -> {}
@@ -212,6 +216,19 @@ class DrawUpPlanFragment : BaseFragment<FragmentDrawUpPlanBinding>(R.layout.frag
         }
         val mapPoint = MapPoint.mapPointWithGeoCoord(placeInfo.first().latitude, placeInfo.first().longitude)
         mapView.setMapCenterPoint(mapPoint, true)
+    }
+
+    private fun setPolyLine(placeInfo: List<PlaceInfo>){
+        val polyLine = MapPolyline()
+        placeInfo.forEach{ place ->
+            with(polyLine){
+                tag = 1000
+                lineColor = R.color.white_green
+                addPoint(MapPoint.mapPointWithGeoCoord(place.latitude, place.longitude))
+            }
+            mapView.addPolyline(polyLine)
+        }
+        mapView.fitMapViewAreaToShowAllPolylines()
     }
 
     private fun sendKakaoLink(context: Context, defaultFeed: FeedTemplate) {
