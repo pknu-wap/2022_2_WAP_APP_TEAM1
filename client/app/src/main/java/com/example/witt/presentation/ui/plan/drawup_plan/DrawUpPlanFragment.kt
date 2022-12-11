@@ -4,7 +4,9 @@ import android.content.ActivityNotFoundException
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -16,6 +18,7 @@ import com.example.witt.R
 import com.example.witt.databinding.FragmentDrawUpPlanBinding
 import com.example.witt.domain.model.use_case.plan.PlaceInfo
 import com.example.witt.presentation.base.BaseFragment
+import com.example.witt.presentation.listener.MarkerEventListener
 import com.example.witt.presentation.ui.UiEvent
 import com.example.witt.presentation.ui.UiState
 import com.example.witt.presentation.ui.plan.PlanViewModel
@@ -32,10 +35,7 @@ import com.kakao.sdk.template.model.FeedTemplate
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import net.daum.mf.map.api.MapPOIItem
-import net.daum.mf.map.api.MapPoint
-import net.daum.mf.map.api.MapPolyline
-import net.daum.mf.map.api.MapView
+import net.daum.mf.map.api.*
 
 @AndroidEntryPoint
 class DrawUpPlanFragment : BaseFragment<FragmentDrawUpPlanBinding>(R.layout.fragment_draw_up_plan) {
@@ -45,6 +45,8 @@ class DrawUpPlanFragment : BaseFragment<FragmentDrawUpPlanBinding>(R.layout.frag
 
     private val planViewModel by activityViewModels<PlanViewModel>()
     private val viewModel: DrawUpViewModel by viewModels()
+
+    private val eventListener by lazy { MarkerEventListener(requireActivity()) }
     private lateinit var mapView: MapView
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -195,6 +197,8 @@ class DrawUpPlanFragment : BaseFragment<FragmentDrawUpPlanBinding>(R.layout.frag
     private fun initMap() {
         mapView = MapView(requireActivity())
         binding.mapView.addView(mapView)
+        mapView.setPOIItemEventListener(eventListener)
+        mapView.setCalloutBalloonAdapter(CustomBalloonAdapter(layoutInflater))
     }
 
     private fun setMarker(placeInfo: List<PlaceInfo>){
@@ -251,6 +255,21 @@ class DrawUpPlanFragment : BaseFragment<FragmentDrawUpPlanBinding>(R.layout.frag
             } catch (e: ActivityNotFoundException) {
                 e.printStackTrace()
             }
+        }
+    }
+    class CustomBalloonAdapter(private val inflater: LayoutInflater) : CalloutBalloonAdapter {
+        private val itemCardBalloon = inflater.inflate(R.layout.item_card_balloon, null)
+        private val title : TextView = itemCardBalloon.findViewById(R.id.item_balloon_title)
+
+        override fun getCalloutBalloon(poiItem: MapPOIItem?): View {
+            // 마커 클릭 시 나오는 말풍선
+            title.text = poiItem?.itemName
+            return itemCardBalloon
+        }
+
+        override fun getPressedCalloutBalloon(poiItem: MapPOIItem?): View {
+            // 말풍선 클릭 시
+            return itemCardBalloon
         }
     }
 }
