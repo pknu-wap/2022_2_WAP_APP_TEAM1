@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <androidx.cardview.widget.CardView
-        android:id="@+id/ball_view"
+        android:id="@+id/card_balloon_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:cardCornerRadius="8dp">
@@ -41,6 +41,7 @@
                 android:layout_marginEnd="8dp"
                 android:textSize="12sp"
                 android:text="지도로 확인하기"
+                android:textColor="@color/gray"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/item_balloon_address"
