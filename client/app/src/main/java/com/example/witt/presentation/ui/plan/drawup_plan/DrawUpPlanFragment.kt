@@ -3,7 +3,6 @@ package com.example.witt.presentation.ui.plan.drawup_plan
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
@@ -35,7 +34,11 @@ import com.kakao.sdk.template.model.FeedTemplate
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import net.daum.mf.map.api.*
+import net.daum.mf.map.api.CalloutBalloonAdapter
+import net.daum.mf.map.api.MapPOIItem
+import net.daum.mf.map.api.MapPoint
+import net.daum.mf.map.api.MapView
+import net.daum.mf.map.api.MapPolyline
 
 @AndroidEntryPoint
 class DrawUpPlanFragment : BaseFragment<FragmentDrawUpPlanBinding>(R.layout.fragment_draw_up_plan) {
@@ -97,7 +100,7 @@ class DrawUpPlanFragment : BaseFragment<FragmentDrawUpPlanBinding>(R.layout.frag
             viewModel.getDetailPlan(it)
             // default 좌표 설정
             val coordinate = it.Region.convertCoordinates()
-            setMarker(listOf(PlaceInfo(it.Region, coordinate.first, coordinate.second)))
+            setMarker(listOf(PlaceInfo(it.Region, coordinate.first, coordinate.second, "")))
         }
 
         viewModel.drawUpPlanEvent.flowWithLifecycle(viewLifecycleOwner.lifecycle)
@@ -136,7 +139,8 @@ class DrawUpPlanFragment : BaseFragment<FragmentDrawUpPlanBinding>(R.layout.frag
                         val data : MutableList<PlaceInfo> = mutableListOf()
                         it.data.plans?.forEach{ plan ->
                             plan.place?.let{ place ->
-                                data.add(PlaceInfo(place.name, place.latitude, place.longitude))
+                                data.add(PlaceInfo(place.name, place.latitude,
+                                    place.longitude, place.category))
                             }
                         }
                         if(data.isNotEmpty()){
@@ -207,6 +211,7 @@ class DrawUpPlanFragment : BaseFragment<FragmentDrawUpPlanBinding>(R.layout.frag
             val marker = MapPOIItem()
             with(marker) {
                 itemName = place.name // 머커에 표시되는 이름
+                userObject = place
                 tag = 0
                 mapPoint = MapPoint.mapPointWithGeoCoord(
                     place.latitude,
@@ -239,7 +244,6 @@ class DrawUpPlanFragment : BaseFragment<FragmentDrawUpPlanBinding>(R.layout.frag
         if (ShareClient.instance.isKakaoTalkSharingAvailable(context)) {
             ShareClient.instance.shareDefault(context, defaultFeed) { sharingResult, _ ->
                 if (sharingResult != null) {
-                    Log.d("tag", "카카오톡 공유 성공 ${sharingResult.intent}")
                     startActivity(sharingResult.intent)
                 }
             }
@@ -258,12 +262,16 @@ class DrawUpPlanFragment : BaseFragment<FragmentDrawUpPlanBinding>(R.layout.frag
         }
     }
     class CustomBalloonAdapter(private val inflater: LayoutInflater) : CalloutBalloonAdapter {
+
         private val itemCardBalloon = inflater.inflate(R.layout.item_card_balloon, null)
-        private val title : TextView = itemCardBalloon.findViewById(R.id.item_balloon_title)
+        private val placeName : TextView = itemCardBalloon.findViewById(R.id.item_balloon_title)
+        private val placeAddress : TextView = itemCardBalloon.findViewById(R.id.item_balloon_address)
 
         override fun getCalloutBalloon(poiItem: MapPOIItem?): View {
             // 마커 클릭 시 나오는 말풍선
-            title.text = poiItem?.itemName
+            val item = poiItem?.userObject as PlaceInfo
+            placeName.text = item.name
+            placeAddress.text = item.roadAddress
             return itemCardBalloon
         }
 
