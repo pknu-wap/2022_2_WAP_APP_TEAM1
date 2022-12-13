@@ -3,8 +3,9 @@ package com.example.witt.presentation.ui.plan.drawup_plan
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -14,7 +15,9 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.witt.R
 import com.example.witt.databinding.FragmentDrawUpPlanBinding
+import com.example.witt.domain.model.use_case.plan.PlaceInfo
 import com.example.witt.presentation.base.BaseFragment
+import com.example.witt.presentation.listener.MarkerEventListener
 import com.example.witt.presentation.ui.UiEvent
 import com.example.witt.presentation.ui.UiState
 import com.example.witt.presentation.ui.plan.PlanViewModel
@@ -31,9 +34,11 @@ import com.kakao.sdk.template.model.FeedTemplate
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import net.daum.mf.map.api.CalloutBalloonAdapter
 import net.daum.mf.map.api.MapPOIItem
 import net.daum.mf.map.api.MapPoint
 import net.daum.mf.map.api.MapView
+import net.daum.mf.map.api.MapPolyline
 
 @AndroidEntryPoint
 class DrawUpPlanFragment : BaseFragment<FragmentDrawUpPlanBinding>(R.layout.fragment_draw_up_plan) {
@@ -44,10 +49,14 @@ class DrawUpPlanFragment : BaseFragment<FragmentDrawUpPlanBinding>(R.layout.frag
     private val planViewModel by activityViewModels<PlanViewModel>()
     private val viewModel: DrawUpViewModel by viewModels()
 
+    private val eventListener by lazy { MarkerEventListener(requireActivity()) }
+    private lateinit var mapView: MapView
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         initButton()
+        initMap()
         initAdapter()
         observeData()
     }
@@ -89,7 +98,9 @@ class DrawUpPlanFragment : BaseFragment<FragmentDrawUpPlanBinding>(R.layout.frag
         // planViewModel에서 데이터 가져오기
         planViewModel.planState.observe(viewLifecycleOwner) {
             viewModel.getDetailPlan(it)
-            // initMap(it.Region)
+            // default 좌표 설정
+            val coordinate = it.Region.convertCoordinates()
+            setMarker(listOf(PlaceInfo(it.Region, coordinate.first, coordinate.second, "")))
         }
 
         viewModel.drawUpPlanEvent.flowWithLifecycle(viewLifecycleOwner.lifecycle)
@@ -125,6 +136,17 @@ class DrawUpPlanFragment : BaseFragment<FragmentDrawUpPlanBinding>(R.layout.frag
                         it.data.participants?.let { participantList ->
                             participantAdapter.submitList(participantList)
                         }
+                        val data : MutableList<PlaceInfo> = mutableListOf()
+                        it.data.plans?.forEach{ plan ->
+                            plan.place?.let{ place ->
+                                data.add(PlaceInfo(place.name, place.latitude,
+                                    place.longitude, place.category))
+                            }
+                        }
+                        if(data.isNotEmpty()){
+                            setMarker(data)
+                            setPolyLine(data)
+                        }
                     }
                     is UiState.Failure -> {}
                     is UiState.Init -> {}
@@ -133,18 +155,22 @@ class DrawUpPlanFragment : BaseFragment<FragmentDrawUpPlanBinding>(R.layout.frag
     }
 
     private fun initAdapter() {
-
         planAdapter = PlanAdapter(
             context = requireContext(),
             memoClick = { showMemoDialog(it.day, it.planId, it.memo?.content) },
-
+            placeClick = {
+                it.place?.let{ place ->
+                    val mapPoint = MapPoint.mapPointWithGeoCoord(place.latitude, place.longitude)
+                    mapView.setMapCenterPoint(mapPoint, true)
+                }
+            },
             memoButtonClick = { day ->
                 showMemoDialog(day, null, null)
             },
             placeButtonClick = { day ->
                 val direction = DrawUpPlanFragmentDirections.actionDrawUpPlanFragmentToMapSearchFragment(day)
                 findNavController().navigate(direction)
-            }
+            },
         )
         participantAdapter = ParticipantAdapter()
 
@@ -172,40 +198,52 @@ class DrawUpPlanFragment : BaseFragment<FragmentDrawUpPlanBinding>(R.layout.frag
         memoDialog.show(requireActivity().supportFragmentManager, "MEMO")
     }
 
-    private fun initMap(destination: String) {
-        val mapView = MapView(requireActivity())
-        val destinationCoordinate = destination.convertCoordinates()
-        with(mapView) {
-            binding.mapView.addView(this)
-            setMapCenterPoint(
-                MapPoint.mapPointWithGeoCoord(
-                    destinationCoordinate.first,
-                    destinationCoordinate.second
-                ),
-                true
-            )
-            setZoomLevel(7, true)
+    private fun initMap() {
+        mapView = MapView(requireActivity())
+        binding.mapView.addView(mapView)
+        mapView.setPOIItemEventListener(eventListener)
+        mapView.setCalloutBalloonAdapter(CustomBalloonAdapter(layoutInflater))
+    }
+
+    private fun setMarker(placeInfo: List<PlaceInfo>){
+        mapView.removeAllPOIItems()
+        placeInfo.forEach{ place ->
             val marker = MapPOIItem()
             with(marker) {
-                itemName = destination // 머커에 표시되는 이름
+                itemName = place.name // 머커에 표시되는 이름
+                userObject = place
                 tag = 0
                 mapPoint = MapPoint.mapPointWithGeoCoord(
-                    destinationCoordinate.first,
-                    destinationCoordinate.second
+                    place.latitude,
+                    place.longitude
                 ) // 마커 위치
                 markerType = MapPOIItem.MarkerType.BluePin // 기본으로 제공하는 BluePin 마커 모양.
                 selectedMarkerType =
                     MapPOIItem.MarkerType.RedPin // 마커를 클릭했을때, 기본으로 제공하는 RedPin 마커 모양.
             }
-            addPOIItem(marker)
+            mapView.addPOIItem(marker)
         }
+        val mapPoint = MapPoint.mapPointWithGeoCoord(placeInfo.first().latitude, placeInfo.first().longitude)
+        mapView.setMapCenterPoint(mapPoint, true)
+    }
+
+    private fun setPolyLine(placeInfo: List<PlaceInfo>){
+        val polyLine = MapPolyline()
+        placeInfo.forEach{ place ->
+            with(polyLine){
+                tag = 1000
+                lineColor = R.color.white_green
+                addPoint(MapPoint.mapPointWithGeoCoord(place.latitude, place.longitude))
+            }
+            mapView.addPolyline(polyLine)
+        }
+        mapView.fitMapViewAreaToShowAllPolylines()
     }
 
     private fun sendKakaoLink(context: Context, defaultFeed: FeedTemplate) {
         if (ShareClient.instance.isKakaoTalkSharingAvailable(context)) {
             ShareClient.instance.shareDefault(context, defaultFeed) { sharingResult, _ ->
                 if (sharingResult != null) {
-                    Log.d("tag", "카카오톡 공유 성공 ${sharingResult.intent}")
                     startActivity(sharingResult.intent)
                 }
             }
@@ -221,6 +259,25 @@ class DrawUpPlanFragment : BaseFragment<FragmentDrawUpPlanBinding>(R.layout.frag
             } catch (e: ActivityNotFoundException) {
                 e.printStackTrace()
             }
+        }
+    }
+    class CustomBalloonAdapter(private val inflater: LayoutInflater) : CalloutBalloonAdapter {
+
+        private val itemCardBalloon = inflater.inflate(R.layout.item_card_balloon, null)
+        private val placeName : TextView = itemCardBalloon.findViewById(R.id.item_balloon_title)
+        private val placeAddress : TextView = itemCardBalloon.findViewById(R.id.item_balloon_address)
+
+        override fun getCalloutBalloon(poiItem: MapPOIItem?): View {
+            // 마커 클릭 시 나오는 말풍선
+            val item = poiItem?.userObject as PlaceInfo
+            placeName.text = item.name
+            placeAddress.text = item.roadAddress
+            return itemCardBalloon
+        }
+
+        override fun getPressedCalloutBalloon(poiItem: MapPOIItem?): View {
+            // 말풍선 클릭 시
+            return itemCardBalloon
         }
     }
 }

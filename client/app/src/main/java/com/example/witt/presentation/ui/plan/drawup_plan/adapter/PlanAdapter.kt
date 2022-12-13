@@ -16,6 +16,7 @@ import com.example.witt.presentation.listener.ItemTouchCallback
 class PlanAdapter(
     val context: Context,
     val memoClick: (DetailPlanModel) -> Unit,
+    val placeClick: (DetailPlanModel) -> Unit,
     val memoButtonClick: (Int) -> Unit,
     val placeButtonClick: (Int) -> Unit,
 ) : ListAdapter<PlanModel, PlanAdapter.PlanDateViewHolder>(diffutil) {
@@ -38,7 +39,8 @@ class PlanAdapter(
                 LayoutInflater.from(parent.context),
                 parent, false
             ),
-            memoClick
+            memoClick,
+            placeClick
         )
     }
 
@@ -48,11 +50,12 @@ class PlanAdapter(
 
     inner class PlanDateViewHolder(
         private val binding: ItemPlanDayBinding,
-        private val memoClick: (DetailPlanModel) -> Unit
+        private val memoClick: (DetailPlanModel) -> Unit,
+        private val placeClick: (DetailPlanModel) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(dayPlanItem: PlanModel, pos: Int) {
 
-            val adapter = DetailPlanAdapter(memoClick)
+            val adapter = DetailPlanAdapter(memoClick, placeClick)
 
             val itemTouchHelperCallback = ItemTouchCallback(adapter)
             val helper = ItemTouchHelper(itemTouchHelperCallback)

@@ -12,7 +12,8 @@ import com.example.witt.presentation.listener.ItemTouchHelperListener
 import com.example.witt.utils.convertIsoToTime
 
 class DetailPlanAdapter(
-    val memoClick: (DetailPlanModel) -> Unit
+    val memoClick: (DetailPlanModel) -> Unit,
+    val placeClick: (DetailPlanModel) -> Unit,
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>(), ItemTouchHelperListener {
 
     val planContentData = mutableListOf<DetailPlanModel>()
@@ -81,6 +82,9 @@ class DetailPlanAdapter(
         fun bind(item: DetailPlanModel) {
             binding.item = item.place
             binding.placeNumberTextView.text = item.orderIndex.toString()
+            binding.planPlaceCardView.setOnClickListener{
+                placeClick(item)
+            }
         }
     }
 
