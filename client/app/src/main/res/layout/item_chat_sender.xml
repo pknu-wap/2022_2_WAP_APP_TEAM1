@@ -11,6 +11,7 @@
         android:id="@+id/card_gchat_message_me"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         app:cardBackgroundColor="@color/skyBlue"
         app:cardCornerRadius="12dp"
         app:cardElevation="0dp"
@@ -18,7 +19,7 @@
         app:cardUseCompatPadding="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/receiver_date_textView">
 
         <RelativeLayout
             android:id="@+id/layout_gchat_container_me"
@@ -46,11 +47,21 @@
         android:id="@+id/sender_timeStamp_textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="10:00"
+        tools:text="10:00"
         android:textColor="#C0C0C0"
         android:textSize="10sp"
         app:layout_constraintBottom_toBottomOf="@+id/card_gchat_message_me"
         app:layout_constraintEnd_toStartOf="@+id/card_gchat_message_me" />
 
+    <TextView
+        android:id="@+id/receiver_date_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/whiteBlue"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="June 10" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
