@@ -5,6 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.witt.data.model.socket.chat.ChatResponse
+import com.example.witt.data.model.socket.chat.toChatModel
+import com.example.witt.domain.model.socket.chat.ChatModel
 import com.example.witt.domain.repository.UserRepository
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
@@ -20,11 +22,11 @@ class ChatViewModel @Inject constructor(
     private val socket: Socket
 ) : ViewModel() {
 
-    private val chatList = mutableListOf<ChatResponse>()
+    private val chatList = mutableListOf<ChatModel>()
     private val gson by lazy { Gson() }
 
-    private val _chatData: MutableLiveData<List<ChatResponse>> = MutableLiveData(emptyList())
-    val chatData: LiveData<List<ChatResponse>> get() = _chatData
+    private val _chatData: MutableLiveData<List<ChatModel>> = MutableLiveData(emptyList())
+    val chatData: LiveData<List<ChatModel>> get() = _chatData
 
     fun connectServer(tripId: Int) {
         viewModelScope.launch {
@@ -36,7 +38,7 @@ class ChatViewModel @Inject constructor(
                             Array<ChatResponse>::class.java
                         ).toList()
                         data.forEach {
-                            chatList.add(it)
+                            chatList.add(it.toChatModel())
                         }
                         _chatData.value = chatList
                     }
@@ -44,7 +46,7 @@ class ChatViewModel @Inject constructor(
 
                 socket.on("evtMessage") { args ->
                     viewModelScope.launch {
-                        chatList.add(gson.fromJson(args[0].toString(), ChatResponse::class.java))
+                        chatList.add(gson.fromJson(args[0].toString(), ChatResponse::class.java).toChatModel())
                         _chatData.value = chatList
                     }
                 }
