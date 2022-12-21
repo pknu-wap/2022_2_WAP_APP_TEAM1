@@ -5,20 +5,20 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginEnd="8dp"
-    android:layout_marginTop="16dp">
+    android:layout_marginTop="8dp">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/card_gchat_message_me"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         app:cardBackgroundColor="@color/skyBlue"
         app:cardCornerRadius="12dp"
         app:cardPreventCornerOverlap="false"
         app:cardUseCompatPadding="true"
+        android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/receiver_date_textView">
+        app:layout_constraintTop_toBottomOf="@+id/sender_date_textView">
 
         <RelativeLayout
             android:id="@+id/layout_gchat_container_me"
@@ -53,11 +53,11 @@
         app:layout_constraintEnd_toStartOf="@+id/card_gchat_message_me" />
 
     <TextView
-        android:id="@+id/receiver_date_textView"
+        android:id="@+id/sender_date_textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/whiteBlue"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
