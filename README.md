@@ -11,9 +11,6 @@
     <img src="https://img.shields.io/badge/all_contributors-4-orange.svg?style=for-the-badge"/>
 </p>
 
-## Client : 정진호, 최성훈 
-## Server : 서재완, 이예은
-
 위트(Witt) 
 
 <p align="center">
