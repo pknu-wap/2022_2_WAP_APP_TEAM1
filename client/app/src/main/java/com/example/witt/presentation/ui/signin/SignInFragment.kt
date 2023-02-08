@@ -77,7 +77,7 @@ class SignInFragment : BaseFragment<FragmentSignInBinding>(R.layout.fragment_sig
         binding.viewModel = viewModel
 
         // token 검사
-        // viewModel.onEvent(SignInEvent.CheckToken)
+        viewModel.onEvent(SignInEvent.CheckToken)
 
         initSignInUpButton()
         initKakaoButton()
@@ -122,7 +122,9 @@ class SignInFragment : BaseFragment<FragmentSignInBinding>(R.layout.fragment_sig
             viewModel.signInEvents.collect { event ->
                 when (event) {
                     is SignInViewModel.SignInUiEvent.Success -> { // 프로필 있는 상태에서 로그인 성공시 홈으로
-                        startActivity(Intent(requireActivity(), PlanActivity::class.java))
+                        val intent = Intent(requireActivity(), PlanActivity::class.java)
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                        startActivity(intent)
                     }
                     is SignInViewModel.SignInUiEvent.Failure -> { // 실패시 Toast 메세지
                         Toast.makeText(activity, event.message, Toast.LENGTH_SHORT).show()
