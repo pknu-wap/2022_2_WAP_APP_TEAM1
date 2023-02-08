@@ -11,8 +11,6 @@
     <img src="https://img.shields.io/badge/all_contributors-4-orange.svg?style=for-the-badge"/>
 </p>
 
-위트(Witt) 
-
 <p align="center">
 	<h3 align="center">
 		 공유 플랜 여행서비스<br>WitT(With Trip)
