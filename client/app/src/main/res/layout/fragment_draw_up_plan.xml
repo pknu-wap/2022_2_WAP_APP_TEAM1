@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.witt.presentation.ui.plan.PlanViewModel" />
+    </data>
+    <androidx.constraintlayout.motion.widget.MotionLayout
+        android:id="@+id/motionLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layoutDescription="@xml/fragment_draw_up_plan_scene"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/mapView"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tripInfo">
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/tripInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            >
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/share_plan_button"
+                style="@style/Widget.Material3.Chip.Filter.Elevated"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:text="일정 공유하기"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                app:checkedIconEnabled="false"
+                app:chipBackgroundColor="@color/skyBlue"
+                app:chipIcon="@drawable/ic_baseline_add_24"
+                app:chipIconTint="@color/white"
+                app:chipIconVisible="true"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/destination_textView" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/addAirlineButton"
+                style="@style/Widget.Material3.Chip.Filter.Elevated"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:text="항공권 추가하기"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                app:checkedIconEnabled="false"
+                app:chipBackgroundColor="@color/white_green"
+                app:chipIcon="@drawable/ic_baseline_add_24"
+                app:chipIconTint="@color/white"
+                app:chipIconVisible="true"
+                app:layout_constraintStart_toEndOf="@id/share_plan_button"
+                app:layout_constraintTop_toBottomOf="@+id/destination_textView" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/out_plan_button"
+                style="@style/Widget.Material3.Chip.Filter.Elevated"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:text="일정 나가기"
+                android:textColor="@color/skyBlue"
+                android:textSize="12sp"
+                app:checkedIconEnabled="false"
+                app:chipBackgroundColor="@color/white"
+                app:chipIcon="@drawable/ic_baseline_delete_24"
+                app:chipIconTint="@color/skyBlue"
+                app:chipIconVisible="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/go_chat_button"
+                style="@style/Widget.Material3.Chip.Filter.Elevated"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:text="채팅하기"
+                android:textColor="@color/white_green"
+                android:textSize="12sp"
+                app:checkedIconEnabled="false"
+                app:chipBackgroundColor="@color/white"
+                app:chipIcon="@drawable/ic_baseline_chat_24"
+                app:chipIconTint="@color/white_green"
+                app:chipIconVisible="true"
+                app:layout_constraintEnd_toStartOf="@+id/out_plan_button"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/planName_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="64dp"
+                android:text="@{viewModel.planState.name}"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="여행 이름" />
+
+            <TextView
+                android:id="@+id/date_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:text="@{viewModel.planState.startDate + '-' + viewModel.planState.endDate}"
+                android:textColor="@color/gray"
+                app:layout_constraintBottom_toBottomOf="@+id/destination_textView"
+                app:layout_constraintStart_toEndOf="@+id/destination_textView"
+                tools:text="2022.11.01 ~ 2022.11.11" />
+
+            <TextView
+                android:id="@+id/destination_textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:text="@{viewModel.planState.region}"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/planName_text_view"
+                tools:text="부산/경상" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/participant_recyclerView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/share_plan_button" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/plan_drag_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/background_gray"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tripInfo">
+
+            <ImageView
+                android:id="@+id/horizontal_bar_imageView"
+                android:layout_width="100dp"
+                android:layout_height="20dp"
+                android:scaleType="fitXY"
+                android:background="@color/background_gray"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/horizontal_bar" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/date_plan_recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/plan_drag_view">
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+    </androidx.constraintlayout.motion.widget.MotionLayout>
+</layout>

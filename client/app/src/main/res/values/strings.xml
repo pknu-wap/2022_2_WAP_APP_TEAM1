@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Witt</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string-array name="airline_array">
+        <item>대한항공(KE)</item>
+        <item>아시아나항공(OZ)</item>
+        <item>제주항공(7C)</item>
+        <item>진에어(LJ)</item>
+        <item>티웨이항공(TW)</item>
+        <item>에어서울(RS)</item>
+        <item>에어부산(BX)</item>
+        <item>플라이강원(4V)</item>
+    </string-array>
+</resources>

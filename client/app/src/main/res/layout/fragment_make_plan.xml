@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.witt.presentation.ui.plan.make_plan.MakePlanViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".presentation.ui.plan.make_plan.MakePlanFragment"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/make_plan_textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="어디로 여행 가실 예정인가요?"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginTop="32dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/plan_id_textField" />
+
+
+        <Button
+            android:id="@+id/goToDrawUpPlan_button"
+            style="@style/Widget.Material3.Button.ElevatedButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="완료"
+            android:enabled="false"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/name_plan_textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="여행 이름을 붙여주세요."
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginTop="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/plan_id_textField"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint= "Witt와 함께하는 여행"
+            app:counterMaxLength="20"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/name_plan_textView">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/plan_id_editTextView"
+                android:text="@={viewModel.inputPlanName}"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.chip.ChipGroup
+            android:layout_width="347dp"
+            android:layout_height="161dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/make_plan_textView"
+            app:selectionRequired="true"
+            app:singleSelection="true">
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/destination_seoul_chip"
+                style="@style/Widget.MaterialComponents.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:onClick="@{() -> viewModel.onButtonEvent(destinationSeoulChip.getText().toString())}"
+                android:text="서울/경기"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/make_plan_textView" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/destination_busan_chip"
+                style="@style/Widget.MaterialComponents.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="16dp"
+                android:onClick="@{() -> viewModel.onButtonEvent(destinationBusanChip.getText().toString())}"
+                android:text="부산/경상"
+                app:layout_constraintStart_toEndOf="@+id/destination_seoul_chip"
+                app:layout_constraintTop_toBottomOf="@+id/make_plan_textView" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/destination_daejeon_chip"
+                style="@style/Widget.MaterialComponents.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="16dp"
+                android:onClick="@{() -> viewModel.onButtonEvent(destinationDaejeonChip.getText().toString())}"
+                android:text="대전/충청"
+                app:layout_constraintStart_toEndOf="@+id/destination_busan_chip"
+                app:layout_constraintTop_toBottomOf="@+id/make_plan_textView" />
+
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/destination_jeonju_chip"
+                style="@style/Widget.MaterialComponents.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:onClick="@{() -> viewModel.onButtonEvent(destinationJeonjuChip.getText().toString())}"
+                android:text="전주/전라"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/destination_seoul_chip" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/destination_gangreung_chip"
+                style="@style/Widget.MaterialComponents.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="16dp"
+                android:onClick="@{() -> viewModel.onButtonEvent(destinationGangreungChip.getText().toString())}"
+                android:text="강릉/강원"
+                app:layout_constraintStart_toStartOf="@+id/destination_gangreung_chip"
+                app:layout_constraintTop_toBottomOf="@id/destination_jeonju_chip"
+                />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/destination_jeju_chip"
+                style="@style/Widget.MaterialComponents.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="16dp"
+                android:onClick="@{() -> viewModel.onButtonEvent(destinationJejuChip.getText().toString())}"
+                android:text="제주/우도"
+                app:layout_constraintStart_toEndOf="@+id/destination_jeonju_chip"
+                app:layout_constraintTop_toBottomOf="@+id/destination_daejeon_chip" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/destination_etc_chip"
+                style="@style/Widget.MaterialComponents.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:onClick="@{() -> viewModel.onButtonEvent(destinationEtcChip.getText().toString())}"
+                android:text="그 외 여행지"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/destination_jeonju_chip" />
+
+        </com.google.android.material.chip.ChipGroup>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

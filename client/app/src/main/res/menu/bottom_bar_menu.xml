@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/homeFragment"
+        android:icon="@drawable/ic_baseline_home_24"
+        android:enabled="true"
+        android:title="홈" />
+    <item
+        android:id="@+id/chatFragment"
+        android:icon="@drawable/ic_baseline_chat_24"
+        android:enabled="true"
+        android:title="채팅"/>
+    <item
+        android:id="@+id/rankFragment"
+        android:icon="@drawable/ic_baseline_favorite_24"
+        android:enabled="true"
+        android:title="랭킹" />
+    <item
+        android:id="@+id/profileEditFragment"
+        android:icon="@drawable/ic_baseline_portrait_24"
+        android:enabled="true"
+        android:title="프로필" />
+</menu>

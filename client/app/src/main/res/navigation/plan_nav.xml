@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/plan_nav"
+    app:startDestination="@id/homeFragment">
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.witt.presentation.ui.home.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_makePlanFragment"
+            app:destination="@id/makePlanFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_drawUpPlanFragment"
+            app:destination="@id/drawUpPlanFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/makePlanFragment"
+        android:name="com.example.witt.presentation.ui.plan.make_plan.MakePlanFragment"
+        android:label="MakePlanFragment"
+        tools:layout="@layout/fragment_make_plan">
+        <argument
+            android:name="startDate"
+            app:argType="long" />
+        <argument
+            android:name="endDate"
+            app:argType="long" />
+        <action
+            android:id="@+id/action_makePlanFragment_to_drawUpPlanFragment"
+            app:destination="@id/drawUpPlanFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/drawUpPlanFragment"
+        android:name="com.example.witt.presentation.ui.plan.drawup_plan.DrawUpPlanFragment"
+        android:label="DrawUpPlanFragment"
+        tools:layout="@layout/fragment_draw_up_plan">
+        <action
+            android:id="@+id/action_drawUpPlanFragment_to_writeMemoFragment"
+            app:destination="@id/writeMemoFragment" />
+        <action
+            android:id="@+id/action_drawUpPlanFragment_to_mapSearchFragment"
+            app:destination="@id/mapSearchFragment" />
+        <action
+            android:id="@+id/action_drawUpPlanFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+        <action
+            android:id="@+id/action_drawUpPlanFragment_to_airlineSearchFragment"
+            app:destination="@id/airlineSearchFragment" />
+        <action
+            android:id="@+id/action_drawUpPlanFragment_to_chatFragment"
+            app:destination="@id/chatFragment" />
+        <action
+            android:id="@+id/action_drawUpPlanFragment_to_flightSearchFragment"
+            app:destination="@id/flightSearchFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/writeMemoFragment"
+        android:name="com.example.witt.presentation.ui.plan.drawup_plan.memo_dialog.WriteMemoFragment"
+        android:label="WriteMemoFragment"
+        tools:layout="@layout/fragment_write_memo">
+    </fragment>
+    <fragment
+        android:id="@+id/mapSearchFragment"
+        android:name="com.example.witt.presentation.ui.search.MapSearchFragment"
+        android:label="fragment_map_search"
+        tools:layout="@layout/fragment_map_search">
+        <argument
+            android:name="dayId"
+            app:argType="integer" />
+        <action
+            android:id="@+id/action_mapSearchFragment_to_addPlaceFragment"
+            app:destination="@id/addPlaceFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/addPlaceFragment"
+        android:name="com.example.witt.presentation.ui.search.AddPlaceFragment"
+        android:label="addPlaceFragment"
+        android:layout="@layout/fragment_add_place"
+        tools:layout="@layout/fragment_add_place">
+        <argument
+            android:name="day"
+            app:argType="integer" />
+        <argument
+            android:name="place"
+            app:argType="com.example.witt.data.model.remote.detail_plan.search.PlaceModel"
+            app:nullable="false"/>
+        <action
+            android:id="@+id/action_addPlaceFragment_to_drawUpPlanFragment"
+            app:destination="@id/drawUpPlanFragment"/>
+        <action
+            android:id="@+id/action_addPlaceFragment_to_drawUpPlanFragment2"
+            app:destination="@id/drawUpPlanFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/airlineSearchFragment"
+        android:name="com.example.witt.presentation.ui.search.airline.AirlineSearchFragment"
+        android:label="AirlineSearchFragment"
+        tools:layout="@layout/fragment_airline_search">
+        <action
+            android:id="@+id/action_airlineSearchFragment_to_drawUpPlanFragment"
+            app:destination="@id/drawUpPlanFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/chatFragment"
+        android:name="com.example.witt.presentation.ui.chat.ChatFragment"
+        android:label="ChatFragment" >
+        <action
+            android:id="@+id/action_chatFragment_to_drawUpPlanFragment"
+            app:destination="@id/drawUpPlanFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/flightSearchFragment"
+        android:name="com.example.witt.presentation.ui.search.airline.FlightSearchFragment"
+        android:label="FlightSearchFragment" >
+        <action
+            android:id="@+id/action_flightSearchFragment_to_drawUpPlanFragment"
+            app:destination="@id/drawUpPlanFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/profileEditFragment"
+        android:name="com.example.witt.presentation.ui.profile_edit.ProfileEditFragment"
+        android:label="ProfileEditFragment" />
+    <fragment
+        android:id="@+id/rankFragment"
+        android:name="com.example.witt.presentation.ui.rank.RankFragment"
+        android:label="RankFragment" />
+</navigation>
