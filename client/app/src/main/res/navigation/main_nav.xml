@@ -16,9 +16,6 @@
         <action
             android:id="@+id/action_signInFragment_to_profileEditFragment"
             app:destination="@id/profileEditFragment" />
-        <action
-            android:id="@+id/action_signInFragment_to_plan_nav"
-            app:destination="@id/plan_nav" />
     </fragment>
     <fragment
         android:id="@+id/signUpFragment"
@@ -38,5 +35,4 @@
             android:id="@+id/action_profileEditFragment_to_plan_nav"
             app:destination="@id/plan_nav" />
     </fragment>
-    <include app:graph="@navigation/plan_nav" />
 </navigation>
