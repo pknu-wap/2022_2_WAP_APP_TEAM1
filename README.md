@@ -54,10 +54,10 @@ WitT는 Android 공식문서에 서술된 [Android App Architecture](https://dev
 <!-- markdownlint-disable -->
 <table>
   <tr>
-    <td align="center"><a href="http://github.com/jeongjaino"><img src="https://avatars.githubusercontent.com/u/77484719?v=4" width="100px;" alt=""/><br /><sub><b>JinHo Jeong</sub></a><br /><a href="https://github.com/pknu-wap/2022_2_WAP_APP_TEAM1/commits/develop_android?author=jeongjaino" title="Code">💻</a></td>
-    <td align="center"><a href="https://github.com/SeongHoonC"><img src="https://avatars.githubusercontent.com/u/108349655?v=4" width="100px;" alt=""/><br /><sub><b>SeongHoon Choi</b></sub></a><br /><a href="https://github.com/pknu-wap/2022_2_WAP_APP_TEAM1/commits/develop_android?author=SeongHoonC" title="Code">💻</a></td>
-    <td align="center"><a href="https://github.com/winocreative"><img src="https://avatars.githubusercontent.com/u/26576118?v=4" width="100px;" at=""/><br /><sub><b>JaeWan Seo</b></sub></a><br /><a href="https://github.com/pknu-wap/2022_2_WAP_APP_TEAM1/commits/develop_server?author=winocreative" title="Code">💻</a></td>
-    <td align="center"><a href="https://github.com/Yenniiii"><img src="https://avatars.githubusercontent.com/u/102972001?v=4" width="100px;" at=""/><br /><sub><b>YeEun Lee</b></sub></a><br /><a href="https://github.com/pknu-wap/2022_2_WAP_APP_TEAM1/commits/develop_server?author=Yenniiii" title="Code">💻</a></td>
+    <td align="center"><a href="http://github.com/jeongjaino"><img src="https://avatars.githubusercontent.com/u/77484719?v=4" width="100px;" alt=""/><br /><sub><b>JinHo Jeong</sub></a><br /><a href="https://github.com/pknu-wap/2022_2_WAP_APP_TEAM1/commits/main?author=jeongjaino" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/SeongHoonC"><img src="https://avatars.githubusercontent.com/u/108349655?v=4" width="100px;" alt=""/><br /><sub><b>SeongHoon Choi</b></sub></a><br /><a href="https://github.com/pknu-wap/2022_2_WAP_APP_TEAM1/commits/main?author=SeongHoonC" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/winocreative"><img src="https://avatars.githubusercontent.com/u/26576118?v=4" width="100px;" at=""/><br /><sub><b>JaeWan Seo</b></sub></a><br /><a href="https://github.com/pknu-wap/2022_2_WAP_APP_TEAM1/commits/main?author=winocreative" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/Yenniiii"><img src="https://avatars.githubusercontent.com/u/102972001?v=4" width="100px;" at=""/><br /><sub><b>YeEun Lee</b></sub></a><br /><a href="https://github.com/pknu-wap/2022_2_WAP_APP_TEAM1/commits/main?author=Yenniiii" title="Code">💻</a></td>
   </tr>
     <tr>
     <td align="center">안드로이드</td>
