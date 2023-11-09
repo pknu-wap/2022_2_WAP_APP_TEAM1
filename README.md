@@ -1,7 +1,17 @@
-<h1 align="center">2022 2학기 APP 1팀 WitT</h1>
+<h1 align="center">WitT | 공유 플랜 여행서비스 </h1>
+
+
 <p align="center">
-	    <img src="./image/icon.png"/ width="50%">
-</p>	   
+	<img src="https://github.com/pknu-wap/2022_2_WAP_APP_TEAM1/assets/108349655/9591d4db-61ae-4c83-b713-8f74e52deb4f" width="20%">
+</p>	
+
+<p align="center">
+	<img src = "https://github.com/pknu-wap/2022_2_WAP_APP_TEAM1/assets/108349655/ed6d7fe3-ba09-4908-ab7e-3f29486977c3"/  width="70%">
+</p>
+
+
+
+   
 
 <p align="center">
     <img src="https://img.shields.io/badge/Kotlin-1.7.20-7F52FF?style=for-the-badge&logo=Kotlin&logoColor=white"/>
@@ -11,11 +21,11 @@
     <img src="https://img.shields.io/badge/all_contributors-4-orange.svg?style=for-the-badge"/>
 </p>
 
-<p align="center">
-	<h3 align="center">
-		 공유 플랜 여행서비스<br>WitT(With Trip)
-	</h3>	
-</p>
+
+
+
+
+
 
 <h2>Android Tech Stack</h2>
 
